@@ -25,7 +25,7 @@ uint8 distance_integral_flag2 = 0; //路程积分标志位
 uint8 if_first_dis1 = 0;
 int16 k_add = 0; // k值累加
 
-float angle1 = 0;
+float angle1 = 0;	//菜单显示积分
 float angle2 = 0;
 float obstacle_angle = 0;
 int16 distance1 = 0;

@@ -428,18 +428,21 @@ void Keystroke_Menu_TWO(void) // 2
     ips200_showfloat(120, 5, pidL.setpoint, 4, 4);
     ips200_showstr(8, 6, " R.setpoint");
     ips200_showfloat(120, 6, pidR.setpoint, 4, 4);
+
     ips200_showstr(8, 7, " mid_adc_up");
     ips200_showint32(120, 7, adc_data[7], 6);
     ips200_showstr(8, 8, " mid_adc_down");
     ips200_showint32(120, 8, adc_data[2], 6);
+
     ips200_showstr(8, 10, " flag_k");
     ips200_showuint8(120, 10, annulus_flag_k_index);
+    
     ips200_showstr(8, 11, " angle1");
     ips200_showfloat(120, 11, angle1, 5, 2);
-    // ips200_showstr(8, 1, " Return");
+
     ips200_showstr(8, 45, " display");
     ips200_showuint16(120, 45, display % 10);
-     Keystroke_Scan();
+    Keystroke_Scan();
 
     switch (display % 10)
     {
