@@ -206,7 +206,7 @@ void obstacle_control(void)
 	}
 	if (distance_integral_flag2)
 	{
-		distance2 += (abs(speedL) + abs(speedR)) / 2;
+		distance2 += (spL + spR) * 0.005 / 2;
 	}
 	if (1)
 	{
@@ -226,8 +226,13 @@ void obstacle_control(void)
 		{
 			if (tof_count >= 8)
 			{
-				dodge_flag++;
 				distance2 = 0;
+				distance_integral_flag2 = 1; //开始积分距离
+
+				angle1 = 0;
+				angle_integral_flag1 = 1;//开始积分角度
+
+				dodge_flag++;
 			}
 			tof_count_flag = 0;
 		}
@@ -235,79 +240,59 @@ void obstacle_control(void)
 	else if (dodge_flag == 1) //要转角
 	{
 		//左打角
-		distance_integral_flag2 = 1;
-		angle_integral_flag2 = 1;
-//
-		pidS.result = exp(-((0.002*distance2*distance2)/(2.0*100*100)))*250;
-		if (angle2 > 25)
+		pidS.setpoint = exp(-((0.002*distance2*distance2)/(2.0*100*100)))*250;
+		if (angle1 > 25 && distance2 > 40 )
 		{
-			pidS.result = exp(-((0.002*distance2*distance2)/(2.0*100*100)))*250;;
-			// distance_integral_flag2 = 0;
-			// angle_integral_flag1 = 0;	//关闭角度积分
-			if (distance2 < tof_dis1)
-			{
-				//不做处理
-			}
-			else
-			{
-				//distance_integral_flag2 = 0;
+				angle1 = 0;
 				distance2 = 0;
 				dodge_flag++;
-			}
 		}
 	}
 	else if (dodge_flag == 2)
 	{
 		//打回正向
 		pidS.result = exp(-((0.002*distance2*distance2)/(2.0*100*100)))*-150;
-		if (/*straight_flag == 0 &&*/ angle2 < 8)
+		if ( angle1 < -25 && distance2 > 40 )
 		{
-			distance_integral_flag2 = 1;
-			if (distance2 < tof_dis2)
-			{
-				pidS.result = 0;
-			}
-			else
-			{
-				straight_flag = 1;
-				distance_integral_flag2 = 0;
-				distance2 = 0;
-				dodge_flag++;
-			}
+			angle1 = 0;
+			distance2 = 0;
+			dodge_flag++;
+		
 		}
 	}
-
 	else if (dodge_flag == 3)
 	{
-		distance_integral_flag2 = 1;
 		//右打角
 		pidS.result = exp(-((0.003*distance2*distance2)/(2.0*100*100)))*-125;
-		if (straight_flag==1 && angle2 < -22)
+		if (angle1 < -25 && distance2 > 40)
 		{
-			if(abs(pidS.result) > 200)
-			{
-				pidS.result = 0;
-				//不做处理
-			}else
-			{
-				pidS.result = exp(-((0.003*distance2*distance2)/(2.0*100*100)))*-125;
-			}																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															
-			dodge_flag++;
-			//			distance1 = 0;
-			angle2 = 0;
-			//			distance_integral_flag2 = 0;
-			//angle_integral_flag2 = 0;
-			//distance_integral_flag2 = 0;
+			angle1 = 0;
 			distance2 = 0;
+			dodge_flag++;
 		}
 	}
-	else if (dodge_flag == 4)
+	else if (dodge_flag == 4) 
+	{
+		//左打角回正
+		pidS.result = exp(-((0.003*distance2*distance2)/(2.0*100*100)))*125;
+		if (angle1 > 25 && distance2 > 40)
+		{
+			angle1 = 0;
+			distance2 = 0;
+
+			distance_integral_flag2 = 0;//停止路程积分
+			angle_integral_flag1 = 0;//停止角度积分
+
+			dodge_flag++;
+		}
+	}
+	else if (dodge_flag == 5)
 	{
 		distance_integral_flag2 = 1;
 		if(distance2 > 10000)
 		{
-			dodge_flag=5;
-			//obstacle_reset();
+			dodge_flag=6;
+			//obstacle_reset();	//继续避障则取消注释
 		}
 	}
 }
@@ -338,11 +323,15 @@ void all_reset()
 void obstacle_reset()
 {	
 	tof_count = 0;
-	dodge_flag = 0;
+	dodge_flag = 0;	//重新避障
+
 	angle2 = 0;
-	distance2 = 0;
-	//angle_integral_flag1 = 0;
 	angle_integral_flag2 = 0;
-	//distance_integral_flag1 = 0; //路程积分标志位
-	distance_integral_flag2 = 0; //路程积分标志位
+
+	angle1 = 0;
+	angle_integral_flag1 = 0;
+
+	distance2 = 0;
+	distance_integral_flag2 = 0;
+
 }

@@ -67,7 +67,7 @@ void main()
   P77 = 0;
   while (1)
   {
-    if (  /*P50 && */fanL < 10)
+    if (  fanL < 10 )
     {
       Keystroke_Scan();
       Keystroke_Menu();
@@ -76,8 +76,9 @@ void main()
     {
       rx_analysis();
       finish_flag = 0;
-    } //无线调参解析函数
-
+    } 
+    
+    //无线调参解析函数
     // if (last_time_count != time_count && sp_set != 0)
     // {
     //   printf("%ld,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d", time_count, adc_data[0], adc_data[1], adc_data[2], adc_data[3], adc_data[4], adc_data[5], adc_data[6], adc_data[7], adc_data[8], adc_data[9]);
@@ -99,6 +100,7 @@ void main()
     pwm_duty(PWMB_CH1_P74, fanL);
 
     sp_set_max = sp_set;
+    
     //  printf("%d,%d,%d,%f,%f,%f,%d,%d,%d,%f,%f,%d\n", adc_data[0], adc_data[4], aimed_into_speed, into_R, angle, all_angle, adc_data[2], tof_distance, leave_flag, k, pidS.result, dodge_flag);
     //   printf("%d,%d,%d\n", imu963ra_mag_x, imu963ra_mag_y, imu963ra_mag_z);
     //   printf("%d,%d,%d,%d,%d,%d",imu963ra_acc_x,imu963ra_acc_y,imu963ra_acc_z,imu963ra_gyro_x,imu963ra_gyro_y,imu963ra_gyro_z);

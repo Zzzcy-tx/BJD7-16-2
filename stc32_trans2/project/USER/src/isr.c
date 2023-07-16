@@ -23,6 +23,7 @@
 #include "kaerman.h"
 #include "filter.h"
 #include "keyboard.h"
+#include "isr.h"
 char *p = uart_str;
 int16 spL;
 int16 spR;
@@ -253,6 +254,8 @@ void TM4_Isr() interrupt 20
     //     if (k > 50)
     //         k = 50;
     // }
+
+    
 
     renew(); //控制函数
     //读取实际速度

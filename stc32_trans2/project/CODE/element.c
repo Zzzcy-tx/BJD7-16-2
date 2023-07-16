@@ -14,7 +14,7 @@ void control()
     //陀螺仪积分
     if (angle_integral_flag)
     {
-        angle += gyro * 0.01;
+        angle += gyro * 0.005;
     }
 
     //编码器积分
@@ -27,10 +27,11 @@ void control()
     if (leave_flag == 0 && sp_set != 0)
     {
         distance_integral_flag = 1; //启动路程积分
-        pidL.setpoint = 100;
-        pidR.setpoint = 100;
+        pidL.setpoint = 80;
+        pidR.setpoint = 80;
         hall_trigged = 0;
         //直线行驶一段距离
+        
         if (distance >= 3600)
         {
             leave_flag++;
