@@ -1,0 +1,137 @@
+C251 COMPILER V5.60.0,  data                                                               16/07/23  02:23:54  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE data
+OBJECT MODULE PLACED IN .\Out_File\data.obj
+COMPILER INVOKED BY: D:\keil5\C251\BIN\C251.EXE ..\CODE\data.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCD
+                    -IR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;
+                    -..\USER\src) DEBUG PRINT(.\Out_File\data.lst) OBJECT(.\Out_File\data.obj) 
+
+stmt  level    source
+
+    1          #include "data.h"
+    2          
+    3          uint16 t = 0;
+    4          int16 PO_or_OBSTACLE[5] = {-1, -1, -1, -1, -1};
+    5          int16 ring_set_k[5] = {18, 0, 0, 0, 0};
+    6          uint16 sp_ready = 1;
+    7          
+    8          int16 mag;
+    9          int16 sp_check = 0;
+   10          uint16 check_flag = 0;
+   11          
+   12          int16 speedL;
+   13          int16 speedR;
+   14          int8 irs_count = 0;
+   15          float k;
+   16          int32 adc_data[10];
+   17          uint16 adc_d[10];  //实时
+   18          float Adc_gui[10]; //归一化
+   19          uint16 AD_value[10];
+   20          int16 test1;
+   21          
+   22          int32 all_distance = 0;
+   23          
+   24          float test2;
+   25          
+   26          float all_angle = 0;
+   27          float gyro_add = 0;
+   28          
+   29          char str_item[100];       //参数名
+   30          int str_num;              //参数值
+   31          char uart_str[100] = {0}; //串口字符串
+   32          int8 finish_flag = 0;
+   33          uint16 Gui_flag = 0;
+   34          int8 start_flag = 0;
+   35          
+   36          uint8 Rcon_flag = 0;
+   37          uint8 Ocon_flag = 1;
+   38          uint8 protect_flag = 1;
+   39          
+   40          float P_LR = 63.18;
+   41          float I_LR = 50.1;
+   42          uint8 puodao = 0;
+   43          float P_S = 68.27;
+   44          
+   45          float P_S_MAX = 77.0;
+   46          float D_S = -24.19;
+   47          float D_S_z = -33;
+   48          float G_S = -0.198;
+   49          float G_S_1 = -0.17;
+   50          float G_S_zhi = -0.151;
+   51          
+   52          float P_W = 1.83;
+   53          float D_W = 0.86;
+   54          
+   55          float aimed_angle = 0;
+   56          
+   57          float gyro;  //滤波后陀螺仪z轴角速度
+C251 COMPILER V5.60.0,  data                                                               16/07/23  02:23:54  PAGE 2   
+
+   58          float gyro1; //滤波后陀螺仪z轴角速度
+   59          
+   60          int16 dis1 = 2000;
+   61          int16 dis2 = 10000;
+   62          int16 ring_angle = 1600;
+   63          
+   64          int16 wSet;
+   65          float gyro;
+   66          int16 sp_set = 0;
+   67          int16 sp_set_max = 200;
+   68          
+   69          int16 aimed_into_speed = 60; //倒车速度
+   70          float into_R = 0.25;
+   71          //倒车转弯半径(m)
+   72          int16 ku_distance = 1500;
+   73          
+   74          int8 obstacle_count = 0;
+   75          int16 tof_dis = 850;
+   76          // int16 tof_dis1 = 7950;
+   77          int16 tof_dis1 = 7300;
+   78          int16 tof_dis2 = 6650;
+   79          int16 tof_dis3 = 6000;
+   80          
+   81          int16 fanL = 0;
+   82          int16 fanR = 0;
+   83          
+   84          uint8 start_diration = 1;
+   85          
+   86          int16 tof_distance = 0;
+   87          
+   88          //按键
+   89          int8 keys = 0;
+   90          uint8 SINGLE_CLICK = 0;
+   91          uint8 DOUBLE_CLICK = 1;
+   92          int16 strm = -1;
+   93          //拨码开关
+   94          uint8 R_or_L = 0;
+   95          
+   96          uint32 time_count = 0;
+   97          uint16 mode = 0;
+   98          
+   99          uint32 encoder_count = 0;
+  100          int16 speed3 = 0;
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =    ------     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =       497     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =       529     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

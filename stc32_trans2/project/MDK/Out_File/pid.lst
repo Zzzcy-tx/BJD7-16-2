@@ -1,0 +1,222 @@
+C251 COMPILER V5.60.0,  pid                                                                15/07/23  21:04:30  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE pid
+OBJECT MODULE PLACED IN .\Out_File\pid.obj
+COMPILER INVOKED BY: D:\keil5\C251\BIN\C251.EXE ..\CODE\pid.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCDI
+                    -R(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;.
+                    -.\USER\src) DEBUG PRINT(.\Out_File\pid.lst) OBJECT(.\Out_File\pid.obj) 
+
+stmt  level    source
+
+    1          #include "pid.h"
+    2          
+    3          // pid处理函数
+    4          PID pidL; //速度环
+    5          PID pidR; //速度环
+    6          PID pidS; //方向环
+    7          PID pidW; //角度环
+    8          
+    9          //增量式pid计算(pi控制)
+   10          void PIDRegulation(PID *vPID, float processValue)
+   11          {
+   12   1      
+   13   1          float thisError;
+   14   1      
+   15   1          float increment;
+   16   1      
+   17   1          float pError, dError, iError;
+   18   1      
+   19   1          thisError = vPID->setpoint - processValue;
+   20   1      
+   21   1          pError = thisError - vPID->lasterror;
+   22   1      
+   23   1          iError = thisError;
+   24   1      
+   25   1          dError = thisError - 2 * (vPID->lasterror) + vPID->preerror;
+   26   1      
+   27   1          increment = vPID->proportiongain * pError + vPID->integralgain * iError + vPID->derivativegain * dErr
+             -or; //????
+   28   1      
+   29   1          vPID->preerror = vPID->lasterror;
+   30   1      
+   31   1          vPID->lasterror = thisError;
+   32   1      
+   33   1          vPID->result += increment;
+   34   1      
+   35   1          if (vPID->result > vPID->deadband)
+   36   1              vPID->result = vPID->deadband;
+   37   1          if (vPID->result < -vPID->deadband)
+   38   1              vPID->result = -vPID->deadband;
+   39   1      }
+   40          
+   41          //位置式pid计算(pd控制)
+   42          void PIDRegulation1(PID *vPID, float processValue)
+   43          
+   44          {
+   45   1          float thisError;
+   46   1      
+   47   1          thisError = processValue - vPID->setpoint;
+   48   1      
+   49   1          vPID->integral += thisError;
+   50   1      
+   51   1          vPID->result = vPID->proportiongain * thisError + vPID->integralgain * vPID->integral + vPID->derivat
+             -ivegain * (thisError - vPID->lasterror);
+   52   1      
+   53   1          vPID->lasterror = thisError;
+   54   1      }
+   55          
+C251 COMPILER V5.60.0,  pid                                                                15/07/23  21:04:30  PAGE 2   
+
+   56          //陀螺仪pid消抖
+   57          void PIDRegulation2(PID *vPID, float processValue)
+   58          {
+   59   1              float index;
+   60   1          float thisError;
+   61   1          thisError = processValue - vPID->setpoint;
+   62   1              if(vPID->result > 15000)
+   63   1              {
+   64   2                      if(abs(thisError) > 300)
+   65   2                      {
+   66   3                              index = 0.0;
+   67   3                      }else
+   68   2                      {
+   69   3                              if(thisError < 0)
+   70   3                              {
+   71   4                                      index = 1.0;
+   72   4                                      vPID->integral += thisError;
+   73   4                              }
+   74   3                      }
+   75   2              }else if(vPID->result < -15000)
+   76   1              {
+   77   2                      if(abs(thisError) > 300)
+   78   2                      {
+   79   3                              index = 0.0;
+   80   3                      }else
+   81   2                      {
+   82   3                              if(thisError > 0)
+   83   3                              {
+   84   4                                      index = 1.0;
+   85   4                                      vPID->integral += thisError;
+   86   4                              }
+   87   3                      }
+   88   2              }else
+   89   1              {
+   90   2                      if(abs(thisError) > 300)
+   91   2                      {
+   92   3                              index = 0.0;
+   93   3                      }else
+   94   2                      {
+   95   3                              if(abs(thisError) < 100)
+   96   3                              {
+   97   4                                      index = 1.0;
+   98   4                                      vPID->integral += thisError;
+   99   4                              }
+  100   3                              else
+  101   3                              {
+  102   4                                      index = (300-abs(thisError)) / 200;
+  103   4                                      vPID->integral += thisError;
+  104   4                              }
+  105   3                      }
+  106   2              }
+  107   1              
+  108   1          vPID->result = vPID->proportiongain * thisError + index * vPID->integralgain * vPID->integral / 2 + v
+             -PID->derivativegain * (thisError - vPID->lasterror ) + vPID->Gkd * gyro;
+  109   1      
+  110   1          vPID->lasterror = thisError;
+  111   1      }
+  112          
+  113          //设置速度环目标值
+  114          void setSpeedLR(int16 speed)
+  115          {
+  116   1          pidL.setpoint = (float)speed;
+  117   1          pidR.setpoint = (float)speed;
+  118   1      }
+  119          //设置速度环目标值
+  120          void setSpeedL(int16 speed)
+C251 COMPILER V5.60.0,  pid                                                                15/07/23  21:04:30  PAGE 3   
+
+  121          {
+  122   1          pidL.setpoint = (float)speed;
+  123   1      }
+  124          //设置速度环目标值
+  125          void setSpeedR(int16 speed)
+  126          {
+  127   1          pidR.setpoint = (float)speed;
+  128   1      }
+  129          //设置速度环参数
+  130          void setPidL(int16 p, int16 i, int16 d, int16 deadband)
+  131          {
+  132   1          pidL.proportiongain = p;
+  133   1          pidL.integralgain = i;
+  134   1          pidL.derivativegain = d;
+  135   1          pidL.deadband = deadband;
+  136   1      }
+  137          //设置速度环参数
+  138          void setPidR(int16 p, int16 i, int16 d, int16 deadband)
+  139          {
+  140   1          pidR.proportiongain = p;
+  141   1          pidR.integralgain = i;
+  142   1          pidR.derivativegain = d;
+  143   1          pidR.deadband = deadband;
+  144   1      }
+  145          //设置速度环参数
+  146          void setPidLR(int16 p, int16 i, int16 d, int16 deadband)
+  147          {
+  148   1          pidL.proportiongain = p;
+  149   1          pidL.integralgain = i;
+  150   1          pidL.derivativegain = d;
+  151   1          pidR.proportiongain = p;
+  152   1          pidR.integralgain = i;
+  153   1          pidR.derivativegain = d;
+  154   1          pidL.deadband = deadband;
+  155   1          pidR.deadband = deadband;
+  156   1      }
+  157          //设置方向环参数
+  158          void setPidS(float p, float i, float d)
+  159          {
+  160   1          pidS.proportiongain = p;
+  161   1          pidS.integralgain = i;
+  162   1          pidS.derivativegain = d;
+  163   1      }
+  164          //设置方向环参数(加陀螺仪)
+  165          void setPidS_2(float p, float i, float d, float gk)
+  166          {
+  167   1          pidS.proportiongain = p;
+  168   1          pidS.integralgain = i;
+  169   1          pidS.derivativegain = d;
+  170   1              pidS.Gkd = gk;
+  171   1      }
+  172          //设置角度环参数
+  173          void setPidW(float p, float i, float d)
+  174          {
+  175   1          pidW.proportiongain = p;
+  176   1          pidW.integralgain = i;
+  177   1          pidW.derivativegain = d;
+  178   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      2570     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+C251 COMPILER V5.60.0,  pid                                                                15/07/23  21:04:30  PAGE 4   
+
+  xdata size           =       286     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

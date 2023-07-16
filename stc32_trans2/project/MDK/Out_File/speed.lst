@@ -1,0 +1,231 @@
+C251 COMPILER V5.60.0,  speed                                                              16/07/23  03:18:38  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE speed
+OBJECT MODULE PLACED IN .\Out_File\speed.obj
+COMPILER INVOKED BY: D:\keil5\C251\BIN\C251.EXE ..\CODE\speed.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INC
+                    -DIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc
+                    -;..\USER\src) DEBUG PRINT(.\Out_File\speed.lst) OBJECT(.\Out_File\speed.obj) 
+
+stmt  level    source
+
+    1          #include "speed.h"
+    2          
+    3          //设置电机pwm
+    4          //设置电机pwm
+    5          void setMotorL(int16 motorSetL)
+    6          {
+    7   1        if (sp_set < 10)
+    8   1        {
+    9   2          motorSetL = 0;
+   10   2        }
+   11   1        pwm_duty(PWMA_CH1P_P60, abs(motorSetL) * 4 / 7);
+   12   1        if (motorSetL > 0)
+   13   1          P64 = 1;
+   14   1        else
+   15   1          P64 = 0;
+   16   1      }
+   17          void setMotorR(int16 motorSetR)
+   18          {
+   19   1        if (sp_set < 10)
+   20   1        {
+   21   2          motorSetR = 0;
+   22   2        }
+   23   1        pwm_duty(PWMA_CH2P_P62, abs(motorSetR) * 4 / 7);
+   24   1        if (motorSetR < 0)
+   25   1          P66 = 0;
+   26   1        else
+   27   1          P66 = 1;
+   28   1      }
+   29          
+   30          //差速计算
+   31          float Diff_Factor = 0.006;            //差速系数
+   32          int16 Differential(float Diff_Factor) //阿克曼原理，根据舵机进行差速控制，参数整定依赖工程实践
+   33          {
+   34   1        float Diff;
+   35   1        Diff = Diff_Factor * ((pidL.setpoint + pidR.setpoint) / 2) * pidS.result; // diff_factor是差速系数
+   36   1        return (int16)Diff;
+   37   1      }
+   38          
+   39          //计算两轮的速度目标值
+   40          void diffSpeedSet()
+   41          {
+   42   1        int16 Diff_Speed = Differential(Diff_Factor); //通过函数计算差速值
+   43   1          //if (Diff_Speed > 1500)    //差速限幅
+   44   1          //Diff_Speed =1500;
+   45   1         // pidL.setpoint * Diff_Factor;
+   46   1      
+   47   1        if (k < 0)
+   48   1        {
+   49   2          setSpeedR(pidR.setpoint + Diff_Speed);
+   50   2          setSpeedL(pidL.setpoint - Diff_Speed);
+   51   2              
+   52   2        }
+   53   1        else
+   54   1        {
+   55   2          setSpeedR(pidR.setpoint + Diff_Speed);
+   56   2          setSpeedL(pidL.setpoint - Diff_Speed);
+   57   2        }
+C251 COMPILER V5.60.0,  speed                                                              16/07/23  03:18:38  PAGE 2   
+
+   58   1      
+   59   1        // setSpeedLR(pidL.setpoint);
+   60   1        // if (pidS.result < 0)
+   61   1        //  setSpeedR(pidR.setpoint - abs(Diff_Speed));
+   62   1        // else
+   63   1        //  setSpeedL(pidR.setpoint - abs(Diff_Speed));
+   64   1      }
+   65          
+   66          // //计算角度环输出
+   67          // void diffSpeedSet1()
+   68          // {
+   69          //   setSpeedL(pidL.setpoint + pidW.result / 90);
+   70          //   setSpeedR(pidR.setpoint - pidW.result / 90);
+   71          // }
+   72          
+   73          //中断中被循环调用
+   74          
+   75          
+   76          
+   77          
+   78          void renew(void)
+   79          {
+   80   1              int16 a = 7;
+   81   1              int16 b = 5;
+   82   1       if(adc_data[7] < 40 && (dodge_flag == 0||dodge_flag==5) && protect_flag == 1) 
+   83   1        {
+   84   2          sp_set = 0;
+   85   2        }
+   86   1        /* if(fabs(k) < 7)
+   87   1        {
+   88   1          setSpeedLR(sp_set_max); //设置速度初始值为目标值
+   89   1          pidS.proportiongain = P_S;
+   90   1          pidS.derivativegain = D_S_z;
+   91   1          
+   92   1        }
+   93   1        else
+   94   1        {
+   95   1          pidS.proportiongain = P_S_MAX;
+   96   1          pidS.derivativegain = D_S;
+   97   1          setSpeedLR(sp_set); //设置速度初始值为目标值
+   98   1        }
+   99   1        */
+  100   1        if(abs(adc_data[1] - adc_data[3]) < 50)
+  101   1        {
+  102   2               check_flag = 0;
+  103   2               sp_check = exp(-(2*k*k)/(2*80*80))*sp_set;
+  104   2               //sp_check = exp(-(2*k*k)/(2*80*80))*sp_set;
+  105   2               //sp_check = (1-0.05*fabs((exp(-fabs(k/a))-1.0)/(exp(-fabs(k/a))+1.0)))*sp_set;
+  106   2               setSpeedLR(sp_check);
+  107   2               //setSpeedLR(sp_set);
+  108   2               G_S = G_S_zhi;
+  109   2        }
+  110   1        else if(abs(adc_data[1] - adc_data[3]) < 20)
+  111   1        {
+  112   2               check_flag = 2;
+  113   2               //sp_check = exp(-(k*k)/(2*50*50))*sp_set+20;
+  114   2               if(sp_set != 0)
+  115   2               {
+  116   3                       sp_check = exp(-(2*k*k)/(2*80*80))*sp_set + 40;
+  117   3               }else
+  118   2               {
+  119   3                       
+  120   3               }
+  121   2                       //sp_check = (1-0.05*fabs((exp(-fabs(k/a))-1.0)/(exp(-fabs(k/a))+1.0)))*sp_set;
+  122   2               setSpeedLR(sp_check);
+  123   2               //setSpeedLR(sp_set);
+C251 COMPILER V5.60.0,  speed                                                              16/07/23  03:18:38  PAGE 3   
+
+  124   2               G_S = G_S_zhi;
+  125   2        }
+  126   1        else
+  127   1        {
+  128   2               sp_check = (1-0.1*fabs((exp(-fabs(k/b))-1.0)/(exp(-fabs(k/b))+1.0)))*sp_set;
+  129   2               //sp_check = exp(-(k*k)/(2*41.4*41.4))*sp_set;
+  130   2               setSpeedLR(sp_check);
+  131   2               //setSpeedLR(sp_set * 0.85);
+  132   2           check_flag = 1;
+  133   2               G_S = G_S_1;
+  134   2        }
+  135   1        if (sp_set < 3)
+  136   1        {
+  137   2          setSpeedLR(0);
+  138   2        }
+  139   1        if (puodao == 1)
+  140   1        {
+  141   2          setSpeedLR(100);
+  142   2        }
+  143   1        if (adc_data[2] > 820)
+  144   1        {
+  145   2          setSpeedLR(110);
+  146   2        }
+  147   1        if(Rcon_flag == 1)
+  148   1        {
+  149   2              Ring_control();
+  150   2        }
+  151   1        //设置转向PID参数
+  152   1        setPidS(P_S + (fabs(k) / 50) * (P_S_MAX - P_S), 0, D_S_z + (fabs(k) / 50) * (D_S - D_S_z));
+  153   1        PIDRegulation1(&pidS, k); //方向环计算(加陀螺仪积分)
+  154   1        pidS.result += G_S * gyro;
+  155   1        if(Ocon_flag == 1 && obstacle_count == 0)
+  156   1        {
+  157   2              //  obstacle_control();//一定要放setpids后面
+  158   2        }
+  159   1        diffSpeedSet(); //差速设置（输入量为pidS.result和pidL.result）
+  160   1        // control();      //赛道元素控制
+  161   1        //          angle += gyro * 0.01;
+  162   1        //          Jinyun baked cakeJinyun baked cakepidW.setpoint = angle_change(aimed_angle);
+  163   1        //          PIDRegulation1(&pidW, angle);
+  164   1        //          diffSpeedSet1();
+  165   1      
+  166   1        if (abs(speedL) > 800 || abs(speedR) > 800)
+  167   1        {
+  168   2          sp_set = 0;
+  169   2        }
+  170   1        if (pidL.setpoint < -900)
+  171   1          pidL.setpoint = -900;
+  172   1        if (pidR.setpoint < -900)
+  173   1          pidR.setpoint = -900;
+  174   1        if (pidL.setpoint > 1500)
+  175   1          pidL.setpoint = 1500;
+  176   1        if (pidR.setpoint > 1500)
+  177   1          pidR.setpoint = 1500;
+  178   1        PIDRegulation(&pidL, (float)speedL); //速度环计算
+  179   1        PIDRegulation(&pidR, (float)speedR); //速度环计算
+  180   1      
+  181   1        if (pidL.result >= -pidL.deadband && pidL.result <= pidL.deadband)
+  182   1        {
+  183   2          setMotorL(-(int16)pidL.result);
+  184   2        }
+  185   1      
+  186   1        if (pidR.result >= -pidR.deadband && pidR.result <= pidR.deadband)
+  187   1        {
+  188   2          setMotorR((int16)pidR.result);
+  189   2        }
+C251 COMPILER V5.60.0,  speed                                                              16/07/23  03:18:38  PAGE 4   
+
+  190   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      1709     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =        22     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =         9     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

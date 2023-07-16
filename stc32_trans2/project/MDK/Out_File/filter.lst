@@ -1,0 +1,856 @@
+C251 COMPILER V5.60.0,  filter                                                             15/07/23  21:04:29  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE filter
+OBJECT MODULE PLACED IN .\Out_File\filter.obj
+COMPILER INVOKED BY: D:\keil5\C251\BIN\C251.EXE ..\CODE\filter.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE IN
+                    -CDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\in
+                    -c;..\USER\src) DEBUG PRINT(.\Out_File\filter.lst) OBJECT(.\Out_File\filter.obj) 
+
+stmt  level    source
+
+    1          #include "filter.h"
+    2          
+    3          uint16 Min_AD[10] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}; //最小值设为1
+    4          uint16 Max_Ad[10] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}; //电感最大值
+    5          int32 adc_sum[10] = {0};
+    6          int16 Range = 1000; //放大倍数
+    7          uint8 time_count1 = 0;
+    8          
+    9          void read_adc()
+   10          {
+   11   1              //获取电感值
+   12   1              adc_data[0] = MovingAverageFilter0(adc_once(ADC_P00, ADC_10BIT));
+   13   1              adc_data[1] = MovingAverageFilter1(adc_once(ADC_P01, ADC_10BIT));
+   14   1              adc_data[2] = MovingAverageFilter2(adc_once(ADC_P05, ADC_10BIT));
+   15   1              adc_data[3] = MovingAverageFilter3(adc_once(ADC_P06, ADC_10BIT));
+   16   1              adc_data[4] = MovingAverageFilter4(adc_once(ADC_P02, ADC_10BIT));
+   17   1              adc_data[5] = MovingAverageFilter5(adc_once(ADC_P10, ADC_10BIT));
+   18   1              adc_data[6] = MovingAverageFilter6(adc_once(ADC_P11, ADC_10BIT));
+   19   1              adc_data[7] = MovingAverageFilter7(adc_once(ADC_P15, ADC_10BIT));
+   20   1              adc_data[8] = MovingAverageFilter8(adc_once(ADC_P16, ADC_10BIT));
+   21   1              adc_data[9] = MovingAverageFilter9(adc_once(ADC_P14, ADC_10BIT));
+   22   1      
+   23   1              //进行归一化
+   24   1              // for (i = 0; i < 10; i++)
+   25   1              // {
+   26   1              //      Adc_gui[i] = Range * ((float)AD_value[i] / (Max_Ad[i] - Min_AD[i]));
+   27   1              // }
+   28   1              // adc_data[0] = MovingAverageFilter_0(adc_data[0] * 600 / adc_sum[0]);
+   29   1              // adc_data[1] = MovingAverageFilter_1(AD_value[1] * 800 / adc_sum[1]);
+   30   1              // adc_data[2] = MovingAverageFilter_2(AD_value[2] * 600 / adc_sum[2]);
+   31   1              // adc_data[3] = MovingAverageFilter_3(AD_value[3] * 800 / adc_sum[3]);
+   32   1              // adc_data[4] = MovingAverageFilter_4(AD_value[4] * 600 / adc_sum[4]);
+   33   1              // adc_data[5] = MovingAverageFilter_5(AD_value[5] * 600 / adc_sum[5]);
+   34   1              // adc_data[6] = MovingAverageFilter_6(AD_value[6] * 800 / adc_sum[6]);
+   35   1              // adc_data[7] = MovingAverageFilter_7(AD_value[7] * 600 / adc_sum[7]);
+   36   1              // adc_data[8] = MovingAverageFilter_8(AD_value[8] * 800 / adc_sum[8]);
+   37   1              // adc_data[9] = MovingAverageFilter_9(AD_value[9] * 600 / adc_sum[9]);
+   38   1      
+   39   1              /*      //数据处理量太大
+   40   1                      //对归一化的数据再进行冒泡排序
+   41   1                      for(i = 0; i < 10; i++)
+   42   1                      {
+   43   1                              for(j = 0; j < 10; j++)
+   44   1                              {
+   45   1                                      for(k = 0; k < 9 - j; k++)
+   46   1                                      {
+   47   1                                              if(AD_value[i][k] > AD_value[i][k + 1])
+   48   1                                              {
+   49   1                                                      temp = AD_value[i][k + 1];
+   50   1                                                      AD_value[i][k + 1] = AD_value[i][k];
+   51   1                                                      AD_value[i][k] = temp;
+   52   1                                              }
+   53   1                                      }
+   54   1                              }
+   55   1                      }
+   56   1                      //取中间的值获取
+   57   1                      for (i = 0; i < 10; i++)
+C251 COMPILER V5.60.0,  filter                                                             15/07/23  21:04:29  PAGE 2   
+
+   58   1                      {
+   59   1                              ad_sum[i] = (AD_value[i][4] + AD_value[i][5] + AD_value[i][6] + AD_value[i][7])/4;
+   60   1                              Adc_gui[i] = (uint16)ad_sum[i];
+   61   1                      //      if (GUI_AD[i] >= Range)
+   62   1                      //        GUI_AD[i] = Range;
+   63   1                      //   if (GUI_AD[i] <= Min_AD[i])
+   64   1                      //        GUI_AD[i] = Min_AD[i];
+   65   1                      }
+   66   1              */
+   67   1      }
+   68          
+   69          void adc_select()
+   70          {
+   71   1              static float ad_sum[10];
+   72   1      /*
+   73   1              AD_value[0] = adc_once(ADC_P00, ADC_10BIT);
+   74   1              AD_value[1] = adc_once(ADC_P01, ADC_10BIT);
+   75   1              AD_value[2] = adc_once(ADC_P05, ADC_10BIT);
+   76   1              AD_value[3] = adc_once(ADC_P06, ADC_10BIT);
+   77   1              AD_value[4] = adc_once(ADC_P02, ADC_10BIT);
+   78   1              AD_value[5] = adc_once(ADC_P10, ADC_10BIT);
+   79   1              AD_value[6] = adc_once(ADC_P11, ADC_10BIT);
+   80   1              AD_value[7] = adc_once(ADC_P15, ADC_10BIT);
+   81   1              AD_value[8] = adc_once(ADC_P16, ADC_10BIT);
+   82   1              AD_value[9] = adc_once(ADC_P14, ADC_10BIT);
+   83   1      */
+   84   1              if (Gui_flag == 0)
+   85   1                      read_adc();
+   86   1              if (Gui_flag == 1)
+   87   1              {
+   88   2                      //求十次取值的平均值，作为基准值
+   89   2                      if (time_count1 < 10)
+   90   2                      {
+   91   3                              //横电感
+   92   3                              time_count1++;
+   93   3                              adc_sum[0] += adc_once(ADC_P00, ADC_10BIT);
+   94   3                              adc_sum[2] += adc_once(ADC_P05, ADC_10BIT);
+   95   3                              adc_sum[4] += adc_once(ADC_P02, ADC_10BIT);
+   96   3      
+   97   3                              adc_sum[5] += adc_once(ADC_P10, ADC_10BIT);
+   98   3                              adc_sum[7] += adc_once(ADC_P15, ADC_10BIT);
+   99   3                              adc_sum[9] += adc_once(ADC_P14, ADC_10BIT);
+  100   3                      }
+  101   2                      else if (time_count1 == 10)
+  102   2                      {
+  103   3                              adc_sum[0] /= 10;
+  104   3                              adc_sum[2] /= 10;
+  105   3                              adc_sum[4] /= 10;
+  106   3      
+  107   3                              adc_sum[5] /= 10;
+  108   3                              adc_sum[7] /= 10;
+  109   3                              adc_sum[9] /= 10;
+  110   3                              time_count1++;
+  111   3                      }
+  112   2              }
+  113   1              else if (Gui_flag == 2)
+  114   1              {
+  115   2                      if (time_count1 < 21)
+  116   2                      {
+  117   3                              time_count1++;
+  118   3                              adc_sum[1] += adc_once(ADC_P01, ADC_10BIT);
+  119   3                              adc_sum[3] += adc_once(ADC_P06, ADC_10BIT);
+  120   3                      }
+  121   2                      else if (time_count1 == 21)
+  122   2                      {
+  123   3                              adc_sum[1] /= 10;
+C251 COMPILER V5.60.0,  filter                                                             15/07/23  21:04:29  PAGE 3   
+
+  124   3                              adc_sum[3] /= 10;
+  125   3                              time_count1++;
+  126   3                      }
+  127   2              }
+  128   1              else if (Gui_flag == 3)
+  129   1              {
+  130   2                      if (time_count1 < 32)
+  131   2                      {
+  132   3                              time_count1++;
+  133   3                              adc_sum[6] += adc_once(ADC_P11, ADC_10BIT);
+  134   3                              adc_sum[8] += adc_once(ADC_P16, ADC_10BIT);
+  135   3                      }
+  136   2                      else if (time_count1 == 32)
+  137   2                      {
+  138   3                              adc_sum[6] /= 10;
+  139   3                              adc_sum[8] /= 10;
+  140   3                              time_count1++;
+  141   3                      }
+  142   2              }
+  143   1              else if (Gui_flag == 4)
+  144   1              {
+  145   2                      // extern_iap_write_float((float)adc_sum[0], 5, 1, 0xA0);
+  146   2                      // extern_iap_write_float((float)adc_sum[1], 5, 1, 0xB0);
+  147   2                      // extern_iap_write_float((float)adc_sum[2], 5, 1, 0xC0);
+  148   2                      // extern_iap_write_float((float)adc_sum[3], 5, 1, 0xD0);
+  149   2                      // extern_iap_write_float((float)adc_sum[4], 5, 1, 0xE0);
+  150   2                      // extern_iap_write_float((float)adc_sum[5], 5, 1, 0xF0);
+  151   2                      // extern_iap_write_float((float)adc_sum[6], 5, 1, 0x100);
+  152   2                      // extern_iap_write_float((float)adc_sum[7], 5, 1, 0x110);
+  153   2                      // extern_iap_write_float((float)adc_sum[8], 5, 1, 0x120);
+  154   2                      // extern_iap_write_float((float)adc_sum[9], 5, 1, 0x130);
+  155   2                      Gui_flag = 0;
+  156   2                      time_count1 = 0;
+  157   2              }
+  158   1      }
+  159          
+  160          //平均滑动滤波算法
+  161          float MovingAverageFilter0(float x0)
+  162          {
+  163   1              static int8 MAF_index0 = -1;
+  164   1              static float buffer0[MAF_LENGTH];
+  165   1              static float yk_0 = 0;
+  166   1              float y0 = 0;
+  167   1              uint8 i = 0;
+  168   1              if (MAF_index0 == -1)
+  169   1              {
+  170   2                      for (i = 0; i < MAF_LENGTH; i++)
+  171   2                      {
+  172   3                              buffer0[i] = x0;
+  173   3                      }
+  174   2                      yk_0 = x0;
+  175   2                      MAF_index0 = 0;
+  176   2                      y0 = yk_0;
+  177   2              }
+  178   1              else
+  179   1              {
+  180   2                      y0 = yk_0 + (x0 - buffer0[MAF_index0]) / MAF_LENGTH;
+  181   2                      buffer0[MAF_index0] = x0;
+  182   2                      MAF_index0++;
+  183   2                      if (MAF_index0 >= MAF_LENGTH)
+  184   2                      {
+  185   3                              MAF_index0 = 0;
+  186   3                      }
+  187   2                      yk_0 = y0;
+  188   2              }
+  189   1              return y0;
+C251 COMPILER V5.60.0,  filter                                                             15/07/23  21:04:29  PAGE 4   
+
+  190   1      }
+  191          float MovingAverageFilter1(float x1)
+  192          {
+  193   1              static int8 MAF_index1 = -1;
+  194   1              static float buffer1[MAF_LENGTH];
+  195   1              static float yk_1 = 0;
+  196   1              float y1 = 0;
+  197   1              uint8 i = 0;
+  198   1              if (MAF_index1 == -1)
+  199   1              {
+  200   2                      for (i = 0; i < MAF_LENGTH; i++)
+  201   2                      {
+  202   3                              buffer1[i] = x1;
+  203   3                      }
+  204   2                      yk_1 = x1;
+  205   2                      MAF_index1 = 0;
+  206   2                      y1 = yk_1;
+  207   2              }
+  208   1              else
+  209   1              {
+  210   2                      y1 = yk_1 + (x1 - buffer1[MAF_index1]) / MAF_LENGTH;
+  211   2                      buffer1[MAF_index1] = x1;
+  212   2                      MAF_index1++;
+  213   2                      if (MAF_index1 >= MAF_LENGTH)
+  214   2                      {
+  215   3                              MAF_index1 = 0;
+  216   3                      }
+  217   2                      yk_1 = y1;
+  218   2              }
+  219   1              return y1;
+  220   1      }
+  221          
+  222          float MovingAverageFilter2(float x2)
+  223          {
+  224   1              static int8 MAF_index2 = -1;
+  225   1              static float buffer2[MAF_LENGTH];
+  226   1              static float yk_2 = 0;
+  227   1              float y2 = 0;
+  228   1              uint8 i = 0;
+  229   1              if (MAF_index2 == -1)
+  230   1              {
+  231   2                      for (i = 0; i < MAF_LENGTH; i++)
+  232   2                      {
+  233   3                              buffer2[i] = x2;
+  234   3                      }
+  235   2                      yk_2 = x2;
+  236   2                      MAF_index2 = 0;
+  237   2                      y2 = yk_2;
+  238   2              }
+  239   1              else
+  240   1              {
+  241   2                      y2 = yk_2 + (x2 - buffer2[MAF_index2]) / MAF_LENGTH;
+  242   2                      buffer2[MAF_index2] = x2;
+  243   2                      MAF_index2++;
+  244   2                      if (MAF_index2 >= MAF_LENGTH)
+  245   2                      {
+  246   3                              MAF_index2 = 0;
+  247   3                      }
+  248   2                      yk_2 = y2;
+  249   2              }
+  250   1              return y2;
+  251   1      }
+  252          
+  253          float MovingAverageFilter3(float x3)
+  254          {
+  255   1              static int8 MAF_index3 = -1;
+C251 COMPILER V5.60.0,  filter                                                             15/07/23  21:04:29  PAGE 5   
+
+  256   1              static float buffer3[MAF_LENGTH];
+  257   1              static float yk_3 = 0;
+  258   1              float y3 = 0;
+  259   1              uint8 i = 0;
+  260   1              if (MAF_index3 == -1)
+  261   1              {
+  262   2                      for (i = 0; i < MAF_LENGTH; i++)
+  263   2                      {
+  264   3                              buffer3[i] = x3;
+  265   3                      }
+  266   2                      yk_3 = x3;
+  267   2                      MAF_index3 = 0;
+  268   2                      y3 = yk_3;
+  269   2              }
+  270   1              else
+  271   1              {
+  272   2                      y3 = yk_3 + (x3 - buffer3[MAF_index3]) / MAF_LENGTH;
+  273   2                      buffer3[MAF_index3] = x3;
+  274   2                      MAF_index3++;
+  275   2                      if (MAF_index3 >= MAF_LENGTH)
+  276   2                      {
+  277   3                              MAF_index3 = 0;
+  278   3                      }
+  279   2                      yk_3 = y3;
+  280   2              }
+  281   1              return y3;
+  282   1      }
+  283          
+  284          float MovingAverageFilter4(float x4)
+  285          {
+  286   1              static int8 MAF_index4 = -1;
+  287   1              static float buffer4[MAF_LENGTH];
+  288   1              static float yk_4 = 0;
+  289   1              float y4 = 0;
+  290   1              uint8 i = 0;
+  291   1              if (MAF_index4 == -1)
+  292   1              {
+  293   2                      for (i = 0; i < MAF_LENGTH; i++)
+  294   2                      {
+  295   3                              buffer4[i] = x4;
+  296   3                      }
+  297   2                      yk_4 = x4;
+  298   2                      MAF_index4 = 0;
+  299   2                      y4 = yk_4;
+  300   2              }
+  301   1              else
+  302   1              {
+  303   2                      y4 = yk_4 + (x4 - buffer4[MAF_index4]) / MAF_LENGTH;
+  304   2                      buffer4[MAF_index4] = x4;
+  305   2                      MAF_index4++;
+  306   2                      if (MAF_index4 >= MAF_LENGTH)
+  307   2                      {
+  308   3                              MAF_index4 = 0;
+  309   3                      }
+  310   2                      yk_4 = y4;
+  311   2              }
+  312   1              return y4;
+  313   1      }
+  314          
+  315          float MovingAverageFilter5(float x5)
+  316          {
+  317   1              static int8 MAF_index5 = -1;
+  318   1              static float buffer5[MAF_LENGTH];
+  319   1              static float yk_5 = 0;
+  320   1              float y5 = 0;
+  321   1              uint8 i = 0;
+C251 COMPILER V5.60.0,  filter                                                             15/07/23  21:04:29  PAGE 6   
+
+  322   1              if (MAF_index5 == -1)
+  323   1              {
+  324   2                      for (i = 0; i < MAF_LENGTH; i++)
+  325   2                      {
+  326   3                              buffer5[i] = x5;
+  327   3                      }
+  328   2                      yk_5 = x5;
+  329   2                      MAF_index5 = 0;
+  330   2                      y5 = yk_5;
+  331   2              }
+  332   1              else
+  333   1              {
+  334   2                      y5 = yk_5 + (x5 - buffer5[MAF_index5]) / MAF_LENGTH;
+  335   2                      buffer5[MAF_index5] = x5;
+  336   2                      MAF_index5++;
+  337   2                      if (MAF_index5 >= MAF_LENGTH)
+  338   2                      {
+  339   3                              MAF_index5 = 0;
+  340   3                      }
+  341   2                      yk_5 = y5;
+  342   2              }
+  343   1              return y5;
+  344   1      }
+  345          
+  346          float MovingAverageFilter6(float x6)
+  347          {
+  348   1              static int8 MAF_index6 = -1;
+  349   1              static float buffer6[MAF_LENGTH];
+  350   1              static float yk_6 = 0;
+  351   1              float y6 = 0;
+  352   1              uint8 i = 0;
+  353   1              if (MAF_index6 == -1)
+  354   1              {
+  355   2                      for (i = 0; i < MAF_LENGTH; i++)
+  356   2                      {
+  357   3                              buffer6[i] = x6;
+  358   3                      }
+  359   2                      yk_6 = x6;
+  360   2                      MAF_index6 = 0;
+  361   2                      y6 = yk_6;
+  362   2              }
+  363   1              else
+  364   1              {
+  365   2                      y6 = yk_6 + (x6 - buffer6[MAF_index6]) / MAF_LENGTH;
+  366   2                      buffer6[MAF_index6] = x6;
+  367   2                      MAF_index6++;
+  368   2                      if (MAF_index6 >= MAF_LENGTH)
+  369   2                      {
+  370   3                              MAF_index6 = 0;
+  371   3                      }
+  372   2                      yk_6 = y6;
+  373   2              }
+  374   1              return y6;
+  375   1      }
+  376          
+  377          float MovingAverageFilter7(float x7)
+  378          {
+  379   1              static int8 MAF_index7 = -1;
+  380   1              static float buffer7[MAF_LENGTH];
+  381   1              static float yk_7 = 0;
+  382   1              float y7 = 0;
+  383   1              uint8 i = 0;
+  384   1              if (MAF_index7 == -1)
+  385   1              {
+  386   2                      for (i = 0; i < MAF_LENGTH; i++)
+  387   2                      {
+C251 COMPILER V5.60.0,  filter                                                             15/07/23  21:04:29  PAGE 7   
+
+  388   3                              buffer7[i] = x7;
+  389   3                      }
+  390   2                      yk_7 = x7;
+  391   2                      MAF_index7 = 0;
+  392   2                      y7 = yk_7;
+  393   2              }
+  394   1              else
+  395   1              {
+  396   2                      y7 = yk_7 + (x7 - buffer7[MAF_index7]) / MAF_LENGTH;
+  397   2                      buffer7[MAF_index7] = x7;
+  398   2                      MAF_index7++;
+  399   2                      if (MAF_index7 >= MAF_LENGTH)
+  400   2                      {
+  401   3                              MAF_index7 = 0;
+  402   3                      }
+  403   2                      yk_7 = y7;
+  404   2              }
+  405   1              return y7;
+  406   1      }
+  407          float MovingAverageFilter8(float x8)
+  408          {
+  409   1              static int8 MAF_index8 = -1;
+  410   1              static float buffer8[MAF_LENGTH];
+  411   1              static float yk_8 = 0;
+  412   1              float y8 = 0;
+  413   1              uint8 i = 0;
+  414   1              if (MAF_index8 == -1)
+  415   1              {
+  416   2                      for (i = 0; i < MAF_LENGTH; i++)
+  417   2                      {
+  418   3                              buffer8[i] = x8;
+  419   3                      }
+  420   2                      yk_8 = x8;
+  421   2                      MAF_index8 = 0;
+  422   2                      y8 = yk_8;
+  423   2              }
+  424   1              else
+  425   1              {
+  426   2                      y8 = yk_8 + (x8 - buffer8[MAF_index8]) / MAF_LENGTH;
+  427   2                      buffer8[MAF_index8] = x8;
+  428   2                      MAF_index8++;
+  429   2                      if (MAF_index8 >= MAF_LENGTH)
+  430   2                      {
+  431   3                              MAF_index8 = 0;
+  432   3                      }
+  433   2                      yk_8 = y8;
+  434   2              }
+  435   1              return y8;
+  436   1      }
+  437          float MovingAverageFilter9(float x9)
+  438          {
+  439   1              static int8 MAF_index9 = -1;
+  440   1              static float buffer9[MAF_LENGTH];
+  441   1              static float yk_9 = 0;
+  442   1              float y9 = 0;
+  443   1              uint8 i = 0;
+  444   1              if (MAF_index9 == -1)
+  445   1              {
+  446   2                      for (i = 0; i < MAF_LENGTH; i++)
+  447   2                      {
+  448   3                              buffer9[i] = x9;
+  449   3                      }
+  450   2                      yk_9 = x9;
+  451   2                      MAF_index9 = 0;
+  452   2                      y9 = yk_9;
+  453   2              }
+C251 COMPILER V5.60.0,  filter                                                             15/07/23  21:04:29  PAGE 8   
+
+  454   1              else
+  455   1              {
+  456   2                      y9 = yk_9 + (x9 - buffer9[MAF_index9]) / MAF_LENGTH;
+  457   2                      buffer9[MAF_index9] = x9;
+  458   2                      MAF_index9++;
+  459   2                      if (MAF_index9 >= MAF_LENGTH)
+  460   2                      {
+  461   3                              MAF_index9 = 0;
+  462   3                      }
+  463   2                      yk_9 = y9;
+  464   2              }
+  465   1              return y9;
+  466   1      }
+  467          
+  468          float Filter10(float x10)
+  469          {
+  470   1              static int8 MAF_index10 = -1;
+  471   1              static float buffer10[MAF_LENGTH];
+  472   1              static float yk_10 = 0;
+  473   1              float y10 = 0;
+  474   1              uint8 i = 0;
+  475   1              if (MAF_index10 == -1)
+  476   1              {
+  477   2                      for (i = 0; i < MAF_LENGTH; i++)
+  478   2                      {
+  479   3                              buffer10[i] = x10;
+  480   3                      }
+  481   2                      yk_10 = x10;
+  482   2                      MAF_index10 = 0;
+  483   2                      y10 = yk_10;
+  484   2              }
+  485   1              else
+  486   1              {
+  487   2                      for (i = 0; i < MAF_LENGTH; i++)
+  488   2                      {
+  489   3                              buffer10[i] = buffer10[i + 1]; // 所有数据左移，低位仍掉
+  490   3                              y10 += buffer10[i];
+  491   3                      }
+  492   2              }
+  493   1              return y10;
+  494   1      }
+  495          
+  496          float MovingAverageFilter_0(float x_0)
+  497          {
+  498   1              static int8 MAF_index_0 = -1;
+  499   1              static float buffer_0[MAF_LENGTH];
+  500   1              static float yk__0 = 0;
+  501   1              float y_0 = 0;
+  502   1              uint8 i = 0;
+  503   1              if (MAF_index_0 == -1)
+  504   1              {
+  505   2                      for (i = 0; i < MAF_LENGTH; i++)
+  506   2                      {
+  507   3                              buffer_0[i] = x_0;
+  508   3                      }
+  509   2                      yk__0 = x_0;
+  510   2                      MAF_index_0 = 0;
+  511   2                      y_0 = yk__0;
+  512   2              }
+  513   1              else
+  514   1              {
+  515   2                      y_0 = yk__0 + (x_0 - buffer_0[MAF_index_0]) / MAF_LENGTH;
+  516   2                      buffer_0[MAF_index_0] = x_0;
+  517   2                      MAF_index_0++;
+  518   2                      if (MAF_index_0 >= MAF_LENGTH)
+  519   2                      {
+C251 COMPILER V5.60.0,  filter                                                             15/07/23  21:04:29  PAGE 9   
+
+  520   3                              MAF_index_0 = 0;
+  521   3                      }
+  522   2                      yk__0 = y_0;
+  523   2              }
+  524   1              return y_0;
+  525   1      }
+  526          float MovingAverageFilter_1(float x_1)
+  527          {
+  528   1              static int8 MAF_index_1 = -1;
+  529   1              static float buffer_1[MAF_LENGTH];
+  530   1              static float yk__1 = 0;
+  531   1              float y_1 = 0;
+  532   1              uint8 i = 0;
+  533   1              if (MAF_index_1 == -1)
+  534   1              {
+  535   2                      for (i = 0; i < MAF_LENGTH; i++)
+  536   2                      {
+  537   3                              buffer_1[i] = x_1;
+  538   3                      }
+  539   2                      yk__1 = x_1;
+  540   2                      MAF_index_1 = 0;
+  541   2                      y_1 = yk__1;
+  542   2              }
+  543   1              else
+  544   1              {
+  545   2                      y_1 = yk__1 + (x_1 - buffer_1[MAF_index_1]) / MAF_LENGTH;
+  546   2                      buffer_1[MAF_index_1] = x_1;
+  547   2                      MAF_index_1++;
+  548   2                      if (MAF_index_1 >= MAF_LENGTH)
+  549   2                      {
+  550   3                              MAF_index_1 = 0;
+  551   3                      }
+  552   2                      yk__1 = y_1;
+  553   2              }
+  554   1              return y_1;
+  555   1      }
+  556          float MovingAverageFilter_2(float x_2)
+  557          {
+  558   1              static int8 MAF_index_2 = -1;
+  559   1              static float buffer_2[MAF_LENGTH];
+  560   1              static float yk__2 = 0;
+  561   1              float y_2 = 0;
+  562   1              uint8 i = 0;
+  563   1              if (MAF_index_2 == -1)
+  564   1              {
+  565   2                      for (i = 0; i < MAF_LENGTH; i++)
+  566   2                      {
+  567   3                              buffer_2[i] = x_2;
+  568   3                      }
+  569   2                      yk__2 = x_2;
+  570   2                      MAF_index_2 = 0;
+  571   2                      y_2 = yk__2;
+  572   2              }
+  573   1              else
+  574   1              {
+  575   2                      y_2 = yk__2 + (x_2 - buffer_2[MAF_index_2]) / MAF_LENGTH;
+  576   2                      buffer_2[MAF_index_2] = x_2;
+  577   2                      MAF_index_2++;
+  578   2                      if (MAF_index_2 >= MAF_LENGTH)
+  579   2                      {
+  580   3                              MAF_index_2 = 0;
+  581   3                      }
+  582   2                      yk__2 = y_2;
+  583   2              }
+  584   1              return y_2;
+  585   1      }
+C251 COMPILER V5.60.0,  filter                                                             15/07/23  21:04:29  PAGE 10  
+
+  586          
+  587          float MovingAverageFilter_3(float x_3)
+  588          {
+  589   1              static int8 MAF_index_3 = -1;
+  590   1              static float buffer_3[MAF_LENGTH];
+  591   1              static float yk__3 = 0;
+  592   1              float y_3 = 0;
+  593   1              uint8 i = 0;
+  594   1              if (MAF_index_3 == -1)
+  595   1              {
+  596   2                      for (i = 0; i < MAF_LENGTH; i++)
+  597   2                      {
+  598   3                              buffer_3[i] = x_3;
+  599   3                      }
+  600   2                      yk__3 = x_3;
+  601   2                      MAF_index_3 = 0;
+  602   2                      y_3 = yk__3;
+  603   2              }
+  604   1              else
+  605   1              {
+  606   2                      y_3 = yk__3 + (x_3 - buffer_3[MAF_index_3]) / MAF_LENGTH;
+  607   2                      buffer_3[MAF_index_3] = x_3;
+  608   2                      MAF_index_3++;
+  609   2                      if (MAF_index_3 >= MAF_LENGTH)
+  610   2                      {
+  611   3                              MAF_index_3 = 0;
+  612   3                      }
+  613   2                      yk__3 = y_3;
+  614   2              }
+  615   1              return y_3;
+  616   1      }
+  617          
+  618          float MovingAverageFilter_4(float x_4)
+  619          {
+  620   1              static int8 MAF_index_4 = -1;
+  621   1              static float buffer_4[MAF_LENGTH];
+  622   1              static float yk__4 = 0;
+  623   1              float y_4 = 0;
+  624   1              uint8 i = 0;
+  625   1              if (MAF_index_4 == -1)
+  626   1              {
+  627   2                      for (i = 0; i < MAF_LENGTH; i++)
+  628   2                      {
+  629   3                              buffer_4[i] = x_4;
+  630   3                      }
+  631   2                      yk__4 = x_4;
+  632   2                      MAF_index_4 = 0;
+  633   2                      y_4 = yk__4;
+  634   2              }
+  635   1              else
+  636   1              {
+  637   2                      y_4 = yk__4 + (x_4 - buffer_4[MAF_index_4]) / MAF_LENGTH;
+  638   2                      buffer_4[MAF_index_4] = x_4;
+  639   2                      MAF_index_4++;
+  640   2                      if (MAF_index_4 >= MAF_LENGTH)
+  641   2                      {
+  642   3                              MAF_index_4 = 0;
+  643   3                      }
+  644   2                      yk__4 = y_4;
+  645   2              }
+  646   1              return y_4;
+  647   1      }
+  648          float MovingAverageFilter_5(float x_5)
+  649          {
+  650   1              static int8 MAF_index_5 = -1;
+  651   1              static float buffer_5[MAF_LENGTH];
+C251 COMPILER V5.60.0,  filter                                                             15/07/23  21:04:29  PAGE 11  
+
+  652   1              static float yk__5 = 0;
+  653   1              float y_5 = 0;
+  654   1              uint8 i = 0;
+  655   1              if (MAF_index_5 == -1)
+  656   1              {
+  657   2                      for (i = 0; i < MAF_LENGTH; i++)
+  658   2                      {
+  659   3                              buffer_5[i] = x_5;
+  660   3                      }
+  661   2                      yk__5 = x_5;
+  662   2                      MAF_index_5 = 0;
+  663   2                      y_5 = yk__5;
+  664   2              }
+  665   1              else
+  666   1              {
+  667   2                      y_5 = yk__5 + (x_5 - buffer_5[MAF_index_5]) / MAF_LENGTH;
+  668   2                      buffer_5[MAF_index_5] = x_5;
+  669   2                      MAF_index_5++;
+  670   2                      if (MAF_index_5 >= MAF_LENGTH)
+  671   2                      {
+  672   3                              MAF_index_5 = 0;
+  673   3                      }
+  674   2                      yk__5 = y_5;
+  675   2              }
+  676   1              return y_5;
+  677   1      }
+  678          float MovingAverageFilter_6(float x_6)
+  679          {
+  680   1              static int8 MAF_index_6 = -1;
+  681   1              static float buffer_6[MAF_LENGTH];
+  682   1              static float yk__6 = 0;
+  683   1              float y_6 = 0;
+  684   1              uint8 i = 0;
+  685   1              if (MAF_index_6 == -1)
+  686   1              {
+  687   2                      for (i = 0; i < MAF_LENGTH; i++)
+  688   2                      {
+  689   3                              buffer_6[i] = x_6;
+  690   3                      }
+  691   2                      yk__6 = x_6;
+  692   2                      MAF_index_6 = 0;
+  693   2                      y_6 = yk__6;
+  694   2              }
+  695   1              else
+  696   1              {
+  697   2                      y_6 = yk__6 + (x_6 - buffer_6[MAF_index_6]) / MAF_LENGTH;
+  698   2                      buffer_6[MAF_index_6] = x_6;
+  699   2                      MAF_index_6++;
+  700   2                      if (MAF_index_6 >= MAF_LENGTH)
+  701   2                      {
+  702   3                              MAF_index_6 = 0;
+  703   3                      }
+  704   2                      yk__6 = y_6;
+  705   2              }
+  706   1              return y_6;
+  707   1      }
+  708          float MovingAverageFilter_7(float x_7)
+  709          {
+  710   1              static int8 MAF_index_7 = -1;
+  711   1              static float buffer_7[MAF_LENGTH];
+  712   1              static float yk__7 = 0;
+  713   1              float y_7 = 0;
+  714   1              uint8 i = 0;
+  715   1              if (MAF_index_7 == -1)
+  716   1              {
+  717   2                      for (i = 0; i < MAF_LENGTH; i++)
+C251 COMPILER V5.60.0,  filter                                                             15/07/23  21:04:29  PAGE 12  
+
+  718   2                      {
+  719   3                              buffer_7[i] = x_7;
+  720   3                      }
+  721   2                      yk__7 = x_7;
+  722   2                      MAF_index_7 = 0;
+  723   2                      y_7 = yk__7;
+  724   2              }
+  725   1              else
+  726   1              {
+  727   2                      y_7 = yk__7 + (x_7 - buffer_7[MAF_index_7]) / MAF_LENGTH;
+  728   2                      buffer_7[MAF_index_7] = x_7;
+  729   2                      MAF_index_7++;
+  730   2                      if (MAF_index_7 >= MAF_LENGTH)
+  731   2                      {
+  732   3                              MAF_index_7 = 0;
+  733   3                      }
+  734   2                      yk__7 = y_7;
+  735   2              }
+  736   1              return y_7;
+  737   1      }
+  738          float MovingAverageFilter_8(float x_8)
+  739          {
+  740   1              static int8 MAF_index_8 = -1;
+  741   1              static float buffer_8[MAF_LENGTH];
+  742   1              static float yk__8 = 0;
+  743   1              float y_8 = 0;
+  744   1              uint8 i = 0;
+  745   1              if (MAF_index_8 == -1)
+  746   1              {
+  747   2                      for (i = 0; i < MAF_LENGTH; i++)
+  748   2                      {
+  749   3                              buffer_8[i] = x_8;
+  750   3                      }
+  751   2                      yk__8 = x_8;
+  752   2                      MAF_index_8 = 0;
+  753   2                      y_8 = yk__8;
+  754   2              }
+  755   1              else
+  756   1              {
+  757   2                      y_8 = yk__8 + (x_8 - buffer_8[MAF_index_8]) / MAF_LENGTH;
+  758   2                      buffer_8[MAF_index_8] = x_8;
+  759   2                      MAF_index_8++;
+  760   2                      if (MAF_index_8 >= MAF_LENGTH)
+  761   2                      {
+  762   3                              MAF_index_8 = 0;
+  763   3                      }
+  764   2                      yk__8 = y_8;
+  765   2              }
+  766   1              return y_8;
+  767   1      }
+  768          float MovingAverageFilter_9(float x_9)
+  769          {
+  770   1              static int8 MAF_index_9 = -1;
+  771   1              static float buffer_9[MAF_LENGTH];
+  772   1              static float yk__9 = 0;
+  773   1              float y_9 = 0;
+  774   1              uint8 i = 0;
+  775   1              if (MAF_index_9 == -1)
+  776   1              {
+  777   2                      for (i = 0; i < MAF_LENGTH; i++)
+  778   2                      {
+  779   3                              buffer_9[i] = x_9;
+  780   3                      }
+  781   2                      yk__9 = x_9;
+  782   2                      MAF_index_9 = 0;
+  783   2                      y_9 = yk__9;
+C251 COMPILER V5.60.0,  filter                                                             15/07/23  21:04:29  PAGE 13  
+
+  784   2              }
+  785   1              else
+  786   1              {
+  787   2                      y_9 = yk__9 + (x_9 - buffer_9[MAF_index_9]) / MAF_LENGTH;
+  788   2                      buffer_9[MAF_index_9] = x_9;
+  789   2                      MAF_index_9++;
+  790   2                      if (MAF_index_9 >= MAF_LENGTH)
+  791   2                      {
+  792   3                              MAF_index_9 = 0;
+  793   3                      }
+  794   2                      yk__9 = y_9;
+  795   2              }
+  796   1              return y_9;
+  797   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      7999     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =       837     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =       423     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
