@@ -31,7 +31,7 @@ void control()
         pidR.setpoint = 80;
         hall_trigged = 0;
         //直线行驶一段距离
-        
+
         if (distance >= 3600)
         {
             leave_flag++;
