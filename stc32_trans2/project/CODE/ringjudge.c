@@ -72,7 +72,6 @@ void Ring_control(void)
 		k_add = 0;
 		angle_integral_flag1 = 1; //Æô¶¯ÍÓÂÝÒÇ»ý·Ö
 	}
-
 	if (annulus_flag == 1 && annulus_flag != 0)
 	{
 		if (distance1 < dis1 && annulus_flag != 0)
