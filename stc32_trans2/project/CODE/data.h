@@ -99,6 +99,8 @@ extern uint16 mode;
 extern uint32 encoder_count;
 extern int16 speed3;
 
+extern int16 spL;
+extern int16 spR;
 
 
 #endif

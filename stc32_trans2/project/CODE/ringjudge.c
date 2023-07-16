@@ -47,7 +47,7 @@ void Ring_control(void)
 
 	if (angle_integral_flag1)
 	{
-		angle1 += gyro / 2922.22;
+		angle1 += gyro / 2860;
 	}
 
 	if (annulus_flag > 0)
@@ -199,7 +199,8 @@ void obstacle_control(void)
 	if(dodge_flag == 1)
 	{
 		P77 = 1;
-	}else
+	}
+	else
 	{
 		P77 = 0;
 	}
