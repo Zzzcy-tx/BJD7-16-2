@@ -38,7 +38,6 @@ uint8 dodge_flag = 0;	  //避障标志位
 void Ring_control(void)
 {
 	last_annulus_flag = annulus_flag;
-
 	//编码器积分
 	if (distance_integral_flag1)
 	{

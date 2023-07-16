@@ -20,8 +20,7 @@
 #ifndef __ISR_H_
 #define __ISR_H_
 
-extern int16 spL;
-extern int16 spR;
+
 
 
 
