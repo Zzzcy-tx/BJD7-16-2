@@ -234,7 +234,7 @@ void obstacle_control(void)
 	}
 	if (1)
 	{
-		obstacle_angle += gyro / 2922.22;
+		obstacle_angle += gyro / 2860;
 		angle2 = MovingAverageFilter_0(obstacle_angle);
 	}
 	/***********************避障******************************/
@@ -246,9 +246,9 @@ void obstacle_control(void)
 			tof_count++;
 		}
 		tof_count_flag++; // 物体检测次数++
-		if (tof_count_flag == 10)
+		if (tof_count_flag == 10 )
 		{
-			if (tof_count >= 8)
+			if (tof_count >= 8 && PO_or_OBSTACLE[element_cnt+1] == 4)	//要上一个元素判成功才能正常判
 			{
 				distance2 = 0;
 				distance_integral_flag2 = 1; // 开始积分距离
@@ -257,6 +257,9 @@ void obstacle_control(void)
 				angle_integral_flag1 = 1; // 开始积分角度
 
 				dodge_flag++;
+
+				element_cnt++;	//下一个元素
+
 			}
 			tof_count_flag = 0;
 		}

@@ -186,7 +186,12 @@ void Keystroke_Menu_HOME(void)
 			//iap_write_bytes(0x1A0, Ocon_flag, 1);
 			//iap_write_bytes(0x1B0, protect_flag, 1);
 
-            // extern_iap_write_float(PO_or_OBSTACLE[0],3,1,0x1C0);
+            extern_iap_write_float(0, 2,1,0x1C0);   //PO_or_OBSTACLE 默认数据-华南预赛
+            extern_iap_write_float(3, 2,1,0x1C0);
+            extern_iap_write_float(4, 2,1,0x1C0);
+            extern_iap_write_float(-1, 2,1,0x1C0);
+            extern_iap_write_float(-1, 2,1,0x1C0);
+
 	        // PO_or_OBSTACLE[1] = iap_read_int16(6, 0x1D0);
 	        // PO_or_OBSTACLE[2] = iap_read_int16(6, 0x1E0);
 	        // PO_or_OBSTACLE[3] = iap_read_int16(6, 0x1F0);
@@ -630,27 +635,39 @@ void Keystroke_Menu_FOUR(void) // 4
     switch (display % 10)
     {
     case 1:
-        PO_or_OBSTACLE[0] += speed3 * 1;
+        if(speed3>1)PO_or_OBSTACLE[0]++;
+        else PO_or_OBSTACLE[0]--;
+        // PO_or_OBSTACLE[0] += speed3 * 1;
         extern_iap_write_float(PO_or_OBSTACLE[0], 2, 1, 0x1C0);
         break;
     case 2:
-        PO_or_OBSTACLE[1] += speed3 * 1;
+    if(speed3>1)PO_or_OBSTACLE[1]++;
+        else PO_or_OBSTACLE[1]--;
+        // PO_or_OBSTACLE[1] += speed3 * 1;
         extern_iap_write_float(PO_or_OBSTACLE[1], 2, 1, 0x1D0);
         break;
     case 3:
-        PO_or_OBSTACLE[2] += speed3 * 1;
+        if(speed3>1)PO_or_OBSTACLE[2]++;
+        else PO_or_OBSTACLE[2]--;
+        // PO_or_OBSTACLE[2] += speed3 * 1;
         extern_iap_write_float(PO_or_OBSTACLE[2], 2, 1, 0x1E0);
         break;
     case 4:
-        PO_or_OBSTACLE[3] += speed3 * 1;
+        if(speed3>1)PO_or_OBSTACLE[3]++;
+        else PO_or_OBSTACLE[3]--;
+        // PO_or_OBSTACLE[3] += speed3 * 1;
         extern_iap_write_float(PO_or_OBSTACLE[3], 2, 1, 0x1F0);
         break;
     case 5:
-        PO_or_OBSTACLE[4] += speed3 * 1;
+        if(speed3>1)PO_or_OBSTACLE[4]++;
+        else PO_or_OBSTACLE[4]--;
+        // PO_or_OBSTACLE[4] += speed3 * 1;
         extern_iap_write_float(PO_or_OBSTACLE[4], 2, 1, 0x200);
         break;
     case 6:
-        PO_or_OBSTACLE[5] += speed3 * 1;
+        if(speed3>1)PO_or_OBSTACLE[5]++;
+        else PO_or_OBSTACLE[5]--;
+        // PO_or_OBSTACLE[5] += speed3 * 1;
         extern_iap_write_float(PO_or_OBSTACLE[5], 2, 1, 0x210);
         break;
     default:
