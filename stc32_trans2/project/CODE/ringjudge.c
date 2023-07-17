@@ -38,6 +38,7 @@ uint8 dodge_flag = 0;	  //避障标志位
 void Ring_control(void)
 {
 	last_annulus_flag = annulus_flag;
+
 	//编码器积分
 	if (distance_integral_flag1)
 	{
@@ -71,6 +72,22 @@ void Ring_control(void)
 		k_add = 0;
 		angle_integral_flag1 = 1; //启动陀螺仪积分
 	}
+
+	switch (PO_or_OBSTACLE[obstacle_count++])	//根据圆环次序赋不同的dis1和dis2
+	{
+	case 1:
+		dis1 = ring_set_k[1];
+		break;
+	case 2:
+		dis1 = ring_set_k[2];
+		break;
+	case 3:
+		dis1 = ring_set_k[3];
+		break;
+	default:
+		break;
+	}
+
 	if (annulus_flag == 1 && annulus_flag != 0)
 	{
 		if (distance1 < dis1 && annulus_flag != 0)
@@ -85,7 +102,7 @@ void Ring_control(void)
 			}
 		}
 
-		if (distance1 > dis1 && distance1 < dis2 && annulus_flag != 0) //控制固定打角的时间50---100   非常重要！！！！！！！！！！！！
+		if (distance1 > dis1 && distance1 < dis2 && annulus_flag != 0) //控制固定打角的时间50---100
 		{
 			if (first_flag == 0) //判断环向
 			{
