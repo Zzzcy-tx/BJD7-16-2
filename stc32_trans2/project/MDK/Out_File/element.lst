@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  element                                                            16/07/23  17:53:00  PAGE 1   
+C251 COMPILER V5.60.0,  element                                                            17/07/23  20:10:16  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE element
@@ -34,140 +34,158 @@ stmt  level    source
    23   2              distance += (speedL + speedR) / 2;
    24   2          }
    25   1      
-   26   1          //出库
-   27   1          if (leave_flag == 0 && sp_set != 0)
-   28   1          {
-   29   2              distance_integral_flag = 1; //启动路程积分
-   30   2              pidL.setpoint = 80;
-   31   2              pidR.setpoint = 80;
-   32   2              hall_trigged = 0;
-   33   2              //直线行驶一段距离
-   34   2      
-   35   2              if (distance >= 3600)
-   36   2              {
-   37   3                  leave_flag++;
-   38   3                  distance = 0;
-   39   3                  distance_integral_flag = 0; //关闭路程积分
-   40   3              }
-   41   2          }
-   42   1          else if (leave_flag == 1)
-   43   1          {
-   44   2              angle_integral_flag = 1; //启动陀螺仪积分
-   45   2              if (start_diration == 0)
-   46   2              {
-   47   3                  pidL.setpoint = 0; //转
-   48   3                  pidR.setpoint = 90;
-   49   3              }
-   50   2              else
-   51   2              {
-   52   3                  pidL.setpoint = 90; //转
-   53   3                  pidR.setpoint = 0;
-   54   3              }
-   55   2      
-   56   2              hall_trigged = 0;
-   57   2              if (fabs(angle) >= 700)
-C251 COMPILER V5.60.0,  element                                                            16/07/23  17:53:00  PAGE 2   
+   26   1      
+   27   1          // LR_go();
+   28   1      
+   29   1          //出库
+   30   1          if (leave_flag == 0 && sp_set != 0)
+   31   1          {
+   32   2              distance_integral_flag = 1; //启动路程积分
+   33   2              pidL.setpoint = 80;
+   34   2              pidR.setpoint = 80;
+   35   2              hall_trigged = 0;
+   36   2              //直线行驶一段距离
+   37   2      
+   38   2              if (distance >= 3600)
+   39   2              {
+   40   3                  leave_flag++;
+   41   3                  distance = 0;
+   42   3                  distance_integral_flag = 0; //关闭路程积分
+   43   3              }
+   44   2          }
+   45   1          else if (leave_flag == 1)
+   46   1          {
+   47   2              angle_integral_flag = 1; //启动陀螺仪积分
+   48   2              if (start_diration == 0)
+   49   2              {
+   50   3                  pidL.setpoint = 0; //左转
+   51   3                  pidR.setpoint = 90;
+   52   3              }
+   53   2              else
+   54   2              {
+   55   3                  pidL.setpoint = 90; //右转
+   56   3                  pidR.setpoint = 0;
+   57   3              }
+C251 COMPILER V5.60.0,  element                                                            17/07/23  20:10:16  PAGE 2   
 
-   58   2              {
-   59   3                  angle_integral_flag = 0; //关闭陀螺仪积分
-   60   3                  angle = 0;               //角度复位
-   61   3                  leave_flag++;
-   62   3                  hall_trigged = 0;
-   63   3              }
-   64   2          }
-   65   1          else if (leave_flag == 2)
-   66   1          {
-   67   2              distance_integral_flag = 1; //启动路程积分
-   68   2              hall_trigged = 0;           //防止直接进入入库模式
-   69   2              if (distance >= 15000)
-   70   2              {
-   71   3                  leave_flag++;
-   72   3                  distance_integral_flag = 0; //关闭路程积分
-   73   3                  distance = 0;
-   74   3              }
-   75   2          }
-   76   1      
-   77   1          if (HALL_PIN == 0)
-   78   1          {
-   79   2              hall_trigged = 1;
-   80   2          }
-   81   1      
-   82   1          //入库
-   83   1          if (into_flag == 1 && hall_trigged == 1)
-   84   1          {
-   85   2              distance_integral_flag = 1;
-   86   2              if (distance >= ku_distance)
-   87   2              {
-   88   3                  sp_set = 0;
-   89   3                  if ((speedL + speedR) / 2 <= 7)
-   90   3                  {
-   91   4                      into_flag++;
-   92   4                      distance_integral_flag = 0;
-   93   4                      distance = 0;
-   94   4                  }
-   95   3              }
-   96   2          }
-   97   1          else if (into_flag == 2) //旋转90°
-   98   1          {
-   99   2              angle_integral_flag = 1;
-  100   2              if (start_diration == 0)
-  101   2              {
-  102   3                  setSpeedL(-(int16)((2 * into_R - 0.18) / (2 * into_R + 0.18) * (float)aimed_into_speed));
-  103   3                  setSpeedR(-aimed_into_speed);
-  104   3              }
-  105   2              else
-  106   2              {
-  107   3                  setSpeedL(-aimed_into_speed);
-  108   3                  setSpeedR(-(int16)((2 * into_R - 0.18) / (2 * into_R + 0.18) * (float)aimed_into_speed));
-  109   3              }
-  110   2      
-  111   2              // setPidLR(27.4, 12, 0, 9000);
-  112   2              // setPidW(3.68, 0, 9.86);
-  113   2              // angle_integral_flag = 1;      //启动陀螺仪积分
-  114   2              // pidW.setpoint = -2500;        //角度环目标值(即90度)
-  115   2              // PIDRegulation1(&pidW, angle); //角度环计算
-  116   2              // // setSpeedL(-pidW.result / 100 * 3 / 30); //设置目标速度
-  117   2              // setSpeedL(0);
-  118   2              // setSpeedR(-pidW.result / 100); //设置目标速度
-  119   2              if (fabs(angle) >= 2100) //积分量达到目标(90度不到一点)
-  120   2              {
-  121   3                  into_flag++;
-  122   3                  // sp_set = 0;
-  123   3              }
-C251 COMPILER V5.60.0,  element                                                            16/07/23  17:53:00  PAGE 3   
+   58   2      
+   59   2              hall_trigged = 0;
+   60   2              if (fabs(angle) >= 700)
+   61   2              {
+   62   3                  angle_integral_flag = 0; //关闭陀螺仪积分
+   63   3                  angle = 0;               //角度复位
+   64   3                  leave_flag++;
+   65   3                  hall_trigged = 0;
+   66   3              }
+   67   2          }
+   68   1          else if (leave_flag == 2)
+   69   1          {
+   70   2              distance_integral_flag = 1; //启动路程积分
+   71   2              hall_trigged = 0;           //防止直接进入入库模式
+   72   2              if (distance >= 15000)
+   73   2              {
+   74   3                  leave_flag++;
+   75   3                  distance_integral_flag = 0; //关闭路程积分
+   76   3                  distance = 0;
+   77   3              }
+   78   2          }
+   79   1      
+   80   1          if (HALL_PIN == 0)
+   81   1          {
+   82   2              hall_trigged = 1;
+   83   2          }
+   84   1      
+   85   1          //入库
+   86   1          if (into_flag == 1 && hall_trigged == 1)
+   87   1          {
+   88   2              distance_integral_flag = 1;
+   89   2              if (distance >= ku_distance)
+   90   2              {
+   91   3                  sp_set = 0;
+   92   3                  if ((speedL + speedR) / 2 <= 7)
+   93   3                  {
+   94   4                      into_flag++;
+   95   4                      distance_integral_flag = 0;
+   96   4                      distance = 0;
+   97   4                  }
+   98   3              }
+   99   2          }
+  100   1          else if (into_flag == 2) //旋转90°
+  101   1          {
+  102   2              angle_integral_flag = 1;
+  103   2              if (start_diration == 0)
+  104   2              {
+  105   3                  setSpeedL(-(int16)((2 * into_R - 0.18) / (2 * into_R + 0.18) * (float)aimed_into_speed));
+  106   3                  setSpeedR(-aimed_into_speed);
+  107   3              }
+  108   2              else
+  109   2              {
+  110   3                  setSpeedL(-aimed_into_speed);
+  111   3                  setSpeedR(-(int16)((2 * into_R - 0.18) / (2 * into_R + 0.18) * (float)aimed_into_speed));
+  112   3              }
+  113   2      
+  114   2              // setPidLR(27.4, 12, 0, 9000);
+  115   2              // setPidW(3.68, 0, 9.86);
+  116   2              // angle_integral_flag = 1;      //启动陀螺仪积分
+  117   2              // pidW.setpoint = -2500;        //角度环目标值(即90度)
+  118   2              // PIDRegulation1(&pidW, angle); //角度环计算
+  119   2              // // setSpeedL(-pidW.result / 100 * 3 / 30); //设置目标速度
+  120   2              // setSpeedL(0);
+  121   2              // setSpeedR(-pidW.result / 100); //设置目标速度
+  122   2              if (fabs(angle) >= 2100) //积分量达到目标(90度不到一点)
+  123   2              {
+C251 COMPILER V5.60.0,  element                                                            17/07/23  20:10:16  PAGE 3   
 
-  124   2          }
-  125   1          else if (into_flag == 3) //直线倒车
-  126   1          {
-  127   2              // setPidW(6, 0, 11);                  //角度环参数，距离太短不太好调
-  128   2              // pidW.setpoint = -2500;              //角度环目标值
-  129   2              // PIDRegulation1(&pidW, angle);       // PID计算
-  130   2              // setSpeedR(-pidW.result / 90 - 100); //速度设定
-  131   2              // setSpeedL(pidW.result / 90 - 100);  //速度设定
-  132   2              setSpeedLR(-aimed_into_speed);
-  133   2              distance_integral_flag = 1; //启动路程积分
-  134   2      
-  135   2              if (distance <= -2000) //到达目标距离
-  136   2              {
-  137   3                  into_flag++;                //入库完成
-  138   3                  distance = 0;               //距离复位
-  139   3                  distance_integral_flag = 0; //关闭路程积分
-  140   3                  angle_integral_flag = 0;    //关闭陀螺仪积分
-  141   3                  angle = 0;                  //角度复位
-  142   3                  sp_set = 0;                 //停车
-  143   3              }
-  144   2          }
-  145   1      }
+  124   3                  into_flag++;
+  125   3                  // sp_set = 0;
+  126   3              }
+  127   2          }
+  128   1          else if (into_flag == 3) //直线倒车
+  129   1          {
+  130   2              // setPidW(6, 0, 11);                  //角度环参数，距离太短不太好调
+  131   2              // pidW.setpoint = -2500;              //角度环目标值
+  132   2              // PIDRegulation1(&pidW, angle);       // PID计算
+  133   2              // setSpeedR(-pidW.result / 90 - 100); //速度设定
+  134   2              // setSpeedL(pidW.result / 90 - 100);  //速度设定
+  135   2              setSpeedLR(-aimed_into_speed);
+  136   2              distance_integral_flag = 1; //启动路程积分
+  137   2      
+  138   2              if (distance <= -2000) //到达目标距离
+  139   2              {
+  140   3                  into_flag++;                //入库完成
+  141   3                  distance = 0;               //距离复位
+  142   3                  distance_integral_flag = 0; //关闭路程积分
+  143   3                  angle_integral_flag = 0;    //关闭陀螺仪积分
+  144   3                  angle = 0;                  //角度复位
+  145   3                  sp_set = 0;                 //停车
+  146   3              }
+  147   2          }
+  148   1      }
+  149          
+  150          void LR_go(){   //判断左发右发并初始化
+  151   1          int16 i=0;
+  152   1          if (start_diration == 0){
+  153   2              element_cnt = 0;
+  154   2          }
+  155   1          else{   //start_direction=1
+  156   2              for(i = 0; i++ ; i<5){
+  157   3                  if(PO_or_OBSTACLE[i] == -1){
+  158   4                      break;
+  159   4                  }
+  160   3              }
+  161   2              element_cnt = i-1;
+  162   2          }
+  163   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       925     ------
+  code size            =      1033     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        11     ------
+  xdata size           =        13     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------

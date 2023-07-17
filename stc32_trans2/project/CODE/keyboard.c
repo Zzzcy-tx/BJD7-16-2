@@ -134,6 +134,8 @@ void Keystroke_Menu_HOME(void)
     ips200_showuint16(120, 45, display % 10 + 1);
     ips200_showstr(80, 50, " homepage");
      Keystroke_Scan();
+
+
     sp_ready += speed3 /2;
     switch (KeystrokeLabel)
     {
@@ -183,6 +185,14 @@ void Keystroke_Menu_HOME(void)
 			//iap_write_bytes(0x190, Rcon_flag, 1);
 			//iap_write_bytes(0x1A0, Ocon_flag, 1);
 			//iap_write_bytes(0x1B0, protect_flag, 1);
+
+            // extern_iap_write_float(PO_or_OBSTACLE[0],3,1,0x1C0);
+	        // PO_or_OBSTACLE[1] = iap_read_int16(6, 0x1D0);
+	        // PO_or_OBSTACLE[2] = iap_read_int16(6, 0x1E0);
+	        // PO_or_OBSTACLE[3] = iap_read_int16(6, 0x1F0);
+	        // PO_or_OBSTACLE[4] = iap_read_int16(6, 0x200);
+	        // PO_or_OBSTACLE[5] = iap_read_int16(6, 0x210);
+
         }
         else
         {
@@ -603,6 +613,8 @@ void Keystroke_Menu_FOUR(void) // 4
     ips200_showint16(80, 4, PO_or_OBSTACLE[3]);
     ips200_showstr(8, 5, " [4]");
     ips200_showint16(80, 5, PO_or_OBSTACLE[4]);
+    ips200_showstr(8, 5, " [5]");
+    ips200_showint16(80, 5, PO_or_OBSTACLE[5]);
     ips200_showstr(8, 7, " ring_set_k");
     ips200_showstr(8, 8, " [0]");
     ips200_showint16(30, 8, ring_set_k[0]);
@@ -619,49 +631,28 @@ void Keystroke_Menu_FOUR(void) // 4
     {
     case 1:
         PO_or_OBSTACLE[0] += speed3 * 1;
+        extern_iap_write_float(PO_or_OBSTACLE[0], 2, 1, 0x1C0);
         break;
     case 2:
         PO_or_OBSTACLE[1] += speed3 * 1;
+        extern_iap_write_float(PO_or_OBSTACLE[1], 2, 1, 0x1D0);
         break;
     case 3:
         PO_or_OBSTACLE[2] += speed3 * 1;
+        extern_iap_write_float(PO_or_OBSTACLE[2], 2, 1, 0x1E0);
         break;
     case 4:
         PO_or_OBSTACLE[3] += speed3 * 1;
+        extern_iap_write_float(PO_or_OBSTACLE[3], 2, 1, 0x1F0);
         break;
     case 5:
         PO_or_OBSTACLE[4] += speed3 * 1;
+        extern_iap_write_float(PO_or_OBSTACLE[4], 2, 1, 0x200);
         break;
     case 6:
         PO_or_OBSTACLE[5] += speed3 * 1;
+        extern_iap_write_float(PO_or_OBSTACLE[5], 2, 1, 0x210);
         break;
-    case 7:
-        PO_or_OBSTACLE[6] += speed3 * 1;
-        break;
-    // case 8:
-    //     PO_or_OBSTACLE[7] += speed3 * 1;
-    //     break;
-    // case 9:
-    //     PO_or_OBSTACLE[8] += speed3 * 1;
-    //     break;
-    // case 10:
-    //     PO_or_OBSTACLE[9] += speed3 * 1;
-    //     break;
-    // case 20:
-    //     ring_set_k[0] += speed3 * 0.1;
-    //     break;
-    // case 21:
-    //     ring_set_k[1] += speed3 * 0.1;
-    //     break;
-    // case 22:
-    //     ring_set_k[2] += speed3 * 0.1;
-    //     break;
-    // case 23:
-    //     ring_set_k[3] += speed3 * 0.1;
-    //     break;
-    // case 24:
-    //     ring_set_k[4] += speed3 * 0.1;
-    //     break;
     default:
         break;
     }
@@ -677,33 +668,23 @@ void Keystroke_Menu_FOUR(void) // 4
     case KeystrokeTHREE:
         if (display == 8)
         {
-            ring_set_k[0] = fabs(k);
-            extern_iap_write_float(ring_set_k[0], 3, 2, 0x140);
+            ring_set_k[SMALLRING] = fabs(k);
+            // iap_write_bytes(0x140, (float)(ring_set_k[SMALLRING]), 3);
+            extern_iap_write_float( ring_set_k[SMALLRING], 3, 2, 0x140);
         }
         if (display == 9)
         {
-            ring_set_k[1] = fabs(k);
-            extern_iap_write_float(ring_set_k[1], 3, 2, 0x150);
+            ring_set_k[MIDRING] = fabs(k);
+            extern_iap_write_float( ring_set_k[MIDRING], 3, 2, 0x150);
         }
         if (display == 10)
         {
-            ring_set_k[2] = fabs(k);
-            extern_iap_write_float(ring_set_k[2], 3, 2, 0x160);
+            ring_set_k[BIGRING] = fabs(k);
+            extern_iap_write_float( ring_set_k[BIGRING], 3, 2, 0x160);
         }
-        if (display == 11)
-        {
-            ring_set_k[3] = fabs(k);
-            extern_iap_write_float(ring_set_k[3], 3, 2, 0x170);
-        }
-        if (display == 12)
-        {
-            ring_set_k[4] = fabs(k);
-            extern_iap_write_float(ring_set_k[4], 3, 2, 0x180);
-        }
+        
+        ring_set_k[ (display-8) % 10] = k;
 
-        // display = display*10+1;
-        // ips200_clear(IPS200_BGCOLOR);
-        ring_set_k[display % 10] = k;
         break;
     case KeystrokeFOUR:
         Dispay_Codename = 0;

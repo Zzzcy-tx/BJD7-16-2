@@ -23,8 +23,11 @@ extern uint8 annulus_flag_k_index;
 extern uint16 gyro_x_count;
 extern uint8 dodge_flag; //±‹’œ±Í÷æª∑
 
+extern int16 ringK;
+
 void Ring_control(void);
 void all_reset(void);
 void obstacle_control(void);
 void obstacle_reset(void);
+
 #endif

@@ -1,5 +1,6 @@
 #include "ringjudge.h"
 #include "math.h"
+#include "data.h"
 
 uint8 Ring_forecast = 0;
 int8 annulus_flag = 0;
@@ -19,27 +20,28 @@ int8 many_ring = 0;
 
 uint8 angle_integral_flag1 = 0;
 uint8 angle_integral_flag2 = 0;
-uint8 distance_integral_flag1 = 0; //路程积分标志位
-uint8 distance_integral_flag2 = 0; //路程积分标志位
+uint8 distance_integral_flag1 = 0; // 路程积分标志位
+uint8 distance_integral_flag2 = 0; // 路程积分标志位
 
 uint8 if_first_dis1 = 0;
 int16 k_add = 0; // k值累加
 
-float angle1 = 0;	//菜单显示积分
+float angle1 = 0; // 菜单显示积分
 float angle2 = 0;
 float obstacle_angle = 0;
 int16 distance1 = 0;
 int16 distance2 = 0;
 
-uint16 tof_count = 0;	  //记录十次中采集到TOF读数小于320的次数
-uint8 tof_count_flag = 0; //检测到障碍物的次数
-uint8 dodge_flag = 0;	  //避障标志位
+uint16 tof_count = 0;	  // 记录十次中采集到TOF读数小于320的次数
+uint8 tof_count_flag = 0; // 检测到障碍物的次数
+uint8 dodge_flag = 0;	  // 避障标志位
+int16 ringK = 0;
 
 void Ring_control(void)
 {
 	last_annulus_flag = annulus_flag;
 
-	//编码器积分
+	// 编码器积分
 	if (distance_integral_flag1)
 	{
 		distance1 += (abs(speedL) + abs(speedR)) / 2;
@@ -65,28 +67,34 @@ void Ring_control(void)
 	//----------圆环入----------//
 	if (adc_data[7] > 575 && annulus_flag == 0 && adc_data[1] < 350 && adc_data[3] < 350)
 	{
-		Ring_in = 1;	  //圆环进入标志位
-		annulus_flag = 1; //打开标志位1
-		distance1 = 0;	  //距离积分
+		Ring_in = 1;	  // 圆环进入标志位
+		annulus_flag = 1; // 打开标志位1
+		distance1 = 0;	  // 距离积分
 		distance_integral_flag1 = 1;
 		k_add = 0;
-		angle_integral_flag1 = 1; //启动陀螺仪积分
+		angle_integral_flag1 = 1; // 启动陀螺仪积分
 	}
 
-	switch (PO_or_OBSTACLE[obstacle_count++])	//根据圆环次序赋不同的dis1和dis2
+	switch (PO_or_OBSTACLE[element_cnt]) // 根据圆环次序赋不同的dis1和dis2
 	{
+	case 0:
+		ringK = ring_set_k[SMALLRING];
+		dis1 = Ring_Dis1[SMALLRING];
+		dis2 = Ring_Dis2[SMALLRING];
+		break;
 	case 1:
-		dis1 = ring_set_k[1];
+		ringK = ring_set_k[MIDRING];
+		dis1 = Ring_Dis1[MIDRING];
+		dis2 = Ring_Dis2[MIDRING];
 		break;
 	case 2:
-		dis1 = ring_set_k[2];
-		break;
-	case 3:
-		dis1 = ring_set_k[3];
-		break;
-	default:
+		ringK = ring_set_k[BIGRING];
+		dis1 = Ring_Dis1[BIGRING];
+		dis2 = Ring_Dis2[BIGRING];
 		break;
 	}
+
+	element_cnt = element_cnt + 1 - 2 * start_diration; // 根据发车方向不同加减element_cnt,左加右减
 
 	if (annulus_flag == 1 && annulus_flag != 0)
 	{
@@ -102,9 +110,9 @@ void Ring_control(void)
 			}
 		}
 
-		if (distance1 > dis1 && distance1 < dis2 && annulus_flag != 0) //控制固定打角的时间50---100
+		if (distance1 > dis1 && distance1 < dis2 && annulus_flag != 0) // 控制固定打角的时间50---100
 		{
-			if (first_flag == 0) //判断环向
+			if (first_flag == 0) // 判断环向
 			{
 				if (adc_data[1] < adc_data[3])
 				{
@@ -113,24 +121,24 @@ void Ring_control(void)
 				first_flag = 1;
 			}
 
-			//如果可以识别到圆环，但是进不了的话修改下面这里打角幅度或者修改上面的时间
-			if (Left_Annulus == 1) //左环入
+			// 如果可以识别到圆环，但是进不了的话修改下面这里打角幅度或者修改上面的时间
+			if (Left_Annulus == 1) // 左环入
 			{
 				// adc_data[0] = adc_data[3]+80;
 				// k=-40;
 				// if (adc_data[2] > 500)
 				// {
-				k = (-exp(-8*((float)(distance1-dis1)/(dis2-dis1)))+1)*-ring_set_k[annulus_flag_k_index];
+				k = (-exp(-8 * ((float)(distance1 - dis1) / (dis2 - dis1))) + 1) * -ringK;
 				// }
 
 				// pidR.setpoint *= 1.8;
 				//	pwm_duty(PWB_CH1_P74,angle_max);  //强行向左打角（右电机加速）
 			}
-			else if (!Left_Annulus) //右环入
+			else if (!Left_Annulus) // 右环入
 			{
 				// if (adc_data[2] > 500)
 				// {
-				k =  (-exp(-8*(((float)distance1-dis1)/(dis2-dis1)))+1)*ring_set_k[annulus_flag_k_index];
+				k = (-exp(-8 * (((float)distance1 - dis1) / (dis2 - dis1))) + 1) * ringK;
 				// }
 				// pidS.result = 2000;
 				// pidL.setpoint *= 1.8;
@@ -138,7 +146,7 @@ void Ring_control(void)
 				//	pwm_duty(PWMB_CH1_P74,640); //强行向右打角（左电机加速）
 			}
 		}
-		else if (distance1 >= dis2 && annulus_flag != 0) //拐进去后正常循迹
+		else if (distance1 >= dis2 && annulus_flag != 0) // 拐进去后正常循迹
 		{
 			if_first_dis1 = 0;
 			annulus_flag = 2;
@@ -156,11 +164,11 @@ void Ring_control(void)
 	// 		distance_integral_flag1 = 0; //停止路程积分
 	// 	}
 	// }
-	else if (annulus_flag == 2) //在环岛内
+	else if (annulus_flag == 2) // 在环岛内
 	{
 		if (abs(angle1) > 9500)
 		{
-			distance_integral_flag1 = 1; //开启路程积分
+			distance_integral_flag1 = 1; // 开启路程积分
 			annulus_flag = -1;
 			// annulus_flag = 0; //出环
 			annulus_flag_k_index++;
@@ -195,7 +203,7 @@ void Ring_control(void)
 	// 	}
 	// }
 
-	//坡道防误判为环岛
+	// 坡道防误判为环岛
 	if (abs(imu963ra_gyro_x) > 1000)
 	{
 		gyro_x_count++;
@@ -212,7 +220,7 @@ void Ring_control(void)
 
 void obstacle_control(void)
 {
-	if(dodge_flag == 1)
+	if (dodge_flag == 1)
 	{
 		P77 = 1;
 	}
@@ -230,56 +238,44 @@ void obstacle_control(void)
 		angle2 = MovingAverageFilter_0(obstacle_angle);
 	}
 	/***********************避障******************************/
-	if (dodge_flag == 0 && all_distance > 20000	/*&& leave_flag >= 3*/)
+	if (dodge_flag == 0 && all_distance > 20000 /*&& leave_flag >= 3*/)
 	{
-		//检测十次  tof
+		// 检测十次  tof
 		if (tof_distance <= tof_dis)
 		{
 			tof_count++;
 		}
-		tof_count_flag++; //物体检测次数++
+		tof_count_flag++; // 物体检测次数++
 		if (tof_count_flag == 10)
 		{
 			if (tof_count >= 8)
 			{
 				distance2 = 0;
-				distance_integral_flag2 = 1; //开始积分距离
+				distance_integral_flag2 = 1; // 开始积分距离
 
 				angle1 = 0;
-				angle_integral_flag1 = 1;//开始积分角度
+				angle_integral_flag1 = 1; // 开始积分角度
 
 				dodge_flag++;
 			}
 			tof_count_flag = 0;
 		}
 	}
-	else if (dodge_flag == 1) //要转角
+	else if (dodge_flag == 1) // 要转角
 	{
-		//左打角
-		pidS.setpoint = exp(-((0.002*distance2*distance2)/(2.0*100*100)))*250;
-		if (angle1 > 25 && distance2 > 40 )
-		{
-				angle1 = 0;
-				distance2 = 0;
-				dodge_flag++;
-		}
-	}
-	else if (dodge_flag == 2)
-	{
-		//打回正向
-		pidS.result = exp(-((0.002*distance2*distance2)/(2.0*100*100)))*-150;
-		if ( angle1 < -25 && distance2 > 40 )
+		// 左打角
+		pidS.setpoint = exp(-((0.002 * distance2 * distance2) / (2.0 * 100 * 100))) * 250;
+		if (angle1 > 25 && distance2 > 40)
 		{
 			angle1 = 0;
 			distance2 = 0;
 			dodge_flag++;
-		
 		}
 	}
-	else if (dodge_flag == 3)
+	else if (dodge_flag == 2)
 	{
-		//右打角
-		pidS.result = exp(-((0.003*distance2*distance2)/(2.0*100*100)))*-125;
+		// 打回正向
+		pidS.result = exp(-((0.002 * distance2 * distance2) / (2.0 * 100 * 100))) * -150;
 		if (angle1 < -25 && distance2 > 40)
 		{
 			angle1 = 0;
@@ -287,17 +283,28 @@ void obstacle_control(void)
 			dodge_flag++;
 		}
 	}
-	else if (dodge_flag == 4) 
+	else if (dodge_flag == 3)
 	{
-		//左打角回正
-		pidS.result = exp(-((0.003*distance2*distance2)/(2.0*100*100)))*125;
+		// 右打角
+		pidS.result = exp(-((0.003 * distance2 * distance2) / (2.0 * 100 * 100))) * -125;
+		if (angle1 < -25 && distance2 > 40)
+		{
+			angle1 = 0;
+			distance2 = 0;
+			dodge_flag++;
+		}
+	}
+	else if (dodge_flag == 4)
+	{
+		// 左打角回正
+		pidS.result = exp(-((0.003 * distance2 * distance2) / (2.0 * 100 * 100))) * 125;
 		if (angle1 > 25 && distance2 > 40)
 		{
 			angle1 = 0;
 			distance2 = 0;
 
-			distance_integral_flag2 = 0;//停止路程积分
-			angle_integral_flag1 = 0;//停止角度积分
+			distance_integral_flag2 = 0; // 停止路程积分
+			angle_integral_flag1 = 0;	 // 停止角度积分
 
 			dodge_flag++;
 		}
@@ -305,10 +312,10 @@ void obstacle_control(void)
 	else if (dodge_flag == 5)
 	{
 		distance_integral_flag2 = 1;
-		if(distance2 > 10000)
+		if (distance2 > 10000)
 		{
-			dodge_flag=6;
-			//obstacle_reset();	//继续避障则取消注释
+			dodge_flag = 6;
+			// obstacle_reset();	//继续避障则取消注释
 		}
 	}
 }
@@ -330,16 +337,16 @@ void all_reset()
 	// dodge_flag = 0;
 	// angle2 = 0;
 	// distance2 = 0;
-	 angle_integral_flag1 = 0;
+	angle_integral_flag1 = 0;
 	// angle_integral_flag2 = 0;
-	 distance_integral_flag1 = 0; //路程积分标志位
+	distance_integral_flag1 = 0; // 路程积分标志位
 	// distance_integral_flag2 = 0; //路程积分标志位
 }
 
 void obstacle_reset()
-{	
+{
 	tof_count = 0;
-	dodge_flag = 0;	//重新避障
+	dodge_flag = 0; // 重新避障
 
 	angle2 = 0;
 	angle_integral_flag2 = 0;
@@ -349,5 +356,4 @@ void obstacle_reset()
 
 	distance2 = 0;
 	distance_integral_flag2 = 0;
-
 }

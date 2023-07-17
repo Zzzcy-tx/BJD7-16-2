@@ -23,6 +23,9 @@ void control()
         distance += (speedL + speedR) / 2;
     }
 
+
+    // LR_go();
+
     //出库
     if (leave_flag == 0 && sp_set != 0)
     {
@@ -44,12 +47,12 @@ void control()
         angle_integral_flag = 1; //启动陀螺仪积分
         if (start_diration == 0)
         {
-            pidL.setpoint = 0; //转
+            pidL.setpoint = 0; //左转
             pidR.setpoint = 90;
         }
         else
         {
-            pidL.setpoint = 90; //转
+            pidL.setpoint = 90; //右转
             pidR.setpoint = 0;
         }
 
@@ -141,5 +144,20 @@ void control()
             angle = 0;                  //角度复位
             sp_set = 0;                 //停车
         }
+    }
+}
+
+void LR_go(){   //判断左发右发并初始化
+    int16 i=0;
+    if (start_diration == 0){
+        element_cnt = 0;
+    }
+    else{   //start_direction=1
+        for(i = 0; i++ ; i<5){
+            if(PO_or_OBSTACLE[i] == -1){
+                break;
+            }
+        }
+        element_cnt = i-1;
     }
 }

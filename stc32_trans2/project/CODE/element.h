@@ -14,5 +14,6 @@ extern int16 distance1;
 extern int16 distance2;
 extern uint8 hall_trigged;
 
-void control(void);
+void control(void); // 出入库判断
 void angle_integral(void);
+void LR_go();   //左发右发元素顺序调整

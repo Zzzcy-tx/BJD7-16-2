@@ -42,11 +42,14 @@ void allInit()
 	adc_init(ADC_P14, ADC_SYSclk_DIV_2);
 	imu963ra_init(); 
 	//Õ”¬›“«≥ı ºªØ
-					 while (dl1a_init())
-					 {
-					 	delay_ms(500);
-					 	printf("VL53L0X init try again.\r\n");
-					 }
+	while (dl1a_init())
+	{
+		delay_ms(500);
+		printf("VL53L0X init try again.\r\n");
+	}
+
+	LR_go();
+
 	ips200_init();
 	ips200_clear(IPS200_BGCOLOR);
 
@@ -218,14 +221,22 @@ void my_iap_init()
 	// adc_sum[7] = iap_read_float(8, 0x110);
 	// adc_sum[8] = iap_read_float(8, 0x120);
 	// adc_sum[9] = iap_read_float(8, 0x130);
-	ring_set_k[0] = iap_read_float(8, 0x140);
-	ring_set_k[1] = iap_read_float(8, 0x150);
-	ring_set_k[2] = iap_read_float(8, 0x160);
-	ring_set_k[3] = iap_read_float(8, 0x170);
-	ring_set_k[4] = iap_read_float(8, 0x180);
 
-	iap_read_bytes(0x190, Rcon_flag, 1);
-	iap_read_bytes(0x1A0, Ocon_flag, 1);
-	iap_read_bytes(0x1B0, protect_flag, 1);
+	ring_set_k[SMALLRING] = iap_read_int16(8, 0x140);
+	ring_set_k[MIDRING] = iap_read_int16(8, 0x150);
+	ring_set_k[BIGRING] = iap_read_int16(8, 0x160);
+
+
+	iap_read_bytes(0x190, &Rcon_flag, 1);
+	iap_read_bytes(0x1A0, &Ocon_flag, 1);
+	iap_read_bytes(0x1B0, &protect_flag, 1);
+
+
+	PO_or_OBSTACLE[0] = iap_read_float(6, 0x1C0);
+	PO_or_OBSTACLE[1] = iap_read_float(6, 0x1D0);
+	PO_or_OBSTACLE[2] = iap_read_float(6, 0x1E0);
+	PO_or_OBSTACLE[3] = iap_read_float(6, 0x1F0);
+	PO_or_OBSTACLE[4] = iap_read_float(6, 0x200);
+	PO_or_OBSTACLE[5] = iap_read_float(6, 0x210);
 	
 }

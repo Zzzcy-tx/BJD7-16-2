@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               16/07/23  17:52:58  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               17/07/23  20:03:16  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    52   1        exit_init(INT0_P32, FALLING_EDGE);
    53   1         setPidLR(20, 8, 0, 16000);
    54   1         setSpeedLR(110);
-C251 COMPILER V5.60.0,  main                                                               16/07/23  17:52:58  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               17/07/23  20:03:16  PAGE 2   
 
    55   1         setPidS(8, 0, 1);
    56   1         pidS.setpoint = 0;
@@ -134,7 +134,7 @@ stmt  level    source
   110   2          //   printf("%f,%f\n",k,pidS.result);
   111   2          //  printf("%d,%d,%d,%d,%d,%f,%f,%f,%f,%f,%f,", adc_data[9] - adc_data[2], adc_data[9], adc_data[2], 
              -adc_data[0], adc_data[4], pidL.setpoint, pidR.setpoint, pidL.result, pidR.result, pidS.result, k);
-C251 COMPILER V5.60.0,  main                                                               16/07/23  17:52:58  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               17/07/23  20:03:16  PAGE 3   
 
   112   2          //  printf("%f,%d,%d,%f,%d\n", k1, speedL, speedR, ((float)speedL + (float)speedR) / 2 * 200 / 10100,
              - into_flag);

@@ -1,5 +1,6 @@
 #include "headfile.h"
 #include "math.h"
+#include "stdlib.h"
 
 float StrToDouble(const char *s)
 {
@@ -75,4 +76,12 @@ float iap_read_float(uint8 len, uint16 addr)
 	iap_read_bytes(addr, buf, len);
 	
 	return StrToDouble(buf);
+}
+
+int16 iap_read_int16(uint8 len, uint16 addr)
+{
+	uint8 buf[34];
+	iap_read_bytes(addr, buf, len);
+	
+	return atoi(buf);
 }

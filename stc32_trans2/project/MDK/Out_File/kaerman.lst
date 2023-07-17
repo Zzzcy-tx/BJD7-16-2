@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  kaerman                                                            16/07/23  17:52:59  PAGE 1   
+C251 COMPILER V5.60.0,  kaerman                                                            17/07/23  20:03:17  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE kaerman
@@ -66,7 +66,7 @@ stmt  level    source
    55          {
    56   1        imu963ra_get_acc();
    57   1        imu963ra_get_gyro();
-C251 COMPILER V5.60.0,  kaerman                                                            16/07/23  17:52:59  PAGE 2   
+C251 COMPILER V5.60.0,  kaerman                                                            17/07/23  20:03:17  PAGE 2   
 
    58   1        // 1.ªÒ»°º”ÀŸ∂»∫ÕΩ«∂» ˝æ›
    59   1        accel_x = imu963ra_acc_x;
@@ -118,11 +118,11 @@ stmt  level    source
   104   1          {
   105   2            puodao = 1;
   106   2          }
-  107   1          else if(puodao == 1 && pitch_kalman < -10)
+  107   1          else if(puodao == 1  && pitch_kalman < -10)
   108   1          {
   109   2            puodao = 2;
   110   2          }
-  111   1         else if(puodao == 2 && pitch_kalman <5)
+  111   1         else if(puodao == 2  && pitch_kalman <5)
   112   1          {
   113   2            puodao = 0;
   114   2          }
@@ -134,7 +134,7 @@ stmt  level    source
   120          
   121          //ø®∂˚¬¸≤Œ ˝
   122          static float Q_angle = 0.0003; //Ω«∂» ˝æ›÷√–≈∂»£¨Ω«∂»‘Î…˘µƒ–≠∑Ω≤Ó
-C251 COMPILER V5.60.0,  kaerman                                                            16/07/23  17:52:59  PAGE 3   
+C251 COMPILER V5.60.0,  kaerman                                                            17/07/23  20:03:17  PAGE 3   
 
   123          static float Q_gyro = 0.0009;  //Ω«ÀŸ∂» ˝æ›÷√–≈∂»£¨Ω«ÀŸ∂»‘Î…˘µƒ–≠∑Ω≤Ó
   124          static float R_angle = 0.8;    //º”ÀŸ∂»º∆≤‚¡ø‘Î…˘µƒ–≠∑Ω≤Ó
@@ -202,7 +202,7 @@ stmt  level    source
   185   1          ø…”…æ≠—ÈªÚº∆À„µ√≥ˆ
   186   1      
   187   1          ¡ÓD( angle )  = Q_angle
-C251 COMPILER V5.60.0,  kaerman                                                            16/07/23  17:52:59  PAGE 4   
+C251 COMPILER V5.60.0,  kaerman                                                            17/07/23  20:03:17  PAGE 4   
 
   188   1            D( Q_bias ) = Q_gyro
   189   1      
@@ -270,7 +270,7 @@ stmt  level    source
   251          {
   252   1        static float Q_bias;                      // Q_bias:Õ”¬›“«µƒ∆´≤Ó  Angle_err:Ω«∂»∆´¡ø
   253   1        static float K_0, K_1;                    //ø®∂˚¬¸‘ˆ“Ê  K_0:”√”⁄º∆À„◊Ó”≈π¿º∆÷µ  K_1:”√”⁄º∆À„◊Ó”≈π¿º∆÷µµ
-C251 COMPILER V5.60.0,  kaerman                                                            16/07/23  17:52:59  PAGE 5   
+C251 COMPILER V5.60.0,  kaerman                                                            17/07/23  20:03:17  PAGE 5   
 
              -ƒ∆´≤Ó t_0/1:÷–º‰±‰¡ø
   254   1        static float PP[2][2] = {{1, 0}, {0, 1}}; //π˝≥Ã–≠∑Ω≤Óæÿ’ÛP£¨≥ı º÷µŒ™µ•Œª’Û

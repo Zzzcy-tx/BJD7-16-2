@@ -104,11 +104,11 @@ void Angle_Cal()
 		{
 			puodao = 1;
 		}
-		else if(puodao == 1 && pitch_kalman < -10)
+		else if(puodao == 1  && pitch_kalman < -10)
 		{
 			puodao = 2;
 		}
-	 else if(puodao == 2 && pitch_kalman <5)
+	 else if(puodao == 2  && pitch_kalman <5)
 		{
 			puodao = 0;
 		}

@@ -3,10 +3,18 @@
 #define N 1 //待调节参数数量
 #include "headfile.h"
 #include "pid.h"
+
+
+#define SMALLRING 0
+#define MIDRING 1
+#define BIGRING 2
+
+
+
 extern uint16 t;
 extern float all_angle;
 extern int16 PO_or_OBSTACLE[5];
-extern int16 ring_set_k[5];
+extern int16 ring_set_k[4];
 extern uint16 sp_ready;
 
 extern int16 mag;
@@ -101,6 +109,14 @@ extern int16 speed3;
 
 extern int16 spL;
 extern int16 spR;
+
+
+extern int16 element_cnt;//元素计数，是PO_or_Obstacle[]的下标
+
+
+extern int16 Ring_Dis1[4];   //存放大中小环积分距离数据
+extern int16 Ring_Dis2[4];
+
 
 
 #endif
