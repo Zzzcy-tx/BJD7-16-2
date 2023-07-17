@@ -1,12 +1,12 @@
-C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      13/07/23  14:12:17  PAGE 1   
+C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      16/07/23  17:50:04  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE SEEKFREE_DL1B
 OBJECT MODULE PLACED IN .\Out_File\SEEKFREE_DL1B.obj
-COMPILER INVOKED BY: D:\keil5\C251\BIN\C251.EXE ..\..\Libraries\seekfree_peripheral\SEEKFREE_DL1B.c LARGE INTR2 WARNINGL
-                    -EVEL(3) OPTIMIZE(0,SPEED) BROWSE INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\see
-                    -kfree_peripheral;..\CODE;..\USER\inc;..\USER\src) DEBUG PRINT(.\Out_File\SEEKFREE_DL1B.lst) OBJECT(.\Out_File\SEEKFREE_D
-                    -L1B.obj) 
+COMPILER INVOKED BY: D:\Program files\Keil251\C251\BIN\C251.EXE ..\..\Libraries\seekfree_peripheral\SEEKFREE_DL1B.c LARG
+                    -E INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\
+                    -..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;..\USER\src) DEBUG PRINT(.\Out_File\SEEKFREE_DL1B.lst) TABS(2) OBJE
+                    -CT(.\Out_File\SEEKFREE_DL1B.obj) 
 
 stmt  level    source
 
@@ -66,7 +66,7 @@ stmt  level    source
    46          
    47          #include "zf_delay.h"
    48          #include "SEEKFREE_DL1B.h"
-C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      13/07/23  14:12:17  PAGE 2   
+C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      16/07/23  17:50:04  PAGE 2   
 
    49          #include "SEEKFREE_CONFIG.h"
    50          
@@ -80,12 +80,12 @@ stmt  level    source
              -len), (rdata), (rlen)))
    58          
    59          
-   60          #define GET_DL1B_SDA                            DL1B_SDA_PIN
-   61          #define DL1B_SDA_LOW()                  DL1B_SDA_PIN = 0                //IO口输出低电平
-   62          #define DL1B_SDA_HIGH()                 DL1B_SDA_PIN = 1                //IO口输出高电平
+   60          #define GET_DL1B_SDA          DL1B_SDA_PIN
+   61          #define DL1B_SDA_LOW()            DL1B_SDA_PIN = 0    //IO口输出低电平
+   62          #define DL1B_SDA_HIGH()           DL1B_SDA_PIN = 1    //IO口输出高电平
    63          
-   64          #define DL1B_SCL_LOW()                  DL1B_SCL_PIN = 0                //IO口输出低电平
-   65          #define DL1B_SCL_HIGH()                 DL1B_SCL_PIN = 1                //IO口输出高电平
+   64          #define DL1B_SCL_LOW()            DL1B_SCL_PIN = 0    //IO口输出低电平
+   65          #define DL1B_SCL_HIGH()           DL1B_SCL_PIN = 1    //IO口输出高电平
    66          
    67          #define ack 1      //主应答
    68          #define no_ack 0   //从应答  
@@ -93,38 +93,38 @@ stmt  level    source
    70          //-------------------------------------------------------------------------------------------------------
              -------------
    71          //  @brief      模拟IIC延时
-   72          //  @return     void                                            
+   72          //  @return     void            
    73          //  @since      v1.0
-   74          //  Sample usage:                               如果IIC通讯失败可以尝试增加j的值
+   74          //  Sample usage:       如果IIC通讯失败可以尝试增加j的值
    75          //-------------------------------------------------------------------------------------------------------
              -------------
    76          static void dl1b_simiic_delay(void)
    77          {
    78   1          uint16 j=DL1B_SOFT_IIC_DELAY;   
-   79   1              while(j--);
+   79   1        while(j--);
    80   1      }
    81          
    82          //内部使用，用户无需调用
    83          static void dl1b_simiic_start(void)
    84          {
-   85   1              DL1B_SDA_HIGH();
-   86   1              DL1B_SCL_HIGH();
-   87   1              dl1b_simiic_delay();
-   88   1              DL1B_SDA_LOW();
-   89   1              dl1b_simiic_delay();
-   90   1              DL1B_SCL_LOW();
+   85   1        DL1B_SDA_HIGH();
+   86   1        DL1B_SCL_HIGH();
+   87   1        dl1b_simiic_delay();
+   88   1        DL1B_SDA_LOW();
+   89   1        dl1b_simiic_delay();
+   90   1        DL1B_SCL_LOW();
    91   1      }
    92          
    93          //内部使用，用户无需调用
    94          static void dl1b_simiic_stop(void)
    95          {
-   96   1              DL1B_SDA_LOW();
-   97   1              DL1B_SCL_LOW();
-   98   1              dl1b_simiic_delay();
-   99   1              DL1B_SCL_HIGH();
-  100   1              dl1b_simiic_delay();
-  101   1              DL1B_SDA_HIGH();
-  102   1              dl1b_simiic_delay();
+   96   1        DL1B_SDA_LOW();
+   97   1        DL1B_SCL_LOW();
+   98   1        dl1b_simiic_delay();
+   99   1        DL1B_SCL_HIGH();
+  100   1        dl1b_simiic_delay();
+  101   1        DL1B_SDA_HIGH();
+  102   1        dl1b_simiic_delay();
   103   1      }
   104          
   105          //主应答(包含ack:SDA=0和no_ack:SDA=0)
@@ -132,11 +132,11 @@ stmt  level    source
   107          static void dl1b_simiic_sendack(unsigned char ack_dat)
   108          {
   109   1          DL1B_SCL_LOW();
-  110   1              dl1b_simiic_delay();
-  111   1              if(ack_dat) DL1B_SDA_LOW();
-C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      13/07/23  14:12:17  PAGE 3   
+  110   1        dl1b_simiic_delay();
+  111   1        if(ack_dat) DL1B_SDA_LOW();
+C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      16/07/23  17:50:04  PAGE 3   
 
-  112   1          else        DL1B_SDA_HIGH();
+  112   1          else      DL1B_SDA_HIGH();
   113   1      
   114   1          DL1B_SCL_HIGH();
   115   1          dl1b_simiic_delay();
@@ -149,11 +149,11 @@ stmt  level    source
   122          {
   123   1          DL1B_SCL_LOW();
   124   1      
-  125   1              dl1b_simiic_delay();
-  126   1              
-  127   1              DL1B_SCL_HIGH();
+  125   1        dl1b_simiic_delay();
+  126   1        
+  127   1        DL1B_SCL_HIGH();
   128   1          dl1b_simiic_delay();
-  129   1              
+  129   1        
   130   1          if(GET_DL1B_SDA)           //应答为高电平，异常，通信失败
   131   1          {
   132   2      
@@ -162,7 +162,7 @@ stmt  level    source
   135   2          }
   136   1      
   137   1          DL1B_SCL_LOW();
-  138   1              dl1b_simiic_delay();
+  138   1        dl1b_simiic_delay();
   139   1          return 1;
   140   1      }
   141          
@@ -172,18 +172,18 @@ stmt  level    source
   145          //内部使用，用户无需调用
   146          static void dl1b_send_ch(uint8 c)
   147          {
-  148   1              uint8 i = 8;
+  148   1        uint8 i = 8;
   149   1          while(i--)
   150   1          {
-  151   2              if(c & 0x80)    DL1B_SDA_HIGH();//SDA 输出数据
-  152   2              else                    DL1B_SDA_LOW();
+  151   2              if(c & 0x80)  DL1B_SDA_HIGH();//SDA 输出数据
+  152   2              else      DL1B_SDA_LOW();
   153   2              c <<= 1;
   154   2              dl1b_simiic_delay();
   155   2              DL1B_SCL_HIGH();                //SCL 拉高，采集信号
   156   2              dl1b_simiic_delay();
   157   2              DL1B_SCL_LOW();                //SCL 时钟线拉低
   158   2          }
-  159   1              dl1b_sccb_waitack();
+  159   1        dl1b_sccb_waitack();
   160   1      }
   161          
   162          
@@ -202,7 +202,7 @@ stmt  level    source
   175   1          for(i=0;i<8;i++)
   176   1          {
   177   2              dl1b_simiic_delay();
-C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      13/07/23  14:12:17  PAGE 4   
+C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      16/07/23  17:50:04  PAGE 4   
 
   178   2              DL1B_SCL_LOW();         //置时钟线为低，准备接收数据位
   179   2              dl1b_simiic_delay();
@@ -215,10 +215,10 @@ stmt  level    source
   186   3              }
   187   2          }
   188   1      
-  189   1              DL1B_SCL_LOW();
-  190   1              dl1b_simiic_delay();
-  191   1              dl1b_simiic_sendack(ack_x);
-  192   1              
+  189   1        DL1B_SCL_LOW();
+  190   1        dl1b_simiic_delay();
+  191   1        dl1b_simiic_sendack(ack_x);
+  192   1        
   193   1          return c;
   194   1      }
   195          
@@ -249,7 +249,7 @@ stmt  level    source
   217   1          dl1b_send_ch(DL1B_DEV_ADDR << 1 | 0x01);
   218   1          while(read_len --)
   219   1          {
-  220   2                      // 前面7位需要回复ack，最后1位不需要回复ack.
+  220   2          // 前面7位需要回复ack，最后1位不需要回复ack.
   221   2              *read_data ++ = dl1b_read_ch(read_len != 0);
   222   2          }
   223   1          dl1b_simiic_stop();
@@ -270,7 +270,7 @@ stmt  level    source
              -------------
   237          void dl1b_get_distance (void)
   238          {
-C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      13/07/23  14:12:17  PAGE 5   
+C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      16/07/23  17:50:04  PAGE 5   
 
   239   1          if(dl1b_init_flag)
   240   1          {
@@ -338,7 +338,7 @@ stmt  level    source
   301          //-------------------------------------------------------------------------------------------------------
              -------------
   302          uint8 dl1b_init (void)
-C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      13/07/23  14:12:17  PAGE 6   
+C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      16/07/23  17:50:04  PAGE 6   
 
   303          {
   304   1          uint8   return_state    = 0;
@@ -407,7 +407,7 @@ Module Information          Static   Overlayable
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
-C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      13/07/23  14:12:17  PAGE 7   
+C251 COMPILER V5.60.0,  SEEKFREE_DL1B                                                      16/07/23  17:50:04  PAGE 7   
 
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------

@@ -1,11 +1,11 @@
-C251 COMPILER V5.60.0,  other                                                              16/07/23  02:20:41  PAGE 1   
+C251 COMPILER V5.60.0,  other                                                              16/07/23  17:52:59  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE other
 OBJECT MODULE PLACED IN .\Out_File\other.obj
-COMPILER INVOKED BY: D:\keil5\C251\BIN\C251.EXE ..\CODE\other.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INC
-                    -DIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc
-                    -;..\USER\src) DEBUG PRINT(.\Out_File\other.lst) OBJECT(.\Out_File\other.obj) 
+COMPILER INVOKED BY: D:\Program files\Keil251\C251\BIN\C251.EXE ..\CODE\other.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(0,S
+                    -PEED) BROWSE INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\
+                    -CODE;..\USER\inc;..\USER\src) DEBUG PRINT(.\Out_File\other.lst) TABS(2) OBJECT(.\Out_File\other.obj) 
 
 stmt  level    source
 
@@ -22,232 +22,232 @@ stmt  level    source
    11          
    12          void allInit()
    13          {
-   14   1              //编码器计数初始化
-   15   1              ctimer_count_init(CTIM0_P34);
-   16   1              ctimer_count_init(CTIM3_P04);
+   14   1        //编码器计数初始化
+   15   1        ctimer_count_init(CTIM0_P34);
+   16   1        ctimer_count_init(CTIM3_P04);
    17   1      
-   18   1              //电机pwm与方向初始化
-   19   1              pwm_init(PWMA_CH1P_P60, 17000, 0);
-   20   1              pwm_init(PWMA_CH2P_P62, 17000, 0);
+   18   1        //电机pwm与方向初始化
+   19   1        pwm_init(PWMA_CH1P_P60, 17000, 0);
+   20   1        pwm_init(PWMA_CH2P_P62, 17000, 0);
    21   1      
-   22   1              pwm_init(PWMB_CH1_P74, 50, 0);
-   23   1              pwm_init(PWMB_CH2_P75, 50, 0);
+   22   1        pwm_init(PWMB_CH1_P74, 50, 0);
+   23   1        pwm_init(PWMB_CH2_P75, 50, 0);
    24   1      
-   25   1              gpio_mode(P6_6, GPO_PP);
-   26   1              gpio_mode(P6_4, GPO_PP);
+   25   1        gpio_mode(P6_6, GPO_PP);
+   26   1        gpio_mode(P6_4, GPO_PP);
    27   1      
-   28   1              gpio_mode(P7_7, GPO_PP);
-   29   1              P77 = 0;
+   28   1        gpio_mode(P7_7, GPO_PP);
+   29   1        P77 = 0;
    30   1      
-   31   1              imu963ra_init(); //六轴陀螺仪初始化
+   31   1        imu963ra_init(); //六轴陀螺仪初始化
    32   1      
-   33   1              adc_init(ADC_P00, ADC_SYSclk_DIV_2);
-   34   1              adc_init(ADC_P01, ADC_SYSclk_DIV_2);
-   35   1              adc_init(ADC_P05, ADC_SYSclk_DIV_2);
-   36   1              adc_init(ADC_P06, ADC_SYSclk_DIV_2);
-   37   1              adc_init(ADC_P02, ADC_SYSclk_DIV_2);
-   38   1              adc_init(ADC_P10, ADC_SYSclk_DIV_2);
-   39   1              adc_init(ADC_P11, ADC_SYSclk_DIV_2);
-   40   1              adc_init(ADC_P15, ADC_SYSclk_DIV_2);
-   41   1              adc_init(ADC_P16, ADC_SYSclk_DIV_2);
-   42   1              adc_init(ADC_P14, ADC_SYSclk_DIV_2);
-   43   1              imu963ra_init(); 
-   44   1              //陀螺仪初始化
-   45   1                                               while (dl1a_init())
-   46   1                                               {
-   47   2                                                      delay_ms(500);
-   48   2                                                      printf("VL53L0X init try again.\r\n");
-   49   2                                               }
-   50   1              ips200_init();
-   51   1              ips200_clear(IPS200_BGCOLOR);
+   33   1        adc_init(ADC_P00, ADC_SYSclk_DIV_2);
+   34   1        adc_init(ADC_P01, ADC_SYSclk_DIV_2);
+   35   1        adc_init(ADC_P05, ADC_SYSclk_DIV_2);
+   36   1        adc_init(ADC_P06, ADC_SYSclk_DIV_2);
+   37   1        adc_init(ADC_P02, ADC_SYSclk_DIV_2);
+   38   1        adc_init(ADC_P10, ADC_SYSclk_DIV_2);
+   39   1        adc_init(ADC_P11, ADC_SYSclk_DIV_2);
+   40   1        adc_init(ADC_P15, ADC_SYSclk_DIV_2);
+   41   1        adc_init(ADC_P16, ADC_SYSclk_DIV_2);
+   42   1        adc_init(ADC_P14, ADC_SYSclk_DIV_2);
+   43   1        imu963ra_init(); 
+   44   1        //陀螺仪初始化
+   45   1                 while (dl1a_init())
+   46   1                 {
+   47   2                  delay_ms(500);
+   48   2                  printf("VL53L0X init try again.\r\n");
+   49   2                 }
+   50   1        ips200_init();
+   51   1        ips200_clear(IPS200_BGCOLOR);
    52   1      
-   53   1              iap_init();
-   54   1              my_iap_init();
-   55   1              
-   56   1              // dl1a_init();//tof初始化
+   53   1        iap_init();
+   54   1        my_iap_init();
+   55   1        
+   56   1        // dl1a_init();//tof初始化
    57   1      }
-C251 COMPILER V5.60.0,  other                                                              16/07/23  02:20:41  PAGE 2   
+C251 COMPILER V5.60.0,  other                                                              16/07/23  17:52:59  PAGE 2   
 
    58          
    59          //无线调参的参数在这里设置，加一个switch即可加一个调参参数(浮点数用%f,整数用%.0f)
    60          void any_change(int16 id, char cp[])
    61          {
-   62   1              switch (id)
-   63   1              {
-   64   2              case 0:
-   65   2                      start_flag = atoi(cp);
-   66   2                      break;
-   67   2              case 1:
-   68   2                      test1 = atoi(cp);
-   69   2                      break;
-   70   2              case 2:
-   71   2                      P_LR = atof(cp);
-   72   2                      break;
-   73   2              case 3:
-   74   2                      I_LR = atof(cp);
-   75   2                      break; //浮点数用atof
-   76   2              case 4:
-   77   2                      wSet = atoi(cp);
-   78   2                      break; //整数数用atoi
-   79   2              case 5:
-   80   2                      test1 = atoi(cp);
-   81   2                      break; //整数数用atoi
-   82   2              case 6:
-   83   2                      P_S = atof(cp);
-   84   2                      break; //浮点数用atof
-   85   2              case 7:
-   86   2                      D_S = atof(cp);
-   87   2                      break; //浮点数用atof
-   88   2                                 // case后面的是序号
-   89   2              case 8:
-   90   2                      sp_set = atoi(cp);
-   91   2                      break;
-   92   2              case 9:
-   93   2                      into_flag = atoi(cp);
-   94   2                      break; //浮点数用atof
-   95   2              case 10:
-   96   2                      P_W = atoi(cp);
-   97   2                      break; //浮点数用atof
-   98   2              case 11:
-   99   2                      D_W = atoi(cp);
-  100   2                      break; //浮点数用atof
-  101   2              case 12:
-  102   2                      aimed_angle = atoi(cp);
-  103   2                      break; //浮点数用atof
-  104   2              case 13:
-  105   2                      dis1 = atoi(cp);
-  106   2                      break; //浮点数用atof
-  107   2              case 14:
-  108   2                      dis2 = atoi(cp);
-  109   2                      break; //浮点数用atof
-  110   2              case 15:
-  111   2                      G_S_1 = atof(cp);
-  112   2                      break; //浮点数用atof
-  113   2              case 16:
-  114   2                      fanL = atoi(cp);
-  115   2                      break; //浮点数用atof
-  116   2              case 17:
-  117   2                      fanR = atoi(cp);
-  118   2                      break; //浮点数用atof
-  119   2              case 18:
-  120   2                      aimed_into_speed = atoi(cp);
-  121   2                      break;
-  122   2              case 19:
-  123   2                      into_R = atof(cp);
-C251 COMPILER V5.60.0,  other                                                              16/07/23  02:20:41  PAGE 3   
+   62   1        switch (id)
+   63   1        {
+   64   2        case 0:
+   65   2          start_flag = atoi(cp);
+   66   2          break;
+   67   2        case 1:
+   68   2          test1 = atoi(cp);
+   69   2          break;
+   70   2        case 2:
+   71   2          P_LR = atof(cp);
+   72   2          break;
+   73   2        case 3:
+   74   2          I_LR = atof(cp);
+   75   2          break; //浮点数用atof
+   76   2        case 4:
+   77   2          wSet = atoi(cp);
+   78   2          break; //整数数用atoi
+   79   2        case 5:
+   80   2          test1 = atoi(cp);
+   81   2          break; //整数数用atoi
+   82   2        case 6:
+   83   2          P_S = atof(cp);
+   84   2          break; //浮点数用atof
+   85   2        case 7:
+   86   2          D_S = atof(cp);
+   87   2          break; //浮点数用atof
+   88   2               // case后面的是序号
+   89   2        case 8:
+   90   2          sp_set = atoi(cp);
+   91   2          break;
+   92   2        case 9:
+   93   2          into_flag = atoi(cp);
+   94   2          break; //浮点数用atof
+   95   2        case 10:
+   96   2          P_W = atoi(cp);
+   97   2          break; //浮点数用atof
+   98   2        case 11:
+   99   2          D_W = atoi(cp);
+  100   2          break; //浮点数用atof
+  101   2        case 12:
+  102   2          aimed_angle = atoi(cp);
+  103   2          break; //浮点数用atof
+  104   2        case 13:
+  105   2          dis1 = atoi(cp);
+  106   2          break; //浮点数用atof
+  107   2        case 14:
+  108   2          dis2 = atoi(cp);
+  109   2          break; //浮点数用atof
+  110   2        case 15:
+  111   2          G_S_1 = atof(cp);
+  112   2          break; //浮点数用atof
+  113   2        case 16:
+  114   2          fanL = atoi(cp);
+  115   2          break; //浮点数用atof
+  116   2        case 17:
+  117   2          fanR = atoi(cp);
+  118   2          break; //浮点数用atof
+  119   2        case 18:
+  120   2          aimed_into_speed = atoi(cp);
+  121   2          break;
+  122   2        case 19:
+  123   2          into_R = atof(cp);
+C251 COMPILER V5.60.0,  other                                                              16/07/23  17:52:59  PAGE 3   
 
-  124   2                      break;
-  125   2              case 20:
-  126   2                      sp_set_max = atoi(cp);
-  127   2                      break;
-  128   2              case 21:
-  129   2                      P_S_MAX = atof(cp);
-  130   2                      break;
-  131   2              case 22:
-  132   2                      ku_distance = atoi(cp);
-  133   2                      break;
-  134   2              case 23:
-  135   2                      ring_angle = atoi(cp);
-  136   2                      break;
-  137   2              case 24:
-  138   2                      G_S_zhi = atof(cp);
-  139   2                      break;
-  140   2              case 25:
-  141   2                      D_S_z = atof(cp);
-  142   2                      break;
-  143   2              case 26:
-  144   2                      tof_dis = atoi(cp);
-  145   2                      break;
-  146   2              case 27:
-  147   2                      tof_dis1 = atoi(cp);
-  148   2                      break;
-  149   2              case 28:
-  150   2                      tof_dis2 = atoi(cp);
-  151   2                      break;
-  152   2              }
+  124   2          break;
+  125   2        case 20:
+  126   2          sp_set_max = atoi(cp);
+  127   2          break;
+  128   2        case 21:
+  129   2          P_S_MAX = atof(cp);
+  130   2          break;
+  131   2        case 22:
+  132   2          ku_distance = atoi(cp);
+  133   2          break;
+  134   2        case 23:
+  135   2          ring_angle = atoi(cp);
+  136   2          break;
+  137   2        case 24:
+  138   2          G_S_zhi = atof(cp);
+  139   2          break;
+  140   2        case 25:
+  141   2          D_S_z = atof(cp);
+  142   2          break;
+  143   2        case 26:
+  144   2          tof_dis = atoi(cp);
+  145   2          break;
+  146   2        case 27:
+  147   2          tof_dis1 = atoi(cp);
+  148   2          break;
+  149   2        case 28:
+  150   2          tof_dis2 = atoi(cp);
+  151   2          break;
+  152   2        }
   153   1      }
   154          
   155          //无线调参字符串解析函数
   156          void rx_analysis()
   157          {
-  158   1              str_i = 0;
-  159   1              str_eq = 0;
-  160   1              str_position = 0;
-  161   1              //字符串解析函数
+  158   1        str_i = 0;
+  159   1        str_eq = 0;
+  160   1        str_position = 0;
+  161   1        //字符串解析函数
   162   1      
-  163   1              //解析变量名
-  164   1              while (uart_str[str_position] != '=' && str_position < 100)
-  165   1              {
-  166   2                      str_position++;
-  167   2              }
+  163   1        //解析变量名
+  164   1        while (uart_str[str_position] != '=' && str_position < 100)
+  165   1        {
+  166   2          str_position++;
+  167   2        }
   168   1      
-  169   1              for (str_i = 0; str_i < str_position; str_i++)
-  170   1              {
-  171   2                      str_item[str_i] = uart_str[str_i];
-  172   2              }
-  173   1              str_item[str_i] = '\0';
-  174   1              str_eq = str_position;
-  175   1              // printf("%d,%d\n",str_position,str_eq);
-  176   1              //解析值
-  177   1              while (uart_str[str_position] != '#' && str_position < 100)
-  178   1              {
-  179   2                      str_position++;
-  180   2              }
-  181   1              // printf("%d,%d\n",str_position,str_eq);
-  182   1              for (str_i = 0; str_i < str_position - 2; str_i++)
-  183   1              {
-  184   2                      str_num_str[str_i] = uart_str[str_i + str_eq + 1];
-  185   2              }
-  186   1              str_num_str[str_i] = '\0';
-  187   1              str_num = atoi(str_num_str);
+  169   1        for (str_i = 0; str_i < str_position; str_i++)
+  170   1        {
+  171   2          str_item[str_i] = uart_str[str_i];
+  172   2        }
+  173   1        str_item[str_i] = '\0';
+  174   1        str_eq = str_position;
+  175   1        // printf("%d,%d\n",str_position,str_eq);
+  176   1        //解析值
+  177   1        while (uart_str[str_position] != '#' && str_position < 100)
+  178   1        {
+  179   2          str_position++;
+  180   2        }
+  181   1        // printf("%d,%d\n",str_position,str_eq);
+  182   1        for (str_i = 0; str_i < str_position - 2; str_i++)
+  183   1        {
+  184   2          str_num_str[str_i] = uart_str[str_i + str_eq + 1];
+  185   2        }
+  186   1        str_num_str[str_i] = '\0';
+  187   1        str_num = atoi(str_num_str);
   188   1      
-  189   1              any_change(atoi(str_item), str_num_str);
-C251 COMPILER V5.60.0,  other                                                              16/07/23  02:20:41  PAGE 4   
+  189   1        any_change(atoi(str_item), str_num_str);
+C251 COMPILER V5.60.0,  other                                                              16/07/23  17:52:59  PAGE 4   
 
-  190   1              // printf("%s,%d\n",str_item,atoi(str_num_str)+1);
+  190   1        // printf("%s,%d\n",str_item,atoi(str_num_str)+1);
   191   1      }
   192          
   193          //将角度转换为陀螺仪输出值 例如90度即为angle_change(90)
   194          float angle_change(float ang)
   195          {
-  196   1              return ang * 28.05;
+  196   1        return ang * 28.05;
   197   1      }
   198          
   199          void my_iap_init()
   200          {
-  201   1              P_S_MAX = iap_read_float(8, 0x00);
-  202   1              D_S_z = iap_read_float(8, 0x10);
-  203   1              D_S = iap_read_float(8, 0x20);
-  204   1              G_S_1 = iap_read_float(8, 0x30);
-  205   1              G_S_zhi = iap_read_float(8, 0x40);
-  206   1              P_LR = iap_read_float(8, 0x50);
-  207   1              I_LR = iap_read_float(8, 0x60);
-  208   1              P_S = iap_read_float(8, 0x70);
-  209   1              dis1 = iap_read_float(8, 0x80);
-  210   1              dis2 = iap_read_float(8, 0x90);
-  211   1              // adc_sum[0] = iap_read_float(8, 0xA0);
-  212   1              // adc_sum[1] = iap_read_float(8, 0xB0);
-  213   1              // adc_sum[2] = iap_read_float(8, 0xC0);
-  214   1              // adc_sum[3] = iap_read_float(8, 0xD0);
-  215   1              // adc_sum[4] = iap_read_float(8, 0xE0);
-  216   1              // adc_sum[5] = iap_read_float(8, 0xF0);
-  217   1              // adc_sum[6] = iap_read_float(8, 0x100);
-  218   1              // adc_sum[7] = iap_read_float(8, 0x110);
-  219   1              // adc_sum[8] = iap_read_float(8, 0x120);
-  220   1              // adc_sum[9] = iap_read_float(8, 0x130);
-  221   1              ring_set_k[0] = iap_read_float(8, 0x140);
-  222   1              ring_set_k[1] = iap_read_float(8, 0x150);
-  223   1              ring_set_k[2] = iap_read_float(8, 0x160);
-  224   1              ring_set_k[3] = iap_read_float(8, 0x170);
-  225   1              ring_set_k[4] = iap_read_float(8, 0x180);
+  201   1        P_S_MAX = iap_read_float(8, 0x00);
+  202   1        D_S_z = iap_read_float(8, 0x10);
+  203   1        D_S = iap_read_float(8, 0x20);
+  204   1        G_S_1 = iap_read_float(8, 0x30);
+  205   1        G_S_zhi = iap_read_float(8, 0x40);
+  206   1        P_LR = iap_read_float(8, 0x50);
+  207   1        I_LR = iap_read_float(8, 0x60);
+  208   1        P_S = iap_read_float(8, 0x70);
+  209   1        dis1 = iap_read_float(8, 0x80);
+  210   1        dis2 = iap_read_float(8, 0x90);
+  211   1        // adc_sum[0] = iap_read_float(8, 0xA0);
+  212   1        // adc_sum[1] = iap_read_float(8, 0xB0);
+  213   1        // adc_sum[2] = iap_read_float(8, 0xC0);
+  214   1        // adc_sum[3] = iap_read_float(8, 0xD0);
+  215   1        // adc_sum[4] = iap_read_float(8, 0xE0);
+  216   1        // adc_sum[5] = iap_read_float(8, 0xF0);
+  217   1        // adc_sum[6] = iap_read_float(8, 0x100);
+  218   1        // adc_sum[7] = iap_read_float(8, 0x110);
+  219   1        // adc_sum[8] = iap_read_float(8, 0x120);
+  220   1        // adc_sum[9] = iap_read_float(8, 0x130);
+  221   1        ring_set_k[0] = iap_read_float(8, 0x140);
+  222   1        ring_set_k[1] = iap_read_float(8, 0x150);
+  223   1        ring_set_k[2] = iap_read_float(8, 0x160);
+  224   1        ring_set_k[3] = iap_read_float(8, 0x170);
+  225   1        ring_set_k[4] = iap_read_float(8, 0x180);
   226   1      
-  227   1              iap_read_bytes(0x190, Rcon_flag, 1);
+  227   1        iap_read_bytes(0x190, Rcon_flag, 1);
 *** WARNING C40 IN LINE 227 OF ..\CODE\other.c: 'unsigned char' converted to 'far' pointer
-  228   1              iap_read_bytes(0x1A0, Ocon_flag, 1);
+  228   1        iap_read_bytes(0x1A0, Ocon_flag, 1);
 *** WARNING C40 IN LINE 228 OF ..\CODE\other.c: 'unsigned char' converted to 'far' pointer
-  229   1              iap_read_bytes(0x1B0, protect_flag, 1);
+  229   1        iap_read_bytes(0x1B0, protect_flag, 1);
 *** WARNING C40 IN LINE 229 OF ..\CODE\other.c: 'unsigned char' converted to 'far' pointer
-  230   1              
+  230   1        
   231   1      }
 
 

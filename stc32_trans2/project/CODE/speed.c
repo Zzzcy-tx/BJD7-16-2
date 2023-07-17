@@ -28,7 +28,7 @@ void setMotorR(int16 motorSetR)
 }
 
 //差速计算
-float Diff_Factor = 0.006;            //差速系数
+float Diff_Factor = 0.006;  //差速系数
 int16 Differential(float Diff_Factor) //阿克曼原理，根据舵机进行差速控制，参数整定依赖工程实践
 {
   float Diff;

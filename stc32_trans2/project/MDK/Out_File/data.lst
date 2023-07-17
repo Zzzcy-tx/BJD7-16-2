@@ -1,11 +1,11 @@
-C251 COMPILER V5.60.0,  data                                                               16/07/23  02:23:54  PAGE 1   
+C251 COMPILER V5.60.0,  data                                                               16/07/23  17:53:28  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE data
 OBJECT MODULE PLACED IN .\Out_File\data.obj
-COMPILER INVOKED BY: D:\keil5\C251\BIN\C251.EXE ..\CODE\data.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCD
-                    -IR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;
-                    -..\USER\src) DEBUG PRINT(.\Out_File\data.lst) OBJECT(.\Out_File\data.obj) 
+COMPILER INVOKED BY: D:\Program files\Keil251\C251\BIN\C251.EXE ..\CODE\data.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SP
+                    -EED) BROWSE INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\C
+                    -ODE;..\USER\inc;..\USER\src) DEBUG PRINT(.\Out_File\data.lst) TABS(2) OBJECT(.\Out_File\data.obj) 
 
 stmt  level    source
 
@@ -66,7 +66,7 @@ stmt  level    source
    55          float aimed_angle = 0;
    56          
    57          float gyro;  //¬À≤®∫ÛÕ”¬›“«z÷·Ω«ÀŸ∂»
-C251 COMPILER V5.60.0,  data                                                               16/07/23  02:23:54  PAGE 2   
+C251 COMPILER V5.60.0,  data                                                               16/07/23  17:53:28  PAGE 2   
 
    58          float gyro1; //¬À≤®∫ÛÕ”¬›“«z÷·Ω«ÀŸ∂»
    59          
@@ -111,6 +111,8 @@ stmt  level    source
    98          
    99          uint32 encoder_count = 0;
   100          int16 speed3 = 0;
+  101          
+  102          
 
 
 Module Information          Static   Overlayable

@@ -1,11 +1,11 @@
-C251 COMPILER V5.60.0,  kaerman                                                            15/07/23  21:04:29  PAGE 1   
+C251 COMPILER V5.60.0,  kaerman                                                            16/07/23  17:52:59  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE kaerman
 OBJECT MODULE PLACED IN .\Out_File\kaerman.obj
-COMPILER INVOKED BY: D:\keil5\C251\BIN\C251.EXE ..\CODE\kaerman.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE I
-                    -NCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\i
-                    -nc;..\USER\src) DEBUG PRINT(.\Out_File\kaerman.lst) OBJECT(.\Out_File\kaerman.obj) 
+COMPILER INVOKED BY: D:\Program files\Keil251\C251\BIN\C251.EXE ..\CODE\kaerman.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(0
+                    -,SPEED) BROWSE INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;.
+                    -.\CODE;..\USER\inc;..\USER\src) DEBUG PRINT(.\Out_File\kaerman.lst) TABS(2) OBJECT(.\Out_File\kaerman.obj) 
 
 stmt  level    source
 
@@ -66,7 +66,7 @@ stmt  level    source
    55          {
    56   1        imu963ra_get_acc();
    57   1        imu963ra_get_gyro();
-C251 COMPILER V5.60.0,  kaerman                                                            15/07/23  21:04:29  PAGE 2   
+C251 COMPILER V5.60.0,  kaerman                                                            16/07/23  17:52:59  PAGE 2   
 
    58   1        // 1.»ñÈ¡¼ÓËÙ¶ÈºÍ½Ç¶ÈÊý¾Ý
    59   1        accel_x = imu963ra_acc_x;
@@ -111,30 +111,30 @@ stmt  level    source
    98   1      
    99   1        // 4.µ÷ÓÃ¿¨¶ûÂüº¯Êý
   100   1        Kalman_Cal_Pitch(pitch_raw, gyro_x_rea); //¿¨¶ûÂüÂË²¨¼ÆËã¸©Ñö½Ç
-  101   1                                                 //   Kalman_Cal_Roll(roll_raw,gyro_y_rea);  //¿¨¶ûÂüÂË²¨¼ÆËãÇãÐ±
+  101   1                                                 // Kalman_Cal_Roll(roll_raw,gyro_y_rea);  //¿¨¶ûÂüÂË²¨¼ÆËãÇãÐ±
              -½Ç
-  102   1                                                 //   Kalman_Cal_Yaw(yaw_raw,gyro_z_rea);  //¿¨¶ûÂüÂË²¨¼ÆËãÆ«º½½Ç
-  103   1                      if (pitch_kalman > 15)
-  104   1                      {
-  105   2                              puodao = 1;
-  106   2                      }
-  107   1                      else if(puodao == 1 && pitch_kalman < -10)
-  108   1                      {
-  109   2                              puodao = 2;
-  110   2                      }
-  111   1               else if(puodao == 2 && pitch_kalman <5)
-  112   1                      {
-  113   2                              puodao = 0;
-  114   2                      }
-  115   1                      else
-  116   1                      {
-  117   2                              puodao = 0;
-  118   2                      }
+  102   1                                                 // Kalman_Cal_Yaw(yaw_raw,gyro_z_rea);  //¿¨¶ûÂüÂË²¨¼ÆËãÆ«º½½Ç
+  103   1          if (pitch_kalman > 15)
+  104   1          {
+  105   2            puodao = 1;
+  106   2          }
+  107   1          else if(puodao == 1 && pitch_kalman < -10)
+  108   1          {
+  109   2            puodao = 2;
+  110   2          }
+  111   1         else if(puodao == 2 && pitch_kalman <5)
+  112   1          {
+  113   2            puodao = 0;
+  114   2          }
+  115   1          else
+  116   1          {
+  117   2            puodao = 0;
+  118   2          }
   119   1      }
   120          
   121          //¿¨¶ûÂü²ÎÊý
   122          static float Q_angle = 0.0003; //½Ç¶ÈÊý¾ÝÖÃÐÅ¶È£¬½Ç¶ÈÔëÉùµÄÐ­·½²î
-C251 COMPILER V5.60.0,  kaerman                                                            15/07/23  21:04:29  PAGE 3   
+C251 COMPILER V5.60.0,  kaerman                                                            16/07/23  17:52:59  PAGE 3   
 
   123          static float Q_gyro = 0.0009;  //½ÇËÙ¶ÈÊý¾ÝÖÃÐÅ¶È£¬½ÇËÙ¶ÈÔëÉùµÄÐ­·½²î
   124          static float R_angle = 0.8;    //¼ÓËÙ¶È¼Æ²âÁ¿ÔëÉùµÄÐ­·½²î
@@ -156,12 +156,12 @@ stmt  level    source
   139   1          (5) µ÷½Ú³¬²ÎÊýP¡¢Q
   140   1        */
   141   1        /*
-  142   1        X(k)£ºkÊ±¿ÌÏµÍ³×´Ì¬                           Z(k)£ºkÊ±¿Ì²âÁ¿Öµ
-  143   1        U(k)£ºkÊ±¿Ì¶ÔÏµÍ³¿ØÖÆÁ¿               H£º²âÁ¿ÏµÍ³²ÎÊý
+  142   1        X(k)£ºkÊ±¿ÌÏµÍ³×´Ì¬       Z(k)£ºkÊ±¿Ì²âÁ¿Öµ
+  143   1        U(k)£ºkÊ±¿Ì¶ÔÏµÍ³¿ØÖÆÁ¿   H£º²âÁ¿ÏµÍ³²ÎÊý
   144   1                                                 ·½²î
-  145   1        A/F£º×´Ì¬×ªÒÆ¾ØÕó                                     W(k)£º¹ý³ÌÔëÉù ----> Q
+  145   1        A/F£º×´Ì¬×ªÒÆ¾ØÕó         W(k)£º¹ý³ÌÔëÉù ----> Q
   146   1                                                 ·½²î
-  147   1        B£º¿ØÖÆ¾ØÕó                                                           V(k)£º²âÁ¿ÔëÉù ----> R
+  147   1        B£º¿ØÖÆ¾ØÕó               V(k)£º²âÁ¿ÔëÉù ----> R
   148   1      
   149   1                          ÀëÉ¢¿ØÖÆÏµÍ³
   150   1        ÏµÍ³ÃèÊö£ºX(k|k-1) = AX(k-1|k-1) + BU(k) + (W(k))
@@ -176,7 +176,7 @@ stmt  level    source
   159   1          A(2,1) = 0,A(2,2) = 1
   160   1          ×¢£ºÉÏÏÂÁ¬¡°[¡±´ú±í¾ØÕó
   161   1          Ô¤²âµ±Ç°½Ç¶ÈÖµ£º
-  162   1          [ angle ]   [1 -dt][ angle ]         [dt]
+  162   1          [ angle ]   [1 -dt][ angle ]   [dt]
   163   1          [ Q_bias] = [0  1 ][ Q_bias] + [ 0] * newGyro(¼ÓËÙ¶È¼Æ²âÁ¿Öµ)
   164   1          ¹Ê
   165   1          angle = angle - Q_bias*dt + newGyro * dt
@@ -194,15 +194,15 @@ stmt  level    source
   177   1      
   178   1          ÏµÍ³¹ý³ÌÐ­·½²îÔëÉùQ¶¨Òå£º
   179   1          | cov(angle,angle)  cov(Q_bias,angle) |
-  180   1          |   cov(angle,Q_bias) cov(Q_bias,Q_bias)|
+  180   1          | cov(angle,Q_bias) cov(Q_bias,Q_bias)|
   181   1             ½Ç¶ÈÔëÉùºÍ½ÇËÙ¶ÈÆ¯ÒÆÔëÉùÏà»¥¶ÀÁ¢
-  182   1          | D( angle )                        0        |
-  183   1        = |                   0                       D( Q_bias )|
+  182   1          | D( angle )        0    |
+  183   1        = |     0       D( Q_bias )|
   184   1          ÓÖQ_angleºÍQ_biasµÄ·½²îÎª³£Êý£¬
   185   1          ¿ÉÓÉ¾­Ñé»ò¼ÆËãµÃ³ö
   186   1      
   187   1          ÁîD( angle )  = Q_angle
-C251 COMPILER V5.60.0,  kaerman                                                            15/07/23  21:04:29  PAGE 4   
+C251 COMPILER V5.60.0,  kaerman                                                            16/07/23  17:52:59  PAGE 4   
 
   188   1            D( Q_bias ) = Q_gyro
   189   1      
@@ -213,12 +213,12 @@ stmt  level    source
   194   1                            |a(k)  b(k)|
   195   1                            |c(k)  d(k)|
   196   1          ÓÉ¹«Ê½2£ºP(k|k-1)=AP(k-1|k-1)A^T + Q µÃ
-  197   1          |a(k)  b(k)|                |1 -dt| |a(k-1) b(k-1)| |1       0|             | D( angle )                    0        |
-  198   1          |c(k)  d(k)| =  |0  1 | |c(k-1) d(k-1)| |-dt 1| + |                 0                       D( Q_bias )|
+  197   1          |a(k)  b(k)|    |1 -dt| |a(k-1) b(k-1)| |1   0|   | D( angle )        0    |
+  198   1          |c(k)  d(k)| =  |0  1 | |c(k-1) d(k-1)| |-dt 1| + |     0       D( Q_bias )|
   199   1      
   200   1          ½øÒ»²½µÃ
-  201   1          |a(k)  b(k)|                |a(k-1) - [c(k-1) + b(k-1)]*dt + d(dt)^2                b(k-1) - d(k-1)*dt|             | D( angle )                    0        |
-  202   1          |c(k)  d(k)| =  |                           c(k-1) - d(k-1)*dt                                                                                                      d(k-1)          | + |                   0                       D( Q_bias )|
+  201   1          |a(k)  b(k)|    |a(k-1) - [c(k-1) + b(k-1)]*dt + d(dt)^2    b(k-1) - d(k-1)*dt|   | D( angle )        0    |
+  202   1          |c(k)  d(k)| =  |       c(k-1) - d(k-1)*dt                          d(k-1)    | + |     0       D( Q_bias )|
   203   1      
   204   1          ÓÉÓÚdt^2Ì«Ð¡£¬¹Êdt^2Ê¡ÂÔ
   205   1        */
@@ -270,7 +270,7 @@ stmt  level    source
   251          {
   252   1        static float Q_bias;                      // Q_bias:ÍÓÂÝÒÇµÄÆ«²î  Angle_err:½Ç¶ÈÆ«Á¿
   253   1        static float K_0, K_1;                    //¿¨¶ûÂüÔöÒæ  K_0:ÓÃÓÚ¼ÆËã×îÓÅ¹À¼ÆÖµ  K_1:ÓÃÓÚ¼ÆËã×îÓÅ¹À¼ÆÖµµ
-C251 COMPILER V5.60.0,  kaerman                                                            15/07/23  21:04:29  PAGE 5   
+C251 COMPILER V5.60.0,  kaerman                                                            16/07/23  17:52:59  PAGE 5   
 
              -ÄÆ«²î t_0/1:ÖÐ¼ä±äÁ¿
   254   1        static float PP[2][2] = {{1, 0}, {0, 1}}; //¹ý³ÌÐ­·½²î¾ØÕóP£¬³õÊ¼ÖµÎªµ¥Î»Õó

@@ -1,11 +1,11 @@
-C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  02:26:04  PAGE 1   
+C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  17:53:00  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE keyboard
 OBJECT MODULE PLACED IN .\Out_File\keyboard.obj
-COMPILER INVOKED BY: D:\keil5\C251\BIN\C251.EXE ..\CODE\keyboard.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE 
-                    -INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\
-                    -inc;..\USER\src) DEBUG PRINT(.\Out_File\keyboard.lst) OBJECT(.\Out_File\keyboard.obj) 
+COMPILER INVOKED BY: D:\Program files\Keil251\C251\BIN\C251.EXE ..\CODE\keyboard.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(
+                    -0,SPEED) BROWSE INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;
+                    -..\CODE;..\USER\inc;..\USER\src) DEBUG PRINT(.\Out_File\keyboard.lst) TABS(2) OBJECT(.\Out_File\keyboard.obj) 
 
 stmt  level    source
 
@@ -45,10 +45,10 @@ stmt  level    source
    32   1          if (key_up && ((KeyONE == 0) || (KeyTWO == 0) || (KeyTHREE == 0) || (KeyFOUR == 0) || (KeyFIVE == 0))
              -)
    33   1          {
-   34   2              //      if (mode == SINGLE_CLICK)
-   35   2              //              key_up = 0;
-   36   2              //      if (mode == DOUBLE_CLICK)
-   37   2              //              key_up = 1;
+   34   2              //  if (mode == SINGLE_CLICK)
+   35   2              //    key_up = 0;
+   36   2              //  if (mode == DOUBLE_CLICK)
+   37   2              //    key_up = 1;
    38   2              if (KeyONE == 0)
    39   2              {
    40   3                  KeystrokeLabel = 1;
@@ -66,7 +66,7 @@ stmt  level    source
    52   3                  KeystrokeLabel = 4;
    53   3              }
    54   2              else if (KeyFIVE == 0)
-C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  02:26:04  PAGE 2   
+C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  17:53:00  PAGE 2   
 
    55   2              {
    56   3                  KeystrokeLabel = 5;
@@ -134,7 +134,7 @@ stmt  level    source
   114          
   115          {
   116   1          ips200_Dispaly(BLACK);
-C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  02:26:04  PAGE 3   
+C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  17:53:00  PAGE 3   
 
   117   1          ips200_showstr(0, display % 10, "*");
   118   1          ips200_showstr(8, 0, " data________1"); // 1
@@ -142,15 +142,15 @@ stmt  level    source
   120   1          ips200_showstr(8, 2, " adc_get_____3"); // 3
   121   1          ips200_showstr(8, 3, " preset______4"); // 4
   122   1          ips200_showstr(8, 4, " obstacle____5"); // 5
-  123   1              ips200_showstr(8, 5, " Ring_control");
-  124   1              ips200_showuint8(120, 5, Rcon_flag);
-  125   1              ips200_showstr(8, 6, " Obstacle_flag");
-  126   1              ips200_showuint8(120, 6, Ocon_flag);
-  127   1              ips200_showstr(8, 7, " protect_flag");
-  128   1              ips200_showuint8(120, 7, protect_flag);
+  123   1        ips200_showstr(8, 5, " Ring_control");
+  124   1        ips200_showuint8(120, 5, Rcon_flag);
+  125   1        ips200_showstr(8, 6, " Obstacle_flag");
+  126   1        ips200_showuint8(120, 6, Ocon_flag);
+  127   1        ips200_showstr(8, 7, " protect_flag");
+  128   1        ips200_showuint8(120, 7, protect_flag);
   129   1          ips200_showstr(8, 8, " speed");
   130   1          ips200_showuint16(120, 8, sp_ready * 10 + 110);
-  131   1              ips200_showstr(8, 9, " data_reset");
+  131   1        ips200_showstr(8, 9, " data_reset");
   132   1          ips200_showfloat(120, 9, P_S, 4, 3);
   133   1          ips200_showstr(8, 45, " display:    ");
   134   1          ips200_showuint16(120, 45, display % 10 + 1);
@@ -165,35 +165,35 @@ stmt  level    source
   143   2          case KeystrokeTWO:
   144   2              display += 1;
   145   2              break;         
-  146   2                      {                  
+  146   2          {                  
   147   3          case KeystrokeTHREE:
-  148   3                      if(display == 5) 
-  149   3                      {                       
-  150   4                              Rcon_flag = 1 - Rcon_flag;
-  151   4                              //iap_write_bytes(0x190, Rcon_flag, 1);         
-  152   4                      }
-  153   3                      else if(display == 6)         
-  154   3                      {         
-  155   4                              Ocon_flag = 1 - Ocon_flag;
-  156   4                              //iap_write_bytes(0x1A0, Ocon_flag, 1);
-  157   4                      }
-  158   3                      else if(display == 7)
-  159   3                      {
-  160   4                              protect_flag = 1 - protect_flag;
-  161   4                              //iap_write_bytes(0x1B0, protect_flag, 1);
-  162   4                      }
-  163   3                      
+  148   3          if(display == 5) 
+  149   3          {     
+  150   4            Rcon_flag = 1 - Rcon_flag;
+  151   4            //iap_write_bytes(0x190, Rcon_flag, 1);         
+  152   4          }
+  153   3          else if(display == 6)         
+  154   3          {         
+  155   4            Ocon_flag = 1 - Ocon_flag;
+  156   4            //iap_write_bytes(0x1A0, Ocon_flag, 1);
+  157   4          }
+  158   3          else if(display == 7)
+  159   3          {
+  160   4            protect_flag = 1 - protect_flag;
+  161   4            //iap_write_bytes(0x1B0, protect_flag, 1);
+  162   4          }
+  163   3          
   164   3              else if (display == 9)
   165   3              {
-  166   4                              extern_iap_write_float(70, 3, 2, 0x70);
+  166   4            extern_iap_write_float(70, 3, 2, 0x70);
   167   4                  extern_iap_write_float(79, 3, 2, 0x00);
   168   4                  extern_iap_write_float(-39, 3, 2, 0x10);
   169   4                  extern_iap_write_float(-87, 3, 2, 0x20);
   170   4                  extern_iap_write_float(-0.16, 1, 4, 0x40);
-  171   4                              extern_iap_write_float(-0.18, 1, 4, 0x30);
+  171   4            extern_iap_write_float(-0.18, 1, 4, 0x30);
   172   4                  extern_iap_write_float(63.18, 3, 2, 0x50);
   173   4                  extern_iap_write_float(50.1, 3, 2, 0x60);
-  174   4                              
+  174   4            
   175   4                  extern_iap_write_float(13, 3, 2, 0x140);
   176   4                  extern_iap_write_float(0, 3, 2, 0x150);
   177   4                  extern_iap_write_float(0, 3, 2, 0x160);
@@ -201,22 +201,22 @@ stmt  level    source
   179   4                  extern_iap_write_float(0, 3, 2, 0x180);
   180   4                  extern_iap_write_float(4200, 5, 1, 0x80);
   181   4                  extern_iap_write_float(12000, 5, 1, 0x90);
-  182   4                              
-C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  02:26:04  PAGE 4   
+  182   4            
+C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  17:53:00  PAGE 4   
 
-  183   4                              //iap_write_bytes(0x190, Rcon_flag, 1);
-  184   4                              //iap_write_bytes(0x1A0, Ocon_flag, 1);
-  185   4                              //iap_write_bytes(0x1B0, protect_flag, 1);
+  183   4            //iap_write_bytes(0x190, Rcon_flag, 1);
+  184   4            //iap_write_bytes(0x1A0, Ocon_flag, 1);
+  185   4            //iap_write_bytes(0x1B0, protect_flag, 1);
   186   4              }
   187   3              else
   188   3              {
-  189   4                              if(display >= 0 && display <= 5)
-  190   4                              {
+  189   4            if(display >= 0 && display <= 5)
+  190   4            {
   191   5                  Dispay_Codename = display + 1;
   192   5                  display = 0;
   193   5                  ips200_clear(BLACK);
-  194   5                              }
-  195   4                      }
+  194   5            }
+  195   4          }
   196   3              break;
   197   3          case KeystrokeFOUR:
   198   3              fanL = 780;
@@ -225,8 +225,8 @@ stmt  level    source
   201   3              sp_set = sp_ready * 10 + 110;
   202   3              // ips200_clear(IPS200_BGCOLOR);
   203   3              break;
-  204   3                      }
-  205   2              }
+  204   3          }
+  205   2        }
   206   1      }
   207          //-------------------------------------------------------------------------------------------------------
              -------------
@@ -270,7 +270,7 @@ stmt  level    source
   244   2              if (display == 0)
   245   2              {
   246   3                  step = 0;
-C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  02:26:04  PAGE 5   
+C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  17:53:00  PAGE 5   
 
   247   3              }
   248   2              else if (display == -1)
@@ -338,7 +338,7 @@ stmt  level    source
   308   1          ips200_showfloat(120, 2, P_S_MAX, 4, 4);
   309   1      
   310   1          ips200_showstr(8, 3, " D_ZHI");
-C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  02:26:04  PAGE 6   
+C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  17:53:00  PAGE 6   
 
   311   1          ips200_showfloat(120, 3, D_S_z, 4, 4);
   312   1          ips200_showstr(8, 4, " D_WAN");
@@ -361,12 +361,12 @@ stmt  level    source
   329   1          ips200_showfloat(120, 10, gyro, 4, 4);
   330   1      
   331   1          ips200_showstr(8, 11, " Return");
-  332   1              
-  333   1              ips200_showstr(8, 12, " sp_check");
+  332   1        
+  333   1        ips200_showstr(8, 12, " sp_check");
   334   1          ips200_showint16(120, 12, sp_check);
-  335   1              ips200_showstr(8, 14, " check_flag");
+  335   1        ips200_showstr(8, 14, " check_flag");
   336   1          ips200_showuint16(120, 14, check_flag);
-  337   1              
+  337   1        
   338   1          ips200_showstr(8, 46, " display");
   339   1          ips200_showuint16(120, 46, display % 10);
   340   1           Keystroke_Scan();
@@ -375,7 +375,7 @@ stmt  level    source
   343   2          case 0:
   344   2              sp_set += speed3 * 6;
   345   2              break;
-  346   2              case 1:
+  346   2        case 1:
   347   2              P_S += speed3 * 0.6;
   348   2              extern_iap_write_float(P_S, 3, 2, 0x70);
   349   2              break;
@@ -395,7 +395,7 @@ stmt  level    source
   363   2              G_S_zhi += speed3 * 0.001;
   364   2              extern_iap_write_float(G_S_zhi, 1, 4, 0x40);
   365   2              break;
-  366   2              case 6:
+  366   2        case 6:
   367   2              G_S_1 += speed3 * 0.001;
   368   2              extern_iap_write_float(G_S_1, 1, 4, 0x30);
   369   2              break;
@@ -406,7 +406,7 @@ stmt  level    source
   374   2          case 8:
   375   2              I_LR += speed3 * 0.6;
   376   2              extern_iap_write_float(I_LR, 3, 2, 0x60);
-C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  02:26:04  PAGE 7   
+C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  17:53:00  PAGE 7   
 
   377   2              break;
   378   2          default:
@@ -464,394 +464,397 @@ stmt  level    source
   428   1          ips200_showfloat(120, 5, pidL.setpoint, 4, 4);
   429   1          ips200_showstr(8, 6, " R.setpoint");
   430   1          ips200_showfloat(120, 6, pidR.setpoint, 4, 4);
-  431   1          ips200_showstr(8, 7, " mid_adc_up");
-  432   1          ips200_showint32(120, 7, adc_data[7], 6);
-  433   1          ips200_showstr(8, 8, " mid_adc_down");
-  434   1          ips200_showint32(120, 8, adc_data[2], 6);
-  435   1          ips200_showstr(8, 10, " flag_k");
-  436   1          ips200_showuint8(120, 10, annulus_flag_k_index);
-  437   1          ips200_showstr(8, 11, " angle1");
-  438   1          ips200_showfloat(120, 11, angle1, 5, 2);
-  439   1          // ips200_showstr(8, 1, " Return");
-  440   1          ips200_showstr(8, 45, " display");
-C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  02:26:04  PAGE 8   
+  431   1      
+  432   1          ips200_showstr(8, 7, " mid_adc_up");
+  433   1          ips200_showint32(120, 7, adc_data[7], 6);
+  434   1          ips200_showstr(8, 8, " mid_adc_down");
+  435   1          ips200_showint32(120, 8, adc_data[2], 6);
+  436   1      
+  437   1          ips200_showstr(8, 10, " flag_k");
+  438   1          ips200_showuint8(120, 10, annulus_flag_k_index);
+  439   1          
+  440   1          ips200_showstr(8, 11, " angle1");
+C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  17:53:00  PAGE 8   
 
-  441   1          ips200_showuint16(120, 45, display % 10);
-  442   1           Keystroke_Scan();
-  443   1      
-  444   1          switch (display % 10)
-  445   1          {
-  446   2          case 2:
-  447   2              dis1 -= speed3 * 100;
-  448   2              extern_iap_write_float((float)dis1, 5, 1, 0x80);
-  449   2              break;
-  450   2          case 3:
-  451   2              dis2 += speed3 * 100;
-  452   2              extern_iap_write_float((float)dis2, 5, 1, 0x90);
-  453   2              break;
-  454   2          default:
-  455   2              break;
-  456   2          }
-  457   1      
-  458   1          switch (KeystrokeLabel)
-  459   1          {
-  460   2          case KeystrokeONE:
-  461   2              display -= 1;
-  462   2              break;
-  463   2          case KeystrokeTWO:
-  464   2              display += 1;
+  441   1          ips200_showfloat(120, 11, angle1, 5, 2);
+  442   1      
+  443   1          ips200_showstr(8, 45, " display");
+  444   1          ips200_showuint16(120, 45, display % 10);
+  445   1          Keystroke_Scan();
+  446   1      
+  447   1          switch (display % 10)
+  448   1          {
+  449   2          case 2:
+  450   2              dis1 -= speed3 * 100;
+  451   2              extern_iap_write_float((float)dis1, 5, 1, 0x80);
+  452   2              break;
+  453   2          case 3:
+  454   2              dis2 += speed3 * 100;
+  455   2              extern_iap_write_float((float)dis2, 5, 1, 0x90);
+  456   2              break;
+  457   2          default:
+  458   2              break;
+  459   2          }
+  460   1      
+  461   1          switch (KeystrokeLabel)
+  462   1          {
+  463   2          case KeystrokeONE:
+  464   2              display -= 1;
   465   2              break;
-  466   2          case KeystrokeTHREE:
-  467   2              // Dispay_Codename = display;
-  468   2              // display = display*10+1;
-  469   2              // ips200_clear(IPS200_BGCOLOR);
-  470   2              break;
-  471   2          case KeystrokeFOUR:
-  472   2              Dispay_Codename = 0;
-  473   2              display = 0;
-  474   2              ips200_clear(IPS200_BGCOLOR);
-  475   2              break;
-  476   2          }
-  477   1      }
-  478          //-------------------------------------------------------------------------------------------------------
+  466   2          case KeystrokeTWO:
+  467   2              display += 1;
+  468   2              break;
+  469   2          case KeystrokeTHREE:
+  470   2              // Dispay_Codename = display;
+  471   2              // display = display*10+1;
+  472   2              // ips200_clear(IPS200_BGCOLOR);
+  473   2              break;
+  474   2          case KeystrokeFOUR:
+  475   2              Dispay_Codename = 0;
+  476   2              display = 0;
+  477   2              ips200_clear(IPS200_BGCOLOR);
+  478   2              break;
+  479   2          }
+  480   1      }
+  481          //-------------------------------------------------------------------------------------------------------
              -------------
-  479          //  @brief      菜单三
-  480          //  @param
-  481          //  @param
-  482          //  @param
+  482          //  @brief      菜单三
   483          //  @param
-  484          //  @return     void
-  485          //  @note       此页面为编号为0
-  486          //-------------------------------------------------------------------------------------------------------
+  484          //  @param
+  485          //  @param
+  486          //  @param
+  487          //  @return     void
+  488          //  @note       此页面为编号为0
+  489          //-------------------------------------------------------------------------------------------------------
              -------------
-  487          void Keystroke_Menu_THREE(void) // 3
-  488          {
-  489   1          ips200_Dispaly(BLACK);
-  490   1      
-  491   1          if (Gui_flag == 0)
-  492   1          {
-  493   2              ips200_showstr(0, display % 10, "*");
-  494   2              ips200_showstr(8, 0, " Adc_0");
-  495   2              ips200_showint32(120, 0, adc_data[0], 6);
-  496   2              ips200_showstr(8, 1, " Adc_1");
-  497   2              ips200_showint32(120, 1, adc_data[1], 6);
-  498   2              ips200_showstr(8, 2, " Adc_2");
-  499   2              ips200_showint32(120, 2, adc_data[2], 6);
-  500   2              ips200_showstr(8, 3, " Adc_3");
-  501   2              ips200_showint32(120, 3, adc_data[3], 6);
-  502   2              ips200_showstr(8, 4, " Adc_4");
-  503   2              ips200_showint32(120, 4, adc_data[4], 6);
-  504   2              ips200_showstr(8, 6, " Adc_5");
-C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  02:26:04  PAGE 9   
+  490          void Keystroke_Menu_THREE(void) // 3
+  491          {
+  492   1          ips200_Dispaly(BLACK);
+  493   1      
+  494   1          if (Gui_flag == 0)
+  495   1          {
+  496   2              ips200_showstr(0, display % 10, "*");
+  497   2              ips200_showstr(8, 0, " Adc_0");
+  498   2              ips200_showint32(120, 0, adc_data[0], 6);
+  499   2              ips200_showstr(8, 1, " Adc_1");
+  500   2              ips200_showint32(120, 1, adc_data[1], 6);
+  501   2              ips200_showstr(8, 2, " Adc_2");
+  502   2              ips200_showint32(120, 2, adc_data[2], 6);
+  503   2              ips200_showstr(8, 3, " Adc_3");
+  504   2              ips200_showint32(120, 3, adc_data[3], 6);
+C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  17:53:00  PAGE 9   
 
-  505   2              ips200_showint32(120, 6, adc_data[5], 6);
-  506   2              ips200_showstr(8, 7, " Adc_6");
-  507   2              ips200_showint32(120, 7, adc_data[6], 6);
-  508   2              ips200_showstr(8, 8, " Adc_7");
-  509   2              ips200_showint32(120, 8, adc_data[7], 6);
-  510   2              ips200_showstr(8, 9, " Adc_8");
-  511   2              ips200_showint32(120, 9, adc_data[8], 6);
-  512   2              ips200_showstr(8, 10, " Adc_9");
-  513   2              ips200_showint32(120, 10, adc_data[9], 6);
-  514   2              ips200_showstr(8, 11, " -");
-  515   2              ips200_showint32(120, 11, adc_data[1] - adc_data[3], 6);
-  516   2                      ips200_showstr(8, 12, " hen_cha_0_4");
-  517   2              ips200_showint32(120, 12, adc_data[0]-adc_data[4], 6);
-  518   2                      ips200_showstr(8, 13, " hen_cha_5_9");
-  519   2              ips200_showint32(120, 13, adc_data[5]-adc_data[9], 6);
-  520   2                      ips200_showstr(8, 14, " zong_cha_1_3");
-  521   2              ips200_showint32(120, 14, adc_data[1]-adc_data[3], 6);
-  522   2                      ips200_showstr(8, 15, " zong_cha_6_8");
-  523   2              ips200_showint32(120, 15, adc_data[6]-adc_data[8], 6);
-  524   2                      ips200_showstr(8, 16, " check_flag");
-  525   2                      ips200_showuint16(120, 16, check_flag);
-  526   2          }
-  527   1          else
-  528   1          {
-  529   2              ips200_showstr(0, display % 10, "*");
-  530   2              ips200_showstr(8, 0, " Adc_0");
-  531   2              ips200_showint32(120, 0, adc_sum[0], 6);
-  532   2              ips200_showstr(8, 1, " Adc_1");
-  533   2              ips200_showint32(120, 1, adc_sum[1], 6);
-  534   2              ips200_showstr(8, 2, " Adc_2");
-  535   2              ips200_showint32(120, 2, adc_sum[2], 6);
-  536   2              ips200_showstr(8, 3, " Adc_3");
-  537   2              ips200_showint32(120, 3, adc_sum[3], 6);
-  538   2              ips200_showstr(8, 4, " Adc_4");
-  539   2              ips200_showint32(120, 4, adc_sum[4], 6);
-  540   2              ips200_showstr(8, 6, " Adc_5");
-  541   2              ips200_showint32(120, 6, adc_sum[5], 6);
-  542   2              ips200_showstr(8, 7, " Adc_6");
-  543   2              ips200_showint32(120, 7, adc_sum[6], 6);
-  544   2              ips200_showstr(8, 8, " Adc_7");
-  545   2              ips200_showint32(120, 8, adc_sum[7], 6);
-  546   2              ips200_showstr(8, 9, " Adc_8");
-  547   2              ips200_showint32(120, 9, adc_sum[8], 6);
-  548   2              ips200_showstr(8, 10, " Adc_9");
-  549   2              ips200_showint32(120, 10, adc_sum[9], 6);
-  550   2              ips200_showstr(8, 11, " t_c");
-  551   2              ips200_showuint8(120, 11, time_count1);
-  552   2          }
-  553   1      
-  554   1          ips200_showstr(8, 12, " Gui_flag");
-  555   1          ips200_showuint16(120, 12, Gui_flag);
+  505   2              ips200_showstr(8, 4, " Adc_4");
+  506   2              ips200_showint32(120, 4, adc_data[4], 6);
+  507   2              ips200_showstr(8, 6, " Adc_5");
+  508   2              ips200_showint32(120, 6, adc_data[5], 6);
+  509   2              ips200_showstr(8, 7, " Adc_6");
+  510   2              ips200_showint32(120, 7, adc_data[6], 6);
+  511   2              ips200_showstr(8, 8, " Adc_7");
+  512   2              ips200_showint32(120, 8, adc_data[7], 6);
+  513   2              ips200_showstr(8, 9, " Adc_8");
+  514   2              ips200_showint32(120, 9, adc_data[8], 6);
+  515   2              ips200_showstr(8, 10, " Adc_9");
+  516   2              ips200_showint32(120, 10, adc_data[9], 6);
+  517   2              ips200_showstr(8, 11, " -");
+  518   2              ips200_showint32(120, 11, adc_data[1] - adc_data[3], 6);
+  519   2          ips200_showstr(8, 12, " hen_cha_0_4");
+  520   2              ips200_showint32(120, 12, adc_data[0]-adc_data[4], 6);
+  521   2          ips200_showstr(8, 13, " hen_cha_5_9");
+  522   2              ips200_showint32(120, 13, adc_data[5]-adc_data[9], 6);
+  523   2          ips200_showstr(8, 14, " zong_cha_1_3");
+  524   2              ips200_showint32(120, 14, adc_data[1]-adc_data[3], 6);
+  525   2          ips200_showstr(8, 15, " zong_cha_6_8");
+  526   2              ips200_showint32(120, 15, adc_data[6]-adc_data[8], 6);
+  527   2          ips200_showstr(8, 16, " check_flag");
+  528   2          ips200_showuint16(120, 16, check_flag);
+  529   2          }
+  530   1          else
+  531   1          {
+  532   2              ips200_showstr(0, display % 10, "*");
+  533   2              ips200_showstr(8, 0, " Adc_0");
+  534   2              ips200_showint32(120, 0, adc_sum[0], 6);
+  535   2              ips200_showstr(8, 1, " Adc_1");
+  536   2              ips200_showint32(120, 1, adc_sum[1], 6);
+  537   2              ips200_showstr(8, 2, " Adc_2");
+  538   2              ips200_showint32(120, 2, adc_sum[2], 6);
+  539   2              ips200_showstr(8, 3, " Adc_3");
+  540   2              ips200_showint32(120, 3, adc_sum[3], 6);
+  541   2              ips200_showstr(8, 4, " Adc_4");
+  542   2              ips200_showint32(120, 4, adc_sum[4], 6);
+  543   2              ips200_showstr(8, 6, " Adc_5");
+  544   2              ips200_showint32(120, 6, adc_sum[5], 6);
+  545   2              ips200_showstr(8, 7, " Adc_6");
+  546   2              ips200_showint32(120, 7, adc_sum[6], 6);
+  547   2              ips200_showstr(8, 8, " Adc_7");
+  548   2              ips200_showint32(120, 8, adc_sum[7], 6);
+  549   2              ips200_showstr(8, 9, " Adc_8");
+  550   2              ips200_showint32(120, 9, adc_sum[8], 6);
+  551   2              ips200_showstr(8, 10, " Adc_9");
+  552   2              ips200_showint32(120, 10, adc_sum[9], 6);
+  553   2              ips200_showstr(8, 11, " t_c");
+  554   2              ips200_showuint8(120, 11, time_count1);
+  555   2          }
   556   1      
-  557   1          ips200_showstr(8, 45, " display");
-  558   1          ips200_showuint16(120, 45, display % 10);
-  559   1           Keystroke_Scan();
-  560   1          switch (KeystrokeLabel)
-  561   1          {
-  562   2          case KeystrokeONE:
-  563   2              display -= 1;
-  564   2              break;
-  565   2          case KeystrokeTWO:
-  566   2              display += 1;
+  557   1          ips200_showstr(8, 12, " Gui_flag");
+  558   1          ips200_showuint16(120, 12, Gui_flag);
+  559   1      
+  560   1          ips200_showstr(8, 45, " display");
+  561   1          ips200_showuint16(120, 45, display % 10);
+  562   1           Keystroke_Scan();
+  563   1          switch (KeystrokeLabel)
+  564   1          {
+  565   2          case KeystrokeONE:
+  566   2              display -= 1;
   567   2              break;
-  568   2          case KeystrokeTHREE:
-  569   2              Gui_flag++;
+  568   2          case KeystrokeTWO:
+  569   2              display += 1;
   570   2              break;
-C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  02:26:04  PAGE 10  
+C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  17:53:00  PAGE 10  
 
-  571   2          case KeystrokeFOUR:
-  572   2              Dispay_Codename = 0;
-  573   2              display = 0;
-  574   2              ips200_clear(IPS200_BGCOLOR);
-  575   2              break;
-  576   2          }
-  577   1      }
-  578          
-  579          //-------------------------------------------------------------------------------------------------------
+  571   2          case KeystrokeTHREE:
+  572   2              Gui_flag++;
+  573   2              break;
+  574   2          case KeystrokeFOUR:
+  575   2              Dispay_Codename = 0;
+  576   2              display = 0;
+  577   2              ips200_clear(IPS200_BGCOLOR);
+  578   2              break;
+  579   2          }
+  580   1      }
+  581          
+  582          //-------------------------------------------------------------------------------------------------------
              -------------
-  580          //  @brief      菜单四
-  581          //  @param
-  582          //  @param
-  583          //  @param
+  583          //  @brief      菜单四
   584          //  @param
-  585          //  @return     void
-  586          //  @note       此页面为编号为0
-  587          //-------------------------------------------------------------------------------------------------------
+  585          //  @param
+  586          //  @param
+  587          //  @param
+  588          //  @return     void
+  589          //  @note       此页面为编号为0
+  590          //-------------------------------------------------------------------------------------------------------
              -------------
-  588          void Keystroke_Menu_FOUR(void) // 4
-  589          {
-  590   1          ips200_Dispaly(BLACK);
-  591   1          ips200_showstr(0, display % 10, "*");
-  592   1          ips200_showstr(8, 0, " PO_or_OBSTACLE");
-  593   1          ips200_showstr(8, 1, " [0]");
-  594   1          ips200_showint16(80, 1, PO_or_OBSTACLE[0]);
-  595   1          ips200_showstr(8, 2, " [1]");
-  596   1          ips200_showint16(80, 2, PO_or_OBSTACLE[1]);
-  597   1          ips200_showstr(8, 3, " [2]");
-  598   1          ips200_showint16(80, 3, PO_or_OBSTACLE[2]);
-  599   1          ips200_showstr(8, 4, " [3]");
-  600   1          ips200_showint16(80, 4, PO_or_OBSTACLE[3]);
-  601   1          ips200_showstr(8, 5, " [4]");
-  602   1          ips200_showint16(80, 5, PO_or_OBSTACLE[4]);
-  603   1          ips200_showstr(8, 7, " ring_set_k");
-  604   1          ips200_showstr(8, 8, " [0]");
-  605   1          ips200_showint16(30, 8, ring_set_k[0]);
-  606   1          ips200_showstr(8, 9, " [1]");
-  607   1          ips200_showint16(30, 9, ring_set_k[1]);
-  608   1          ips200_showstr(8, 10, " [2]");
-  609   1          ips200_showint16(30, 10, ring_set_k[2]);
-  610   1          ips200_showstr(8, 11, " [3]");
-  611   1          ips200_showint16(30, 11, ring_set_k[3]);
-  612   1          ips200_showstr(8, 12, " [4]");
-  613   1          ips200_showint16(30, 12, ring_set_k[4]);
-  614   1           Keystroke_Scan();
-  615   1          switch (display % 10)
-  616   1          {
-  617   2          case 1:
-  618   2              PO_or_OBSTACLE[0] += speed3 * 1;
-  619   2              break;
-  620   2          case 2:
-  621   2              PO_or_OBSTACLE[1] += speed3 * 1;
+  591          void Keystroke_Menu_FOUR(void) // 4
+  592          {
+  593   1          ips200_Dispaly(BLACK);
+  594   1          ips200_showstr(0, display % 10, "*");
+  595   1          ips200_showstr(8, 0, " PO_or_OBSTACLE");
+  596   1          ips200_showstr(8, 1, " [0]");
+  597   1          ips200_showint16(80, 1, PO_or_OBSTACLE[0]);
+  598   1          ips200_showstr(8, 2, " [1]");
+  599   1          ips200_showint16(80, 2, PO_or_OBSTACLE[1]);
+  600   1          ips200_showstr(8, 3, " [2]");
+  601   1          ips200_showint16(80, 3, PO_or_OBSTACLE[2]);
+  602   1          ips200_showstr(8, 4, " [3]");
+  603   1          ips200_showint16(80, 4, PO_or_OBSTACLE[3]);
+  604   1          ips200_showstr(8, 5, " [4]");
+  605   1          ips200_showint16(80, 5, PO_or_OBSTACLE[4]);
+  606   1          ips200_showstr(8, 7, " ring_set_k");
+  607   1          ips200_showstr(8, 8, " [0]");
+  608   1          ips200_showint16(30, 8, ring_set_k[0]);
+  609   1          ips200_showstr(8, 9, " [1]");
+  610   1          ips200_showint16(30, 9, ring_set_k[1]);
+  611   1          ips200_showstr(8, 10, " [2]");
+  612   1          ips200_showint16(30, 10, ring_set_k[2]);
+  613   1          ips200_showstr(8, 11, " [3]");
+  614   1          ips200_showint16(30, 11, ring_set_k[3]);
+  615   1          ips200_showstr(8, 12, " [4]");
+  616   1          ips200_showint16(30, 12, ring_set_k[4]);
+  617   1           Keystroke_Scan();
+  618   1          switch (display % 10)
+  619   1          {
+  620   2          case 1:
+  621   2              PO_or_OBSTACLE[0] += speed3 * 1;
   622   2              break;
-  623   2          case 3:
-  624   2              PO_or_OBSTACLE[2] += speed3 * 1;
+  623   2          case 2:
+  624   2              PO_or_OBSTACLE[1] += speed3 * 1;
   625   2              break;
-  626   2          case 4:
-  627   2              PO_or_OBSTACLE[3] += speed3 * 1;
+  626   2          case 3:
+  627   2              PO_or_OBSTACLE[2] += speed3 * 1;
   628   2              break;
-  629   2          case 5:
-  630   2              PO_or_OBSTACLE[4] += speed3 * 1;
+  629   2          case 4:
+  630   2              PO_or_OBSTACLE[3] += speed3 * 1;
   631   2              break;
-  632   2          case 6:
-  633   2              PO_or_OBSTACLE[5] += speed3 * 1;
+  632   2          case 5:
+  633   2              PO_or_OBSTACLE[4] += speed3 * 1;
   634   2              break;
-C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  02:26:04  PAGE 11  
+C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  17:53:00  PAGE 11  
 
-  635   2          case 7:
-  636   2              PO_or_OBSTACLE[6] += speed3 * 1;
+  635   2          case 6:
+  636   2              PO_or_OBSTACLE[5] += speed3 * 1;
   637   2              break;
-  638   2          // case 8:
-  639   2          //     PO_or_OBSTACLE[7] += speed3 * 1;
-  640   2          //     break;
-  641   2          // case 9:
-  642   2          //     PO_or_OBSTACLE[8] += speed3 * 1;
+  638   2          case 7:
+  639   2              PO_or_OBSTACLE[6] += speed3 * 1;
+  640   2              break;
+  641   2          // case 8:
+  642   2          //     PO_or_OBSTACLE[7] += speed3 * 1;
   643   2          //     break;
-  644   2          // case 10:
-  645   2          //     PO_or_OBSTACLE[9] += speed3 * 1;
+  644   2          // case 9:
+  645   2          //     PO_or_OBSTACLE[8] += speed3 * 1;
   646   2          //     break;
-  647   2          // case 20:
-  648   2          //     ring_set_k[0] += speed3 * 0.1;
+  647   2          // case 10:
+  648   2          //     PO_or_OBSTACLE[9] += speed3 * 1;
   649   2          //     break;
-  650   2          // case 21:
-  651   2          //     ring_set_k[1] += speed3 * 0.1;
+  650   2          // case 20:
+  651   2          //     ring_set_k[0] += speed3 * 0.1;
   652   2          //     break;
-  653   2          // case 22:
-  654   2          //     ring_set_k[2] += speed3 * 0.1;
+  653   2          // case 21:
+  654   2          //     ring_set_k[1] += speed3 * 0.1;
   655   2          //     break;
-  656   2          // case 23:
-  657   2          //     ring_set_k[3] += speed3 * 0.1;
+  656   2          // case 22:
+  657   2          //     ring_set_k[2] += speed3 * 0.1;
   658   2          //     break;
-  659   2          // case 24:
-  660   2          //     ring_set_k[4] += speed3 * 0.1;
+  659   2          // case 23:
+  660   2          //     ring_set_k[3] += speed3 * 0.1;
   661   2          //     break;
-  662   2          default:
-  663   2              break;
-  664   2          }
-  665   1      
-  666   1          switch (KeystrokeLabel)
-  667   1          {
-  668   2          case KeystrokeONE:
-  669   2              display -= 1;
-  670   2              break;
-  671   2          case KeystrokeTWO:
-  672   2              display += 1;
+  662   2          // case 24:
+  663   2          //     ring_set_k[4] += speed3 * 0.1;
+  664   2          //     break;
+  665   2          default:
+  666   2              break;
+  667   2          }
+  668   1      
+  669   1          switch (KeystrokeLabel)
+  670   1          {
+  671   2          case KeystrokeONE:
+  672   2              display -= 1;
   673   2              break;
-  674   2          case KeystrokeTHREE:
-  675   2              if (display == 8)
-  676   2              {
-  677   3                  ring_set_k[0] = fabs(k);
-  678   3                  extern_iap_write_float(ring_set_k[0], 3, 2, 0x140);
-  679   3              }
-  680   2              if (display == 9)
-  681   2              {
-  682   3                  ring_set_k[1] = fabs(k);
-  683   3                  extern_iap_write_float(ring_set_k[1], 3, 2, 0x150);
-  684   3              }
-  685   2              if (display == 10)
-  686   2              {
-  687   3                  ring_set_k[2] = fabs(k);
-  688   3                  extern_iap_write_float(ring_set_k[2], 3, 2, 0x160);
-  689   3              }
-  690   2              if (display == 11)
-  691   2              {
-  692   3                  ring_set_k[3] = fabs(k);
-  693   3                  extern_iap_write_float(ring_set_k[3], 3, 2, 0x170);
-  694   3              }
-  695   2              if (display == 12)
-  696   2              {
-  697   3                  ring_set_k[4] = fabs(k);
-  698   3                  extern_iap_write_float(ring_set_k[4], 3, 2, 0x180);
-  699   3              }
-  700   2      
-C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  02:26:04  PAGE 12  
+  674   2          case KeystrokeTWO:
+  675   2              display += 1;
+  676   2              break;
+  677   2          case KeystrokeTHREE:
+  678   2              if (display == 8)
+  679   2              {
+  680   3                  ring_set_k[0] = fabs(k);
+  681   3                  extern_iap_write_float(ring_set_k[0], 3, 2, 0x140);
+  682   3              }
+  683   2              if (display == 9)
+  684   2              {
+  685   3                  ring_set_k[1] = fabs(k);
+  686   3                  extern_iap_write_float(ring_set_k[1], 3, 2, 0x150);
+  687   3              }
+  688   2              if (display == 10)
+  689   2              {
+  690   3                  ring_set_k[2] = fabs(k);
+  691   3                  extern_iap_write_float(ring_set_k[2], 3, 2, 0x160);
+  692   3              }
+  693   2              if (display == 11)
+  694   2              {
+  695   3                  ring_set_k[3] = fabs(k);
+  696   3                  extern_iap_write_float(ring_set_k[3], 3, 2, 0x170);
+  697   3              }
+  698   2              if (display == 12)
+  699   2              {
+  700   3                  ring_set_k[4] = fabs(k);
+C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  17:53:00  PAGE 12  
 
-  701   2              // display = display*10+1;
-  702   2              // ips200_clear(IPS200_BGCOLOR);
-  703   2              ring_set_k[display % 10] = k;
-  704   2              break;
-  705   2          case KeystrokeFOUR:
-  706   2              Dispay_Codename = 0;
-  707   2              display = 0;
-  708   2              ips200_clear(IPS200_BGCOLOR);
-  709   2              break;
-  710   2          }
-  711   1      }
-  712          
-  713          
-  714          //-------------------------------------------------------------------------------------------------------
+  701   3                  extern_iap_write_float(ring_set_k[4], 3, 2, 0x180);
+  702   3              }
+  703   2      
+  704   2              // display = display*10+1;
+  705   2              // ips200_clear(IPS200_BGCOLOR);
+  706   2              ring_set_k[display % 10] = k;
+  707   2              break;
+  708   2          case KeystrokeFOUR:
+  709   2              Dispay_Codename = 0;
+  710   2              display = 0;
+  711   2              ips200_clear(IPS200_BGCOLOR);
+  712   2              break;
+  713   2          }
+  714   1      }
+  715          
+  716          
+  717          //-------------------------------------------------------------------------------------------------------
              -------------
-  715          //  @brief      菜单五
-  716          //  @param
-  717          //  @param
-  718          //  @param
+  718          //  @brief      菜单五
   719          //  @param
-  720          //  @return     void
-  721          //  @note       此页面为编号为0
-  722          //-------------------------------------------------------------------------------------------------------
+  720          //  @param
+  721          //  @param
+  722          //  @param
+  723          //  @return     void
+  724          //  @note       此页面为编号为0
+  725          //-------------------------------------------------------------------------------------------------------
              -------------
-  723          void Keystroke_Menu_FIVE(void) // 5
-  724          {
-  725   1          ips200_Dispaly(BLACK);
-  726   1          ips200_showstr(0, display % 10, "*");
-  727   1      
-  728   1          ips200_showstr(8, 0, " leave_flag");
-  729   1          ips200_showuint16(120, 0, leave_flag);
-  730   1          ips200_showstr(8, 1, " dodge_flag");
-  731   1          ips200_showuint16(120, 1, dodge_flag);
-  732   1          ips200_showstr(8, 2, " pidS.result");
-  733   1          ips200_showfloat(120, 2, pidS.result,4,2);
-  734   1          ips200_showstr(8, 3, " straight_flag");
-  735   1          ips200_showuint8(120, 3, straight_flag);
-  736   1          ips200_showstr(8, 4, " angle2");
-  737   1          ips200_showfloat(120, 4, angle2,4,2);
-  738   1          ips200_showstr(8, 5, " distance2");
-  739   1          ips200_showint16(120, 5, distance2);
-  740   1              ips200_showstr(8, 6, " tof_distance");
-  741   1          ips200_showint16(120, 6, tof_distance);
-  742   1              ips200_showstr(8, 7, " tof_dist");
-  743   1          ips200_showint16(120, 7, tof_dis);
-  744   1              ips200_showstr(8, 8, " tof_dis1");
-  745   1          ips200_showint16(120, 8, tof_dis1);
-  746   1              ips200_showstr(8, 9, " tof_dis2");
-  747   1          ips200_showint16(120, 9, tof_dis2);
-  748   1              ips200_showstr(8, 10, " all_reset");
-  749   1          Keystroke_Scan();
-  750   1              switch(display)
-  751   1              {
-  752   2                      case 7:
-  753   2                              tof_dis += 50*speed3;
-  754   2                              break;
-  755   2                      case 8:
-  756   2                              tof_dis1 += 50*speed3;
-  757   2                              break;
-  758   2                      case 9:
-  759   2                              tof_dis2 += 50*speed3;
-  760   2                              break;
-  761   2              }
-  762   1          switch (KeystrokeLabel)
-  763   1          {
-  764   2          case KeystrokeONE:
-C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  02:26:04  PAGE 13  
+  726          void Keystroke_Menu_FIVE(void) // 5
+  727          {
+  728   1          ips200_Dispaly(BLACK);
+  729   1          ips200_showstr(0, display % 10, "*");
+  730   1      
+  731   1          ips200_showstr(8, 0, " leave_flag");
+  732   1          ips200_showuint16(120, 0, leave_flag);
+  733   1          ips200_showstr(8, 1, " dodge_flag");
+  734   1          ips200_showuint16(120, 1, dodge_flag);
+  735   1          ips200_showstr(8, 2, " pidS.result");
+  736   1          ips200_showfloat(120, 2, pidS.result,4,2);
+  737   1          ips200_showstr(8, 3, " straight_flag");
+  738   1          ips200_showuint8(120, 3, straight_flag);
+  739   1          ips200_showstr(8, 4, " angle2");
+  740   1          ips200_showfloat(120, 4, angle2,4,2);
+  741   1          ips200_showstr(8, 5, " distance2");
+  742   1          ips200_showint16(120, 5, distance2);
+  743   1        ips200_showstr(8, 6, " tof_distance");
+  744   1          ips200_showint16(120, 6, tof_distance);
+  745   1        ips200_showstr(8, 7, " tof_dist");
+  746   1          ips200_showint16(120, 7, tof_dis);
+  747   1        ips200_showstr(8, 8, " tof_dis1");
+  748   1          ips200_showint16(120, 8, tof_dis1);
+  749   1        ips200_showstr(8, 9, " tof_dis2");
+  750   1          ips200_showint16(120, 9, tof_dis2);
+  751   1        ips200_showstr(8, 10, " all_reset");
+  752   1          Keystroke_Scan();
+  753   1        switch(display)
+  754   1        {
+  755   2          case 7:
+  756   2            tof_dis += 50*speed3;
+  757   2            break;
+  758   2          case 8:
+  759   2            tof_dis1 += 50*speed3;
+  760   2            break;
+  761   2          case 9:
+  762   2            tof_dis2 += 50*speed3;
+  763   2            break;
+  764   2        }
+C251 COMPILER V5.60.0,  keyboard                                                           16/07/23  17:53:00  PAGE 13  
 
-  765   2              display -= 1;
-  766   2              break;
-  767   2          case KeystrokeTWO:
-  768   2              display += 1;
+  765   1          switch (KeystrokeLabel)
+  766   1          {
+  767   2          case KeystrokeONE:
+  768   2              display -= 1;
   769   2              break;
-  770   2          case KeystrokeTHREE:
-  771   2                      if(display == 9)
-  772   2                      {
-  773   3                              all_reset();
-  774   3                      }
-  775   2              break;
-  776   2          case KeystrokeFOUR:
-  777   2              Dispay_Codename = 0;
-  778   2              display = 0;
-  779   2              ips200_clear(IPS200_BGCOLOR);
-  780   2              break;
-  781   2          }
-  782   1      }
-  783          
-  784          /*
-  785          //-------------------------------------------------------------------------------------------------------
+  770   2          case KeystrokeTWO:
+  771   2              display += 1;
+  772   2              break;
+  773   2          case KeystrokeTHREE:
+  774   2          if(display == 9)
+  775   2          {
+  776   3            all_reset();
+  777   3          }
+  778   2              break;
+  779   2          case KeystrokeFOUR:
+  780   2              Dispay_Codename = 0;
+  781   2              display = 0;
+  782   2              ips200_clear(IPS200_BGCOLOR);
+  783   2              break;
+  784   2          }
+  785   1      }
+  786          
+  787          /*
+  788          //-------------------------------------------------------------------------------------------------------
              -------------
-  786          //  @brief      发车菜单
-  787          //  @param
-  788          //  @param
-  789          //  @param
+  789          //  @brief      发车菜单
   790          //  @param
-  791          //  @return     void
-  792          //  @note       此页面为编号为0
-  793          //-------------------------------------------------------------------------------------------------------
+  791          //  @param
+  792          //  @param
+  793          //  @param
+  794          //  @return     void
+  795          //  @note       此页面为编号为0
+  796          //-------------------------------------------------------------------------------------------------------
              -------------
-  794          void Keystroke_Menu_RUNNING()//
-  795          {
-  796          
-  797          }
-  798          */
+  797          void Keystroke_Menu_RUNNING()//
+  798          {
+  799          
+  800          }
+  801          */
 
 
 Module Information          Static   Overlayable

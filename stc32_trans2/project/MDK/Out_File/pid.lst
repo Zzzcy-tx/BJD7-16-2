@@ -1,11 +1,11 @@
-C251 COMPILER V5.60.0,  pid                                                                15/07/23  21:04:30  PAGE 1   
+C251 COMPILER V5.60.0,  pid                                                                16/07/23  17:52:59  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE pid
 OBJECT MODULE PLACED IN .\Out_File\pid.obj
-COMPILER INVOKED BY: D:\keil5\C251\BIN\C251.EXE ..\CODE\pid.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCDI
-                    -R(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;.
-                    -.\USER\src) DEBUG PRINT(.\Out_File\pid.lst) OBJECT(.\Out_File\pid.obj) 
+COMPILER INVOKED BY: D:\Program files\Keil251\C251\BIN\C251.EXE ..\CODE\pid.c LARGE INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPE
+                    -ED) BROWSE INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CO
+                    -DE;..\USER\inc;..\USER\src) DEBUG PRINT(.\Out_File\pid.lst) TABS(2) OBJECT(.\Out_File\pid.obj) 
 
 stmt  level    source
 
@@ -66,60 +66,60 @@ stmt  level    source
    53   1          vPID->lasterror = thisError;
    54   1      }
    55          
-C251 COMPILER V5.60.0,  pid                                                                15/07/23  21:04:30  PAGE 2   
+C251 COMPILER V5.60.0,  pid                                                                16/07/23  17:52:59  PAGE 2   
 
    56          //陀螺仪pid消抖
    57          void PIDRegulation2(PID *vPID, float processValue)
    58          {
-   59   1              float index;
+   59   1        float index;
    60   1          float thisError;
    61   1          thisError = processValue - vPID->setpoint;
-   62   1              if(vPID->result > 15000)
-   63   1              {
-   64   2                      if(abs(thisError) > 300)
-   65   2                      {
-   66   3                              index = 0.0;
-   67   3                      }else
-   68   2                      {
-   69   3                              if(thisError < 0)
-   70   3                              {
-   71   4                                      index = 1.0;
-   72   4                                      vPID->integral += thisError;
-   73   4                              }
-   74   3                      }
-   75   2              }else if(vPID->result < -15000)
-   76   1              {
-   77   2                      if(abs(thisError) > 300)
-   78   2                      {
-   79   3                              index = 0.0;
-   80   3                      }else
-   81   2                      {
-   82   3                              if(thisError > 0)
-   83   3                              {
-   84   4                                      index = 1.0;
-   85   4                                      vPID->integral += thisError;
-   86   4                              }
-   87   3                      }
-   88   2              }else
-   89   1              {
-   90   2                      if(abs(thisError) > 300)
-   91   2                      {
-   92   3                              index = 0.0;
-   93   3                      }else
-   94   2                      {
-   95   3                              if(abs(thisError) < 100)
-   96   3                              {
-   97   4                                      index = 1.0;
-   98   4                                      vPID->integral += thisError;
-   99   4                              }
-  100   3                              else
-  101   3                              {
-  102   4                                      index = (300-abs(thisError)) / 200;
-  103   4                                      vPID->integral += thisError;
-  104   4                              }
-  105   3                      }
-  106   2              }
-  107   1              
+   62   1        if(vPID->result > 15000)
+   63   1        {
+   64   2          if(abs(thisError) > 300)
+   65   2          {
+   66   3            index = 0.0;
+   67   3          }else
+   68   2          {
+   69   3            if(thisError < 0)
+   70   3            {
+   71   4              index = 1.0;
+   72   4              vPID->integral += thisError;
+   73   4            }
+   74   3          }
+   75   2        }else if(vPID->result < -15000)
+   76   1        {
+   77   2          if(abs(thisError) > 300)
+   78   2          {
+   79   3            index = 0.0;
+   80   3          }else
+   81   2          {
+   82   3            if(thisError > 0)
+   83   3            {
+   84   4              index = 1.0;
+   85   4              vPID->integral += thisError;
+   86   4            }
+   87   3          }
+   88   2        }else
+   89   1        {
+   90   2          if(abs(thisError) > 300)
+   91   2          {
+   92   3            index = 0.0;
+   93   3          }else
+   94   2          {
+   95   3            if(abs(thisError) < 100)
+   96   3            {
+   97   4              index = 1.0;
+   98   4              vPID->integral += thisError;
+   99   4            }
+  100   3            else
+  101   3            {
+  102   4              index = (300-abs(thisError)) / 200;
+  103   4              vPID->integral += thisError;
+  104   4            }
+  105   3          }
+  106   2        }
+  107   1        
   108   1          vPID->result = vPID->proportiongain * thisError + index * vPID->integralgain * vPID->integral / 2 + v
              -PID->derivativegain * (thisError - vPID->lasterror ) + vPID->Gkd * gyro;
   109   1      
@@ -134,7 +134,7 @@ stmt  level    source
   118   1      }
   119          //设置速度环目标值
   120          void setSpeedL(int16 speed)
-C251 COMPILER V5.60.0,  pid                                                                15/07/23  21:04:30  PAGE 3   
+C251 COMPILER V5.60.0,  pid                                                                16/07/23  17:52:59  PAGE 3   
 
   121          {
   122   1          pidL.setpoint = (float)speed;
@@ -185,7 +185,7 @@ stmt  level    source
   167   1          pidS.proportiongain = p;
   168   1          pidS.integralgain = i;
   169   1          pidS.derivativegain = d;
-  170   1              pidS.Gkd = gk;
+  170   1        pidS.Gkd = gk;
   171   1      }
   172          //设置角度环参数
   173          void setPidW(float p, float i, float d)
@@ -203,7 +203,7 @@ Module Information          Static   Overlayable
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-C251 COMPILER V5.60.0,  pid                                                                15/07/23  21:04:30  PAGE 4   
+C251 COMPILER V5.60.0,  pid                                                                16/07/23  17:52:59  PAGE 4   
 
   xdata size           =       286     ------
   xdata-const size     =    ------     ------

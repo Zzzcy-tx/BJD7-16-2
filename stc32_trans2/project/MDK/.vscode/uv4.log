@@ -1,17 +1,12 @@
 Build target 'STC32G12K128'
-compiling keyboard.c...
-..\CODE\keyboard.c(150): warning C40: 'unsigned int' converted to 'far' pointer
-..\CODE\keyboard.c(156): warning C40: 'unsigned int' converted to 'far' pointer
-..\CODE\keyboard.c(161): warning C40: 'unsigned int' converted to 'far' pointer
-..\CODE\keyboard.c(183): warning C40: 'unsigned int' converted to 'far' pointer
-..\CODE\keyboard.c(184): warning C40: 'unsigned int' converted to 'far' pointer
-..\CODE\keyboard.c(185): warning C40: 'unsigned int' converted to 'far' pointer
+compiling speed.c...
+compiling ringjudge.c...
 linking...
 *** WARNING L14: INCOMPATIBLE MEMORY MODEL
     MODULE:  ..\..\Libraries\seekfree_peripheral\SEEKFREE_CONFIG.LIB (SEEKFREE_CONFIG)
     MODEL:   XSMALL
 
-Program Size: data=8.0 edata+hdata=256 xdata=5643 const=2813 code=60313
+Program Size: data=8.0 edata+hdata=256 xdata=5645 const=2825 code=60704
 creating hex file from ".\Out_File\SEEKFREE"...
-".\Out_File\SEEKFREE" - 0 Error(s), 7 Warning(s).
+".\Out_File\SEEKFREE" - 0 Error(s), 1 Warning(s).
 Build Time Elapsed:  00:00:00
