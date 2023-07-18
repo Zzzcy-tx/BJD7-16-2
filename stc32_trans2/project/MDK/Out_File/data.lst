@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  data                                                               17/07/23  20:10:15  PAGE 1   
+C251 COMPILER V5.60.0,  data                                                               17/07/23  21:33:49  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE data
@@ -12,117 +12,122 @@ stmt  level    source
     1          #include "data.h"
     2          
     3          uint16 t = 0;
-    4          int16 PO_or_OBSTACLE[5] = {0, 3, 4, -1, -1}; //-1ÎªÎÞÔªËØ£¬0ÎªÐ¡»·µº£¬1ÎªÖÐ»·µº£¬2Îª´ó»·µº£¬3ÎªÆÂµÀ£¬4Îª±
-             -ÜÕÏ
-    5          int16 ring_set_k[4] = {18, 0, 0, 0};     //Ð¡ÖÐ´ó»·
+    4          int16 PO_or_OBSTACLE[5] = {0, 1, -1, -1, -1}; //-1ÎªÎÞÔªËØ£¬0ÎªÆÂµÀ£¬1Îª±ÜÕÏ
+    5          int16 HO_cnt = 0;      //ÆÂµÀ±ÜÕÏ¼ÆÊý
     6          
-    7          int16 Ring_Dis1[4] = {0,0,0,0};   //´æ·Å´óÖÐÐ¡»·»ý·Ö¾àÀëÊý¾Ý
-    8          int16 Ring_Dis2[4] = {0,0,0,0};
+    7          int16 RingR[5] = {0, -1, -1, -1, -1};   //Ô²»·Ë³Ðò£¬0ÎªÐ¡»·£¬1ÎªÖÐ»·£¬2Îª´ó»·£¬×ó·¢ÎªË³Ðò
+    8          int16 Ring_cnt = 0;     //»·µº¼ÆÊý
     9          
-   10          
+   10          int16 ring_set_k[4] = {18, 0, 0, 0};     //Ð¡ÖÐ´ó»·´ò½ÇÎó²î£¬0ÎªÐ¡»·£¬1ÎªÖÐ»·£¬2Îª´ó»·
    11          
-   12          uint16 sp_ready = 1;
+   12          // int16 element_cnt = 0;//ÔªËØ¼ÆÊý£¬ÊÇPO_or_Obstacle[]µÄÏÂ±ê
    13          
-   14          int16 mag;
-   15          int16 sp_check = 0;
-   16          uint16 check_flag = 0;
+   14          int16 Ring_Dis1[4] = {0,0,0,0};     //´æ·Å´óÖÐÐ¡»·dia1»ý·Ö¾àÀëÊý¾Ý£¬0ÎªÐ¡»·£¬1ÎªÖÐ»·£¬2Îª´ó»·
+   15          int16 Ring_Dis2[4] = {0,0,0,0};     //´æ·Å´óÖÐÐ¡»·dis2»ý·Ö¾àÀëÊý¾Ý£¬0ÎªÐ¡»·£¬1ÎªÖÐ»·£¬2Îª´ó»·
+   16          
    17          
-   18          int16 speedL;
-   19          int16 speedR;
-   20          int8 irs_count = 0;
-   21          float k;
-   22          int32 adc_data[10];
-   23          uint16 adc_d[10];  //ÊµÊ±
-   24          float Adc_gui[10]; //¹éÒ»»¯
-   25          uint16 AD_value[10];
-   26          int16 test1;
-   27          
-   28          int32 all_distance = 0;
-   29          
-   30          float test2;
-   31          
-   32          float all_angle = 0;
-   33          float gyro_add = 0;
+   18          
+   19          uint16 sp_ready = 1;
+   20          
+   21          int16 mag;
+   22          int16 sp_check = 0;
+   23          uint16 check_flag = 0;
+   24          
+   25          int16 speedL;
+   26          int16 speedR;
+   27          int8 irs_count = 0;
+   28          float k;
+   29          int32 adc_data[10];
+   30          uint16 adc_d[10];  //ÊµÊ±
+   31          float Adc_gui[10]; //¹éÒ»»¯
+   32          uint16 AD_value[10];
+   33          int16 test1;
    34          
-   35          char str_item[100];       //²ÎÊýÃû
-   36          int str_num;              //²ÎÊýÖµ
-   37          char uart_str[100] = {0}; //´®¿Ú×Ö·û´®
-   38          int8 finish_flag = 0;
-   39          uint16 Gui_flag = 0;
-   40          int8 start_flag = 0;
+   35          int32 all_distance = 0;
+   36          
+   37          float test2;
+   38          
+   39          float all_angle = 0;
+   40          float gyro_add = 0;
    41          
-   42          uint8 Rcon_flag = 0;
-   43          uint8 Ocon_flag = 1;
-   44          uint8 protect_flag = 1;
-   45          
-   46          float P_LR = 63.18;
-   47          float I_LR = 50.1;
-   48          uint8 puodao = 0;
-   49          float P_S = 68.27;
-   50          
-   51          float P_S_MAX = 77.0;
-   52          float D_S = -24.19;
-   53          float D_S_z = -33;
-   54          float G_S = -0.198;
-   55          float G_S_1 = -0.17;
-   56          float G_S_zhi = -0.151;
-C251 COMPILER V5.60.0,  data                                                               17/07/23  20:10:15  PAGE 2   
-
+   42          char str_item[100];       //²ÎÊýÃû
+   43          int str_num;              //²ÎÊýÖµ
+   44          char uart_str[100] = {0}; //´®¿Ú×Ö·û´®
+   45          int8 finish_flag = 0;
+   46          uint16 Gui_flag = 0;
+   47          int8 start_flag = 0;
+   48          
+   49          uint8 Rcon_flag = 0;
+   50          uint8 Ocon_flag = 1;
+   51          uint8 protect_flag = 1;
+   52          
+   53          float P_LR = 63.18;
+   54          float I_LR = 50.1;
+   55          uint8 puodao = 0;
+   56          float P_S = 68.27;
    57          
-   58          float P_W = 1.83;
-   59          float D_W = 0.86;
-   60          
-   61          float aimed_angle = 0;
-   62          
-   63          float gyro;  //ÂË²¨ºóÍÓÂÝÒÇzÖá½ÇËÙ¶È
-   64          float gyro1; //ÂË²¨ºóÍÓÂÝÒÇzÖá½ÇËÙ¶È
-   65          
-   66          int16 dis1 = 2000;
-   67          int16 dis2 = 10000;
-   68          int16 ring_angle = 1600;
+C251 COMPILER V5.60.0,  data                                                               17/07/23  21:33:49  PAGE 2   
+
+   58          float P_S_MAX = 77.0;
+   59          float D_S = -24.19;
+   60          float D_S_z = -33;
+   61          float G_S = -0.198;
+   62          float G_S_1 = -0.17;
+   63          float G_S_zhi = -0.151;
+   64          
+   65          float P_W = 1.83;
+   66          float D_W = 0.86;
+   67          
+   68          float aimed_angle = 0;
    69          
-   70          int16 wSet;
-   71          float gyro;
-   72          int16 sp_set = 0;
-   73          int16 sp_set_max = 200;
-   74          
-   75          int16 aimed_into_speed = 60; //µ¹³µËÙ¶È
-   76          float into_R = 0.25;
-   77          //µ¹³µ×ªÍä°ë¾¶(m)
-   78          int16 ku_distance = 1500;
-   79          
-   80          int8 obstacle_count = 0;
-   81          int16 tof_dis = 850;
-   82          // int16 tof_dis1 = 7950;
-   83          int16 tof_dis1 = 7300;
-   84          int16 tof_dis2 = 6650;
-   85          int16 tof_dis3 = 6000;
+   70          float gyro;  //ÂË²¨ºóÍÓÂÝÒÇzÖá½ÇËÙ¶È
+   71          float gyro1; //ÂË²¨ºóÍÓÂÝÒÇzÖá½ÇËÙ¶È
+   72          
+   73          int16 dis1 = 2000;
+   74          int16 dis2 = 10000;
+   75          int16 ring_angle = 1600;
+   76          
+   77          int16 wSet;
+   78          float gyro;
+   79          int16 sp_set = 0;
+   80          int16 sp_set_max = 200;
+   81          
+   82          int16 aimed_into_speed = 60; //µ¹³µËÙ¶È
+   83          float into_R = 0.25;
+   84          //µ¹³µ×ªÍä°ë¾¶(m)
+   85          int16 ku_distance = 1500;
    86          
-   87          int16 fanL = 0;
-   88          int16 fanR = 0;
-   89          
-   90          uint8 start_diration = 1;//0×ó  1ÓÒ
-   91          
-   92          int16 tof_distance = 0;
+   87          int8 obstacle_count = 0;
+   88          int16 tof_dis = 850;
+   89          // int16 tof_dis1 = 7950;
+   90          int16 tof_dis1 = 7300;
+   91          int16 tof_dis2 = 6650;
+   92          int16 tof_dis3 = 6000;
    93          
-   94          //°´¼ü
-   95          int8 keys = 0;
-   96          uint8 SINGLE_CLICK = 0;
-   97          uint8 DOUBLE_CLICK = 1;
-   98          int16 strm = -1;
-   99          //²¦Âë¿ª¹Ø
-  100          uint8 R_or_L = 0;
-  101          
-  102          uint32 time_count = 0;
-  103          uint16 mode = 0;
-  104          
-  105          uint32 encoder_count = 0;
-  106          int16 speed3 = 0;
-  107          
-  108          int16 element_cnt = 0;//ÔªËØ¼ÆÊý£¬ÊÇPO_or_Obstacle[]µÄÏÂ±ê
-  109          
-  110          
+   94          int16 fanL = 0;
+   95          int16 fanR = 0;
+   96          
+   97          uint8 start_diration = 1;//0×ó  1ÓÒ
+   98          
+   99          int16 tof_distance = 0;
+  100          
+  101          //°´¼ü
+  102          int8 keys = 0;
+  103          uint8 SINGLE_CLICK = 0;
+  104          uint8 DOUBLE_CLICK = 1;
+  105          int16 strm = -1;
+  106          //²¦Âë¿ª¹Ø
+  107          uint8 R_or_L = 0;
+  108          
+  109          uint32 time_count = 0;
+  110          uint16 mode = 0;
   111          
+  112          uint32 encoder_count = 0;
+  113          int16 speed3 = 0;
+  114          
+  115          
+  116          
+  117          
 
 
 Module Information          Static   Overlayable
@@ -130,13 +135,13 @@ Module Information          Static   Overlayable
   code size            =    ------     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
+C251 COMPILER V5.60.0,  data                                                               17/07/23  21:33:49  PAGE 3   
+
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =       513     ------
+  xdata size           =       525     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
-C251 COMPILER V5.60.0,  data                                                               17/07/23  20:10:15  PAGE 3   
-
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
@@ -144,7 +149,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =       560     ------
+  hconst size          =       582     ------
 End of Module Information.
 
 

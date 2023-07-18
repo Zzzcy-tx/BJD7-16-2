@@ -13,7 +13,13 @@
 
 extern uint16 t;
 extern float all_angle;
-extern int16 PO_or_OBSTACLE[5];
+
+extern int16 PO_or_OBSTACLE[5]; //-1为无元素，0为坡道，1为避障
+extern int16 HO_cnt;
+
+extern int16 RingR[5];   //0为小环，1为中环，2为大环
+extern int16 Ring_cnt;
+
 extern int16 ring_set_k[4];
 extern uint16 sp_ready;
 
@@ -111,7 +117,7 @@ extern int16 spL;
 extern int16 spR;
 
 
-extern int16 element_cnt;//元素计数，是PO_or_Obstacle[]的下标
+// extern int16 element_cnt;//元素计数，是PO_or_Obstacle[]的下标
 
 
 extern int16 Ring_Dis1[4];   //存放大中小环积分距离数据

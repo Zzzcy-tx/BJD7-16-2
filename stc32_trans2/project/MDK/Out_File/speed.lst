@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  speed                                                              17/07/23  20:03:17  PAGE 1   
+C251 COMPILER V5.60.0,  speed                                                              17/07/23  21:33:50  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE speed
@@ -66,7 +66,7 @@ stmt  level    source
    55   2          setSpeedR(pidR.setpoint + Diff_Speed);
    56   2          setSpeedL(pidL.setpoint - Diff_Speed);
    57   2        }
-C251 COMPILER V5.60.0,  speed                                                              17/07/23  20:03:17  PAGE 2   
+C251 COMPILER V5.60.0,  speed                                                              17/07/23  21:33:50  PAGE 2   
 
    58   1      
    59   1        // setSpeedLR(pidL.setpoint);
@@ -134,7 +134,7 @@ stmt  level    source
   121   2           //sp_check = (1-0.05*fabs((exp(-fabs(k/a))-1.0)/(exp(-fabs(k/a))+1.0)))*sp_set;
   122   2         setSpeedLR(sp_check);
   123   2         //setSpeedLR(sp_set);
-C251 COMPILER V5.60.0,  speed                                                              17/07/23  20:03:17  PAGE 3   
+C251 COMPILER V5.60.0,  speed                                                              17/07/23  21:33:50  PAGE 3   
 
   124   2         G_S = G_S_zhi;
   125   2        }
@@ -202,7 +202,7 @@ stmt  level    source
   187   1        {
   188   2          setMotorR((int16)pidR.result);
   189   2        }
-C251 COMPILER V5.60.0,  speed                                                              17/07/23  20:03:17  PAGE 4   
+C251 COMPILER V5.60.0,  speed                                                              17/07/23  21:33:50  PAGE 4   
 
   190   1      }
 

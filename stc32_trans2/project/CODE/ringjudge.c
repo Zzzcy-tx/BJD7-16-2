@@ -75,7 +75,8 @@ void Ring_control(void)
 		angle_integral_flag1 = 1; // 启动陀螺仪积分
 	}
 
-	switch (PO_or_OBSTACLE[element_cnt]) // 根据圆环次序赋不同的dis1和dis2
+
+	switch (RingR[Ring_cnt]) // 根据圆环次序赋不同的dis1和dis2
 	{
 	case 0:
 		ringK = ring_set_k[SMALLRING];
@@ -94,7 +95,9 @@ void Ring_control(void)
 		break;
 	}
 
-	element_cnt = element_cnt + 1 - 2 * start_diration; // 根据发车方向不同加减element_cnt,左加右减
+
+	HO_cnt = HO_cnt + 1 - 2 * start_diration;
+	//element_cnt = element_cnt + 1 - 2 * start_diration; // 根据发车方向不同加减element_cnt,左加右减
 
 	if (annulus_flag == 1 && annulus_flag != 0)
 	{
@@ -248,7 +251,7 @@ void obstacle_control(void)
 		tof_count_flag++; // 物体检测次数++
 		if (tof_count_flag == 10 )
 		{
-			if (tof_count >= 8 && PO_or_OBSTACLE[element_cnt+1] == 4)	//要上一个元素判成功才能正常判
+			if (tof_count >= 8 && PO_or_OBSTACLE[HO_cnt + 1 - 2*start_diration] == 1)	//要上一个元素判成功才能正常判
 			{
 				distance2 = 0;
 				distance_integral_flag2 = 1; // 开始积分距离
@@ -258,7 +261,7 @@ void obstacle_control(void)
 
 				dodge_flag++;
 
-				element_cnt++;	//下一个元素
+				HO_cnt = HO_cnt + 1 - 2*start_diration;	//下一个元素
 
 			}
 			tof_count_flag = 0;

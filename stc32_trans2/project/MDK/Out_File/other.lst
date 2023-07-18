@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  other                                                              17/07/23  20:10:16  PAGE 1   
+C251 COMPILER V5.60.0,  other                                                              17/07/23  21:34:19  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE other
@@ -66,7 +66,7 @@ stmt  level    source
    55   1      
    56   1        iap_init();
    57   1        my_iap_init();
-C251 COMPILER V5.60.0,  other                                                              17/07/23  20:10:16  PAGE 2   
+C251 COMPILER V5.60.0,  other                                                              17/07/23  21:34:19  PAGE 2   
 
    58   1        
    59   1        // dl1a_init();//tof初始化
@@ -134,7 +134,7 @@ stmt  level    source
   121   2          break; //浮点数用atof
   122   2        case 18:
   123   2          aimed_into_speed = atoi(cp);
-C251 COMPILER V5.60.0,  other                                                              17/07/23  20:10:16  PAGE 3   
+C251 COMPILER V5.60.0,  other                                                              17/07/23  21:34:19  PAGE 3   
 
   124   2          break;
   125   2        case 19:
@@ -202,7 +202,7 @@ stmt  level    source
   187   2          str_num_str[str_i] = uart_str[str_i + str_eq + 1];
   188   2        }
   189   1        str_num_str[str_i] = '\0';
-C251 COMPILER V5.60.0,  other                                                              17/07/23  20:10:16  PAGE 4   
+C251 COMPILER V5.60.0,  other                                                              17/07/23  21:34:19  PAGE 4   
 
   190   1        str_num = atoi(str_num_str);
   191   1      
@@ -254,9 +254,10 @@ stmt  level    source
   237   1        PO_or_OBSTACLE[2] = iap_read_float(6, 0x1E0);
   238   1        PO_or_OBSTACLE[3] = iap_read_float(6, 0x1F0);
   239   1        PO_or_OBSTACLE[4] = iap_read_float(6, 0x200);
-  240   1        PO_or_OBSTACLE[5] = iap_read_float(6, 0x210);
-  241   1        
-  242   1      }
+  240   1      
+  241   1        RingR[0] = iap_read_float(6, 0x210);
+  242   1        
+  243   1      }
 
 
 Module Information          Static   Overlayable
@@ -270,9 +271,9 @@ Module Information          Static   Overlayable
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
-  ebit size            =    ------     ------
-C251 COMPILER V5.60.0,  other                                                              17/07/23  20:10:16  PAGE 5   
+C251 COMPILER V5.60.0,  other                                                              17/07/23  21:34:19  PAGE 5   
 
+  ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------

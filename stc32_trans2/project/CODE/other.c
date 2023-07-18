@@ -237,6 +237,7 @@ void my_iap_init()
 	PO_or_OBSTACLE[2] = iap_read_float(6, 0x1E0);
 	PO_or_OBSTACLE[3] = iap_read_float(6, 0x1F0);
 	PO_or_OBSTACLE[4] = iap_read_float(6, 0x200);
-	PO_or_OBSTACLE[5] = iap_read_float(6, 0x210);
+
+	RingR[0] = iap_read_float(6, 0x210);
 	
 }

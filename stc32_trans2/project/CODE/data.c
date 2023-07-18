@@ -1,11 +1,18 @@
 #include "data.h"
 
 uint16 t = 0;
-int16 PO_or_OBSTACLE[5] = {0, 3, 4, -1, -1}; //-1为无元素，0为小环岛，1为中环岛，2为大环岛，3为坡道，4为避障
-int16 ring_set_k[4] = {18, 0, 0, 0};     //小中大环
+int16 PO_or_OBSTACLE[5] = {0, 1, -1, -1, -1}; //-1为无元素，0为坡道，1为避障
+int16 HO_cnt = 0;      //坡道避障计数
 
-int16 Ring_Dis1[4] = {0,0,0,0};   //存放大中小环积分距离数据
-int16 Ring_Dis2[4] = {0,0,0,0};
+int16 RingR[5] = {0, -1, -1, -1, -1};   //圆环顺序，0为小环，1为中环，2为大环，左发为顺序
+int16 Ring_cnt = 0;     //环岛计数
+
+int16 ring_set_k[4] = {18, 0, 0, 0};     //小中大环打角误差，0为小环，1为中环，2为大环
+
+// int16 element_cnt = 0;//元素计数，是PO_or_Obstacle[]的下标
+
+int16 Ring_Dis1[4] = {0,0,0,0};     //存放大中小环dia1积分距离数据，0为小环，1为中环，2为大环
+int16 Ring_Dis2[4] = {0,0,0,0};     //存放大中小环dis2积分距离数据，0为小环，1为中环，2为大环
 
 
 
@@ -105,7 +112,6 @@ uint16 mode = 0;
 uint32 encoder_count = 0;
 int16 speed3 = 0;
 
-int16 element_cnt = 0;//元素计数，是PO_or_Obstacle[]的下标
 
 
 

@@ -150,7 +150,8 @@ void control()
 void LR_go(){   //判断左发右发并初始化
     int16 i=0;
     if (start_diration == 0){
-        element_cnt = 0;
+        HO_cnt = 0;
+        Ring_cnt = 0;
     }
     else{   //start_direction=1
         for(i = 0; i++ ; i<5){
@@ -158,6 +159,14 @@ void LR_go(){   //判断左发右发并初始化
                 break;
             }
         }
-        element_cnt = i-1;
+        HO_cnt = i-1;
+        
+        for(i = 0; i++ ; i<5){
+            if(RingR[i] == -1){
+                break;
+            }
+        }
+        Ring_cnt = i-1;
     }
+    
 }

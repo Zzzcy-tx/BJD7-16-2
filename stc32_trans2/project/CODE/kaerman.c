@@ -100,10 +100,10 @@ void Angle_Cal()
   Kalman_Cal_Pitch(pitch_raw, gyro_x_rea); //¿¨¶ûÂüÂË²¨¼ÆËã¸©Ñö½Ç
                                            //	Kalman_Cal_Roll(roll_raw,gyro_y_rea);  //¿¨¶ûÂüÂË²¨¼ÆËãÇãĞ±½Ç
                                            //	Kalman_Cal_Yaw(yaw_raw,gyro_z_rea);  //¿¨¶ûÂüÂË²¨¼ÆËãÆ«º½½Ç
-		if (puodao == 0 && pitch_kalman > 10 && PO_or_OBSTACLE[element_cnt++] == 3)
+		if (puodao == 0 && pitch_kalman > 10 && PO_or_OBSTACLE[HO_cnt + 1 - 2*start_diration] == 0)
 		{
 			puodao = 1;
-      element_cnt++;//ÏÂÒ»¸öÔªËØ
+      HO_cnt = HO_cnt + 1 - 2*start_diration;//ÏÂÒ»¸öÔªËØ
 		}
 		else if(puodao == 1  && pitch_kalman < -5)
 		{

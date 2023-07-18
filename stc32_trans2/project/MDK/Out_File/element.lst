@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  element                                                            17/07/23  20:10:16  PAGE 1   
+C251 COMPILER V5.60.0,  element                                                            17/07/23  21:39:49  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE element
@@ -66,7 +66,7 @@ stmt  level    source
    55   3                  pidL.setpoint = 90; //右转
    56   3                  pidR.setpoint = 0;
    57   3              }
-C251 COMPILER V5.60.0,  element                                                            17/07/23  20:10:16  PAGE 2   
+C251 COMPILER V5.60.0,  element                                                            17/07/23  21:39:49  PAGE 2   
 
    58   2      
    59   2              hall_trigged = 0;
@@ -134,7 +134,7 @@ stmt  level    source
   121   2              // setSpeedR(-pidW.result / 100); //设置目标速度
   122   2              if (fabs(angle) >= 2100) //积分量达到目标(90度不到一点)
   123   2              {
-C251 COMPILER V5.60.0,  element                                                            17/07/23  20:10:16  PAGE 3   
+C251 COMPILER V5.60.0,  element                                                            17/07/23  21:39:49  PAGE 3   
 
   124   3                  into_flag++;
   125   3                  // sp_set = 0;
@@ -165,22 +165,30 @@ stmt  level    source
   150          void LR_go(){   //判断左发右发并初始化
   151   1          int16 i=0;
   152   1          if (start_diration == 0){
-  153   2              element_cnt = 0;
-  154   2          }
-  155   1          else{   //start_direction=1
-  156   2              for(i = 0; i++ ; i<5){
-  157   3                  if(PO_or_OBSTACLE[i] == -1){
-  158   4                      break;
-  159   4                  }
-  160   3              }
-  161   2              element_cnt = i-1;
-  162   2          }
-  163   1      }
+  153   2              HO_cnt = 0;
+  154   2              Ring_cnt = 0;
+  155   2          }
+  156   1          else{   //start_direction=1
+  157   2              for(i = 0; i++ ; i<5){
+  158   3                  if(PO_or_OBSTACLE[i] == -1){
+  159   4                      break;
+  160   4                  }
+  161   3              }
+  162   2              HO_cnt = i-1;
+  163   2              for(i = 0; i++ ; i<5){
+  164   3                  if(RingR[i] == -1){
+  165   4                      break;
+  166   4                  }
+  167   3              }
+  168   2              Ring_cnt = i-1;
+  169   2          }
+  170   1          
+  171   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1033     ------
+  code size            =      1122     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -195,6 +203,8 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
+C251 COMPILER V5.60.0,  element                                                            17/07/23  21:39:49  PAGE 4   
+
   hconst size          =        46     ------
 End of Module Information.
 

@@ -607,7 +607,9 @@ void Keystroke_Menu_FOUR(void) // 4
 {
     ips200_Dispaly(BLACK);
     ips200_showstr(0, display % 10, "*");
+
     ips200_showstr(8, 0, " PO_or_OBSTACLE");
+
     ips200_showstr(8, 1, " [0]");
     ips200_showint16(80, 1, PO_or_OBSTACLE[0]);
     ips200_showstr(8, 2, " [1]");
@@ -616,22 +618,26 @@ void Keystroke_Menu_FOUR(void) // 4
     ips200_showint16(80, 3, PO_or_OBSTACLE[2]);
     ips200_showstr(8, 4, " [3]");
     ips200_showint16(80, 4, PO_or_OBSTACLE[3]);
-    ips200_showstr(8, 5, " [4]");
-    ips200_showint16(80, 5, PO_or_OBSTACLE[4]);
-    ips200_showstr(8, 5, " [5]");
-    ips200_showint16(80, 5, PO_or_OBSTACLE[5]);
+
+    ips200_showstr(8, 5, " Ring1 small0 mid1 big2 *Left order plz*");
+    ips200_showint16(80, 5, RingR[0]);
+    ips200_showstr(8, 6, " Ring2");
+    ips200_showint16(80, 6, RingR[1]);
+    ips200_showstr(8, 7, " Ring3");
+    ips200_showint16(80, 7, RingR[2]);
+
     ips200_showstr(8, 7, " ring_set_k");
-    ips200_showstr(8, 8, " [0]");
-    ips200_showint16(30, 8, ring_set_k[0]);
-    ips200_showstr(8, 9, " [1]");
-    ips200_showint16(30, 9, ring_set_k[1]);
-    ips200_showstr(8, 10, " [2]");
-    ips200_showint16(30, 10, ring_set_k[2]);
-    ips200_showstr(8, 11, " [3]");
+
+    ips200_showstr(8, 8, " k_of_small");
+    ips200_showint16(30, 8, ring_set_k[SMALLRING]);
+    ips200_showstr(8, 9, " K_of_mid");
+    ips200_showint16(30, 9, ring_set_k[MIDRING]);
+    ips200_showstr(8, 10, " K_of_big");
+    ips200_showint16(30, 10, ring_set_k[BIGRING]);
+    ips200_showstr(8, 11, " Custom k");
     ips200_showint16(30, 11, ring_set_k[3]);
-    ips200_showstr(8, 12, " [4]");
-    ips200_showint16(30, 12, ring_set_k[4]);
-     Keystroke_Scan();
+
+    Keystroke_Scan();
     switch (display % 10)
     {
     case 1:
